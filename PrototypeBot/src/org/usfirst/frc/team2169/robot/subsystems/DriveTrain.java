@@ -56,10 +56,10 @@ public class DriveTrain extends Subsystem {
 		//rails at these ports.
 		//this also sets up the encoders based on distance and
 		//NEEDS A DISTANCE PER PULSE FACTOR
-		leftEnc = new Encoder(0,1);
+		leftEnc = new Encoder(1,2);
 		leftEnc.setPIDSourceType(PIDSourceType.kDisplacement);
 		leftEnc.setDistancePerPulse(1);
-		rightEnc = new Encoder(2,3);
+		rightEnc = new Encoder(3,4);
 		rightEnc.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEnc.setDistancePerPulse(1);
 		
