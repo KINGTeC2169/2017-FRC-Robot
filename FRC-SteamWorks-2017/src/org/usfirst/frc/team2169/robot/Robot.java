@@ -7,6 +7,7 @@ import org.usfirst.frc.team2169.robot.commands.Auto_CentralGoal;
 import org.usfirst.frc.team2169.robot.commands.Auto_DoNothing;
 import org.usfirst.frc.team2169.robot.commands.Auto_RedLeft;
 import org.usfirst.frc.team2169.robot.commands.Auto_RedRight;
+import org.usfirst.frc.team2169.robot.commands.Auto_Tester;
 import org.usfirst.frc.team2169.robot.commands.GearManip;
 import org.usfirst.frc.team2169.robot.commands.Hanging;
 import org.usfirst.frc.team2169.robot.commands.Intake;
@@ -15,6 +16,7 @@ import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
 import org.usfirst.frc.team2169.robot.subsystems.Intakes;
+import org.usfirst.frc.team2169.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -32,37 +34,61 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	//creating an instance of the gearManipulator
 	public static final GearManipulator gearManipulator = new GearManipulator();
+	
+	//creating an instance of the driveTrain
 	public static final DriveTrain driveTrain = new DriveTrain();
+	
+	//creating an instance of the intakes
 	public static final Intakes intakes = new Intakes();
+	
+	//creating an instance of the vision
+	public static final Vision vision = new Vision();
+	
+	//creating an instance of the hanger
 	public static final Hanger hanger = new Hanger();
+	
+	//creating an instance of the OI
 	public static OI oi;
 
+	//vision setup variables
 	public static boolean isVisionDataGood;
-	public static Boolean visionTargetOnLeft;
+	public static Double visionGearMotor;
 	public static Double visionDistance;
 	public static Double visionAngle;
 	
-	public static double springLength = 35.255;
+	//standard spring length in m to calculate 
+	//the offset distance from the edge of the spring
+	//to the reflective tape
+	public static double springLength = .035255;
 	
+	//creating an instance of each command that
+	//runs continuously in teleOp
 	public Command tankDriveCom;
 	public Command gearManipCom;
 	public Command intakeCom;
 	public Command hangCom;
 	public Command autonomousCommand;
 	
+	//creating an instance of the sendable object that
+	//displays the commands to the SmartDashboard in a match
 	public SendableChooser<Command> chooser = new SendableChooser<>();
 	
 
 	@Override
 	public void robotInit() {
+		//creating an instance of the OI class
 		oi = new OI();
 		
+		//creating an instance of the commands shown above
 		tankDriveCom = new TankDrive();
 		gearManipCom = new GearManip();
 		intakeCom = new Intake();
 		hangCom = new Hanging();
 		
+		//adding all of the commands that go to the 
+		//SmartDashbaord at the beginning of the match
 		chooser.addDefault("Do Nothing", new Auto_DoNothing());
 		chooser.addObject("Blue Left", new Auto_BlueLeft());
 		chooser.addObject("Blue Center", new Auto_CentralGoal());
@@ -70,11 +96,13 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Red Left", new Auto_RedLeft());
 		chooser.addObject("Red Center", new Auto_CentralGoal());
 		chooser.addObject("Red Right", new Auto_RedRight());
+		chooser.addObject("Test Auto", new Auto_Tester());
 		SmartDashboard.putData("Auto mode", chooser);
 		
+		//robot restarting setup at startup
 		Robot.driveTrain.imu.reset();
 		Robot.driveTrain.resetEncoders();
-		Robot.driveTrain.compressor.start();
+		//Robot.driveTrain.startCompressor();
 	}
 
 	/**
@@ -105,6 +133,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		//pulls the checked command on the SmartDashboard
+		//that the drivers want to use for that match
 		autonomousCommand = chooser.getSelected();
 
 		/*
@@ -136,12 +166,14 @@ public class Robot extends IterativeRobot {
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		
+		//Robot.driveTrain.compressor.start();
+		
 		//this is the place to start all commands that run
 		//continuously through the autonomous period
 		tankDriveCom.start();
 		gearManipCom.start();
 		intakeCom.start();
-		hangCom.start();
+		//hangCom.start();
 	}
 
 	/**
@@ -150,6 +182,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+		//any continously updated SmartDashboard data goes here
+		Robot.driveTrain.log();
+		Robot.gearManipulator.log();
+		
 	}
 
 	/**

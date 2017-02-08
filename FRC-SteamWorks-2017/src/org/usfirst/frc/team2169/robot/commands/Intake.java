@@ -20,15 +20,7 @@ public class Intake extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.oi.secondaryStick.getRawButton(3) || Robot.oi.secondaryStick.getRawButton(4)){
-    		if(Robot.oi.secondaryStick.getRawButton(3)){
-    			Robot.intakes.intakeIn();
-    		} else {
-    			Robot.intakes.intakeOut();
-    		}
-    	} else {
-    		Robot.intakes.intakeIdle();
-    	}
+    	Robot.intakes.manualIntakes();
     }
 
     // Make this return true when this Command no longer needs to run execute()

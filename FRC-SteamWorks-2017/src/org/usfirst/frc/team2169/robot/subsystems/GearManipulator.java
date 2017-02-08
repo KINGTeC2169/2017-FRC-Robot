@@ -1,11 +1,14 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
+import org.usfirst.frc.team2169.robot.Robot;
+
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	This is the GearManipulator subsystem. This subsystem
@@ -15,62 +18,99 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class GearManipulator extends Subsystem {
 
+	//creating an instance of the gear motor
     public CANTalon gearMotor;
-    public double gearMotorSpeed = .2;
-    public boolean gearAutomatic;
+    //manual speed of the gear manipulator
+    public double gearMotorSpeed = .4;
     
+    //creating an instance of a deciding boolean
+    public boolean isSliderAutomatic;
+    
+    //creating an instance of the left and right
+    //button bounds on the slider
     public DigitalInput leftButton;
     public DigitalInput rightButton;
     
-    public DigitalInput springButton1;
-    public DigitalInput springButton2;
-    public DigitalInput springButton3;
-    public DigitalInput springButton4;
+    //creating an instance of the pressure plate 
+    //buttons on the slider
+    public DigitalInput springButton;
     
-    public DoubleSolenoid gearSolLeft;
-    public DoubleSolenoid gearSolRight;
-    public DoubleSolenoid sliderSol;
+    //creating an instance of the gear solenoid
+    //and the human player door solenoid
+    public DoubleSolenoid playerSol;
+    public DoubleSolenoid gearDoorSol;
     
     public GearManipulator(){
     	//creating the gear manipulator at this port
     	gearMotor = new CANTalon(8);
     	//this resets the position of the slider
     	//to 0. This should be at the center of 
-    	//every match
+    	//every match to ensure the slider can return to 
+    	//the middle during a match
     	gearMotor.setEncPosition(0);
-    	gearAutomatic = true;
     	
-    	//creating the button on with the ports that 
-    	//correspond to the ports on DIO section
-    	//on the roboRIO
+    	isSliderAutomatic = true;
+    	
+    	//creating the buttons at these DIO ports 
     	leftButton = new DigitalInput(4);
     	rightButton = new DigitalInput(5);
     	
-    	//creating the button on with the ports that 
-    	//correspond to the ports on DIO section
-    	//on the roboRIO
-    	springButton1 = new DigitalInput(6);
-    	springButton2 = new DigitalInput(7);
-    	springButton3 = new DigitalInput(8);
-    	springButton4 = new DigitalInput(9);
+    	//creating the buttons at these DIO ports 
+    	springButton = new DigitalInput(4);
     	
     	//creating two solenoids that flip pistons
     	//on these modules and ports
-    	gearSolLeft = new DoubleSolenoid(0,0,1);
-    	gearSolRight = new DoubleSolenoid(0,2,3);
-    	sliderSol = new DoubleSolenoid(0,4,5);
-    	
-    	//setting the initial values of the pistons
-    	gearSolLeft.set(Value.kForward);
-    	gearSolRight.set(Value.kForward);
+    	playerSol = new DoubleSolenoid(0,6,7);
+    	gearDoorSol = new DoubleSolenoid(0,4,5);
+    }
+    
+    //this method sets the value of the gear 
+    //manipulator based on the reflective tapes position
+    //relative to the slider. Motor values are already
+    //calculated on the Pi side
+    //AUTOMATIC
+    public void automaticGearManip(){
+    	if(Robot.visionGearMotor > 0){
+    		Robot.gearManipulator.gearManipLeft(Robot.visionGearMotor);
+    	} else if(Robot.visionGearMotor < 0){
+    		Robot.gearManipulator.gearManipRight(Robot.visionGearMotor);
+    	} else {
+    		Robot.gearManipulator.gearManipIdle();
+    	}
+    }
+    
+    //this method sets the value of the gear 
+    //manipulator based on UI if the slider and vision
+    //do not cooperate well in a match
+    //MANUAL
+    public void manualGearManip(){
+    	//this statement tests if the gear manipulator should move at all, 
+    	//otherwise the gear manipulator should not move at all
+    	if(Robot.oi.secondaryStick.getRawButton(0) || Robot.oi.secondaryStick.getRawButton(1)){
+    		if(Robot.oi.secondaryStick.getRawButton(0)){
+    			Robot.gearManipulator.gearManipLeft(gearMotorSpeed);
+    		} else {
+    			Robot.gearManipulator.gearManipRight(gearMotorSpeed);
+    		}
+    	} else {
+    		Robot.gearManipulator.gearManipIdle();
+    	}
+    }
+    
+    //when this method is called, it flips the boolean that decides
+    //whether or not the slider is moving based on user input
+    //or vision calculations
+    public void flipSliderManipulation(){
+    	isSliderAutomatic = !isSliderAutomatic;
     }
     
     //this method checks if the leftButton is hit,
     //if not, it will send the gear manipulator
     //to the left until it hits the switch
-    public void gearManipLeft(){
+    //MANUAL
+    public void gearManipLeft(double speed){
     	if(leftButton.get() == true){
-    		gearMotor.set(gearMotorSpeed);
+    		gearMotor.set(speed);
     	} else {
     		gearMotor.set(0);
     	}
@@ -79,16 +119,18 @@ public class GearManipulator extends Subsystem {
     //this is a quick method that stops the
     //gear manipulator if it gets too close
     //to its target
-    public void gearMainpIdle(){
+    //MANUAL
+    public void gearManipIdle(){
     	gearMotor.set(0);
     }
 
     //this method checks if the rightButton is hit,
     //if not, it will send the gear manipulator
     //to the right until it hits the switch
-    public void gearManipRight(){
+    //MANUAL
+    public void gearManipRight(double speed){
     	if(rightButton.get() == true){
-    		gearMotor.set(-gearMotorSpeed);
+    		gearMotor.set(-speed);
     	} else {
     		gearMotor.set(0);
     	}
@@ -96,47 +138,49 @@ public class GearManipulator extends Subsystem {
     
     //flips the state of the solenoids
     //AKA flips the pneumatic pistons
-    //on both sides of the door
-    public void flipDoorSolenoids(){
-    	if(gearSolLeft.get() == Value.kOff){
-    		gearSolLeft.set(Value.kForward);
-    	} else if(gearSolLeft.get() == Value.kForward){
-    		gearSolLeft.set(Value.kReverse);
+    //on the human player door
+    public void flipHumanPlayerSolenoids(){
+    	if(playerSol.get() == Value.kOff){
+    		playerSol.set(Value.kForward);
+    	} else if(playerSol.get() == Value.kForward){
+    		playerSol.set(Value.kReverse);
     	} else {
-    		gearSolLeft.set(Value.kForward);
+    		playerSol.set(Value.kForward);
     	}
     	
-    	if(gearSolLeft.get() == Value.kOff){
-    		gearSolLeft.set(Value.kForward);
-    	} else if(gearSolLeft.get() == Value.kForward){
-    		gearSolLeft.set(Value.kReverse);
-    	} else {
-    		gearSolLeft.set(Value.kForward);
-    	}
     }
     
-  //flips the state of the solenoids
+    //flips the state of the solenoids
     //AKA flips the pneumatic pistons
     //on both sides of the door
-    public void flipSlideSolenoids(){
-    	if(sliderSol.get() == Value.kOff){
-    		sliderSol.set(Value.kForward);
-    	} else if(sliderSol.get() == Value.kForward){
-    		sliderSol.set(Value.kReverse);
+    public void flipDoorSolenoids(){
+    	if(gearDoorSol.get() == Value.kOff){
+    		gearDoorSol.set(Value.kForward);
+    	} else if(gearDoorSol.get() == Value.kForward){
+    		gearDoorSol.set(Value.kReverse);
     	} else {
-    		sliderSol.set(Value.kForward);
+    		gearDoorSol.set(Value.kForward);
     	}
     }
     
-    //checks if any of the buttons inside of the 
-    //manipulkator are checked, if any are pressed,
-    //then return true
+    //checks if any of the buttons on the slider
+    //are pressed, if any are pressed, then return true
     public boolean springButtonHit(){
-    	if(springButton1.get() == false || springButton2.get() == false || springButton3.get() == false || springButton4.get() == false){
+    	if(springButton.get() == false){
     		return true;
     	} else {
     		return false;
     	}
+    }
+    
+    //a standard log function that outputs data about the gear mechanism
+    //to the SmarDashboard using .putInt() .putNumber() or .putData()
+    public void log(){
+    	SmartDashboard.putBoolean("Spring Button", springButtonHit());
+    	SmartDashboard.putBoolean("Left Slider Button", leftButton.get());
+    	SmartDashboard.putBoolean("Right Slider Button", rightButton.get());
+    	SmartDashboard.putBoolean("IsSliderAutomatic", isSliderAutomatic);
+    	
     }
 
     public void initDefaultCommand() {}

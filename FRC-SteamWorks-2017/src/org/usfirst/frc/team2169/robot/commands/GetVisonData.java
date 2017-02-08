@@ -9,43 +9,19 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
  *	angle and position on the field is up to data
  */
 public class GetVisonData extends Command {
-
-	private NetworkTable networkTable;
-	private String name = "datatable";
 	
     public GetVisonData() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	networkTable = NetworkTable.getTable(name);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	networkTable = NetworkTable.getTable(name);
     }
 
     // Called repeatedly when this Command is scheduled to run
-    @SuppressWarnings("deprecation")
 	protected void execute() {
-    	
-    	//some networktables implementation
-    	//if the networks table is working properly,
-    	//then assign real values otherwise
-    	//say they do not exist because of an error
-    	try{
-    		Robot.visionTargetOnLeft = networkTable.getBoolean("TargetOnLeft");
-    		Robot.visionDistance = networkTable.getDouble("TargetOnLeft");
-    		Robot.visionAngle = networkTable.getDouble("TargetOnLeft");
-    		
-    		Robot.isVisionDataGood = true;
-    	}catch(Exception e){
-    		Robot.visionTargetOnLeft = null;
-    		Robot.visionDistance = null;
-    		Robot.visionAngle = null;
-    		
-    		Robot.isVisionDataGood = false;
-    	}
-    	
+    	Robot.vision.getVisionData();
     }
 
     // Make this return true when this Command no longer needs to run execute()

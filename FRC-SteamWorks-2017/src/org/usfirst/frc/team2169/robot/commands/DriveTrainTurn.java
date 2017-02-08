@@ -43,15 +43,17 @@ public class DriveTrainTurn extends Command {
     	
     	error = Robot.driveTrain.getTurnAngle(want, Robot.driveTrain.imu.getAngleZ());
     	
-    	//this is the proportional component of the pid so it gets closer and closer
-    	//to the target as error decreases, speed decreases
+    	//this is an example of the proportional component of the pid so it gets 
+    	//closer and closer to the target as error decreases, speed decreases
     	if(!refinedAngle){
     		if(motorSpeed * kP * error >= motorSpeed){
-	    		Robot.driveTrain.leftDrive.set(motorSpeed);
-	            Robot.driveTrain.rightDrive.set(-motorSpeed);
+    			Robot.driveTrain.tankDrive(motorSpeed, motorSpeed);
+	    		//Robot.driveTrain.leftDrive.set(motorSpeed);
+	            //Robot.driveTrain.rightDrive.set(-motorSpeed);
     		} else {
-    			Robot.driveTrain.leftDrive.set(motorSpeed * kP * error);
-    			Robot.driveTrain.rightDrive.set(-motorSpeed * kP * error);
+    			Robot.driveTrain.tankDrive(motorSpeed * kP * error, motorSpeed * kP * error);
+    			//Robot.driveTrain.leftDrive.set(motorSpeed * kP * error);
+    			//Robot.driveTrain.rightDrive.set(-motorSpeed * kP * error);
     		}
     		
     		if(Math.abs(error) < tolerance){

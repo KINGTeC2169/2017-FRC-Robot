@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
+import org.usfirst.frc.team2169.robot.Robot;
+
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -13,14 +15,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Intakes extends Subsystem {
 
+	//creating an instance of the intake motor
 	public CANTalon intakeMotor;
+	
+	//setting the intake motor speed
 	public double speed = 1.0;
 	
+	//creating an instance of the intake solenoid
 	public DoubleSolenoid intakeSol;
 	
 	public Intakes(){
 		//creating the intake motor at this port
-		intakeMotor = new CANTalon(9);
+		intakeMotor = new CANTalon(5);
 		
 		//creats the solenoid module at these ports
 		intakeSol = new DoubleSolenoid(0,6,7);
@@ -42,6 +48,27 @@ public class Intakes extends Subsystem {
 	//out in a rare case that they could not use a gear
 	public void intakeOut(){
 		intakeMotor.set(-speed);
+	}
+	
+	//this method sets the value of the intakes based 
+	//on UI during a match
+    //MANUAL
+	public void manualIntakes(){
+		if(Robot.oi.secondaryStick.getRawButton(3) || Robot.oi.secondaryStick.getRawButton(4)){
+    		if(Robot.oi.secondaryStick.getRawButton(3)){
+    			Robot.intakes.intakeIn();
+    		} 
+    		else {
+    			Robot.intakes.intakeOut();
+    		}
+    	} 
+		else {
+    		Robot.intakes.intakeIdle();
+    	}
+	}
+	
+	public void intakeInit(){
+		
 	}
 	
 	//this shifts the intake solenoids

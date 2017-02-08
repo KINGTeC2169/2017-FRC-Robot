@@ -66,7 +66,7 @@ public class DriveForward extends Command {
 			}
 		} 
 		
-		//clamp set speeds so they can be ablied to the 
+		//clamp set speeds so they can be applied to the 
 		//motors without errors or exceptions
 		if(leftSpeed < minSpeed){
 			leftSpeed = minSpeed;

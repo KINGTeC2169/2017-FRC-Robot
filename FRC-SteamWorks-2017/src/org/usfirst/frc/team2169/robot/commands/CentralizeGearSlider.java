@@ -11,6 +11,7 @@ public class CentralizeGearSlider extends Command {
 
 	public double positionTolerance = .2;
 	public double velocityTolerance = 1;
+	public double gearMaxSpeed = .2;
 	public double error;
 	
 	private boolean finished;
@@ -22,7 +23,6 @@ public class CentralizeGearSlider extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.gearManipulator.gearAutomatic = false;
     	finished = false;
     }
 
@@ -32,10 +32,12 @@ public class CentralizeGearSlider extends Command {
     	//reset value of 0
     	error = Robot.gearManipulator.gearMotor.getEncPosition();
     	
-    	if(error > 0){
-    		Robot.gearManipulator.gearManipLeft();
+    	if(error > 0 && gearMaxSpeed * error <= 1){
+    		Robot.gearManipulator.gearManipLeft(gearMaxSpeed * error);
+    	} else if(error < 0 && gearMaxSpeed * error >= -1) {
+    		Robot.gearManipulator.gearManipRight(gearMaxSpeed * error);
     	} else {
-    		Robot.gearManipulator.gearManipRight();
+    		Robot.gearManipulator.gearManipIdle();
     	}
     	
     	//adjusts the position of the gear manip until it is slow enough and within tolerance to stop
@@ -53,7 +55,6 @@ public class CentralizeGearSlider extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	Robot.gearManipulator.gearMotor.set(0);
-    	Robot.gearManipulator.gearAutomatic = true;
     }
 
     // Called when another command which requires one or more of the same

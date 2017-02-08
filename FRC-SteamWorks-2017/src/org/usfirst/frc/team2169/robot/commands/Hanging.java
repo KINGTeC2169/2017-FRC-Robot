@@ -20,11 +20,7 @@ public class Hanging extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.oi.secondaryStick.getRawButton(10)){
-    		Robot.hanger.pullUp();
-    	} else {
-    		Robot.hanger.hangIdle();
-    	}
+    	Robot.hanger.manualHanging();
     }
 
     // Make this return true when this Command no longer needs to run execute()
