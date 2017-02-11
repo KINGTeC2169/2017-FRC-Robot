@@ -1,11 +1,13 @@
 package org.usfirst.frc.team2169.robot;
 
+import org.usfirst.frc.team2169.robot.commands.GearManipManualClose;
 import org.usfirst.frc.team2169.robot.commands.GearManipulationChange;
 import org.usfirst.frc.team2169.robot.commands.HumanPlayerSolenoidFlip;
 import org.usfirst.frc.team2169.robot.commands.IntakeSolenoidFlip;
 import org.usfirst.frc.team2169.robot.commands.TankDriveSolenoidFlip;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -29,17 +31,18 @@ public class OI {
 		secondaryStick = new Joystick(2);
 		
 		//creates and declares buttons for a specific joystick and button id
-		JoystickButton dogShiftButton = new JoystickButton(leftStick, 1);
+		JoystickButton dogShiftButtonLow = new JoystickButton(leftStick, 2);
+		JoystickButton dogShiftButtonHigh = new JoystickButton(leftStick, 3);
 		JoystickButton intakeShiftButton = new JoystickButton(secondaryStick, 4);
 		JoystickButton humanPlayerShiftButton = new JoystickButton(secondaryStick, 2);
 		JoystickButton gearManipChangeButton = new JoystickButton(secondaryStick, 5);
+		JoystickButton manualCloseDoors = new JoystickButton(leftStick,1);
 		
 		//runs an instance of a command until its end() function is called
 		//when the button is pressed during teleOp
-		dogShiftButton.whenPressed(new TankDriveSolenoidFlip());
-		intakeShiftButton.whenPressed(new IntakeSolenoidFlip());
-		humanPlayerShiftButton.whenPressed(new HumanPlayerSolenoidFlip());
-		gearManipChangeButton.whenPressed(new GearManipulationChange());
+		//intakeShiftButton.whenPressed(new IntakeSolenoidFlip());
+		//humanPlayerShiftButton.whenPressed(new HumanPlayerSolenoidFlip());
+		//gearManipChangeButton.whenPressed(new GearManipulationChange());
 		
 	}
 }

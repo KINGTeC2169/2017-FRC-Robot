@@ -24,11 +24,11 @@ public class GearManip extends Command {
     	//if the gear manipualtor is desireed to be running
     	//automatically, then it will do so and vise versa for manual
     	//control
-    	/*if(Robot.gearManipulator.isSliderAutomatic){
-    		Robot.gearManipulator.automaticGearManip();
-    	} else {
-    		Robot.gearManipulator.manualGearManip();
-    	}*/
+    	//if(Robot.gearManipulator.isSliderAutomatic){
+    	//	Robot.gearManipulator.automaticGearManip();
+    	//} else {
+    	//	Robot.gearManipulator.manualGearManip();
+    	//}
     	
     	Robot.gearManipulator.manualGearManip();
     	
@@ -39,8 +39,11 @@ public class GearManip extends Command {
     	
     	//if the sping button is hit, then the gear manipulator 
     	//stays closed or closes
-    	//if(!Robot.gearManipulator.springButtonHit())
-    		//Robot.gearManipulator.gearDoorSol.set(Value.kForward);
+    	if(Robot.gearManipulator.springButtonHit()){
+    		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
+    	}else {
+    		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
+    	}
     	
     	
     }

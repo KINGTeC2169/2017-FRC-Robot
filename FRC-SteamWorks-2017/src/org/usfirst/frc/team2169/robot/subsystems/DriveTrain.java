@@ -1,12 +1,12 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
 import com.ctre.CANTalon;
-import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -40,29 +40,30 @@ public class DriveTrain extends Subsystem {
 	
 	public DriveTrain(){
 		//creating the left side of the drive train at these ports
-		leftDrive = new CANTalon(6);
-		leftDrive2 = new CANTalon(7);
+		leftDrive = new CANTalon(1);
+		leftDrive2 = new CANTalon(2);
 		
 		//creating the right side of the drive train at these ports
-		rightDrive = new CANTalon(1);
-		rightDrive2 = new CANTalon(2);
+		rightDrive = new CANTalon(6);
+		rightDrive2 = new CANTalon(7);
 		
 		//creating the IMU (Inertial Measurement Unit)
 		//at the MXP Bus port as labeled in its class
 		imu = new ADIS16448_IMU();
 		
 		//creating the compressor at port 0
-		//compressor = new Compressor();
+		compressor = new Compressor(12);
 		
 		//creating a solenoid at these ports
-		//dogShift = new DoubleSolenoid(0,3,4);
-		//dogShift.set(Value.kForward);
+		dogShift = new DoubleSolenoid(11,3,4);
+		dogShift.set(Value.kForward);
 
 		//creating the encoders at these DIO ports 
 		//NEEDS A DISTANCE PER PULSE FACTOR
-		leftEnc = new Encoder(1,2,true);
+		leftEnc = new Encoder(0,1);
 		leftEnc.setDistancePerPulse(1);
-		rightEnc = new Encoder(0,3,false);
+		leftEnc.reset();
+		rightEnc = new Encoder(2,3);
 		rightEnc.setDistancePerPulse(1);
 		
 		//these set the control mode of one of the motors on each side
@@ -113,14 +114,12 @@ public class DriveTrain extends Subsystem {
 	//this method switches the solenoid states of 
 	//the drive train dog shifter for high/low
 	//driving
-	public void shiftDriveTrain(){
-		if(dogShift.get() == Value.kOff){
-    		dogShift.set(Value.kForward);
-    	} else if(dogShift.get() == Value.kForward){
-    		dogShift.set(Value.kReverse);
-    	} else {
-    		dogShift.set(Value.kForward);
-    	}
+	public void shiftDriveTrainUp(){
+		dogShift.set(Value.kForward);
+	}
+	
+	public void shiftDriveTrainDown(){
+		dogShift.set(Value.kReverse);
 	}
 	
     //this function guarantees that the gyro will take the shortest 
@@ -138,11 +137,13 @@ public class DriveTrain extends Subsystem {
     //to the SmarDashboard using .putInt() .putDouble() or .putData()
 	@SuppressWarnings("deprecation")
 	public void log(){
-    	SmartDashboard.putDouble("Left Enc Dist:", leftEnc.getDistance());
-    	SmartDashboard.putDouble("Right Enc Dist:", rightEnc.getDistance());
+		SmartDashboard.putDouble("left Enc", leftEnc.getDistance());
+		SmartDashboard.putDouble("right Enc", rightEnc.getDistance());
     	//.getAngleZ() is the robots Z rotation or its top down rotation
     	//relative to the field
-    	SmartDashboard.putDouble("Robot Angle Z:", imu.getAngleZ());
+		SmartDashboard.putDouble("Robot Angle X:", imu.getAngleX());
+		SmartDashboard.putDouble("Robot Angle Y:", imu.getAngleY());
+    	SmartDashboard.putDouble("Robot Angle Z:", imu.getAngleZ() / (720 / 180));
     	
     }
 	

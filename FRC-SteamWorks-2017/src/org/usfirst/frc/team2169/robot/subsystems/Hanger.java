@@ -27,11 +27,11 @@ public class Hanger extends Subsystem {
     
     public Hanger(){
     	//creating the hang motor at this port
-    	hangMotor = new CANTalon(9);
+    	/*hangMotor = new CANTalon(9);
     	
     	//cerating the buttons at these DIO ports
     	hangButton = new DigitalInput(5);
-    	hangButton2 = new DigitalInput(6);
+    	hangButton2 = new DigitalInput(6);*/
     }
     
     //applied a full force on the rope so the robot

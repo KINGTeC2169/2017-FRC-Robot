@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
 import org.usfirst.frc.team2169.robot.Robot;
+import org.usfirst.frc.team2169.robot.commands.VisionCommand;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -18,10 +19,13 @@ public class Vision extends Subsystem {
 	public Vision(){
 		//creates an instance of the network table at the name
 		//identifier
-		networkTable = NetworkTable.getTable(name);
+		//networkTable = NetworkTable.getTable(name);
+		//NetworkTable.setClientMode();
+    	//NetworkTable.setIPAddress("10.21.69.79");
+    	//networkTable = NetworkTable.getTable("Root/vTable");
 	}
 	
-	//this method gets the data frmo the pi stream over the
+	//this method gets the data from the pi stream over the
 	//network table
 	@SuppressWarnings("deprecation")
 	public void getVisionData(){
@@ -48,6 +52,19 @@ public class Vision extends Subsystem {
 		SmartDashboard.putNumber("Vision Angle", Robot.visionAngle);
 	}
 
-    public void initDefaultCommand() {}
+	public void initDefaultCommand() {
+		// Set the default command for a subsystem here.
+	}
+	
+	public void printCentX(){
+		SmartDashboard.putNumber("CentX", networkTable.getNumber("centX"));
+	}
+
+	//public void start() {
+		// TODO Auto-generated method stub
+		
+	//}
+
+	
 }
 

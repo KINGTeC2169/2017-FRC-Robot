@@ -23,6 +23,6 @@ public class Auto_CentralGoal extends CommandGroup {
     		addSequential(new DriveForward(distToGoal - Robot.springLength));
     	}
     	
-    	addSequential(new GearSolenoidFlip());
+    	//addSequential(new GearSolenoidFlip());
     }
 }

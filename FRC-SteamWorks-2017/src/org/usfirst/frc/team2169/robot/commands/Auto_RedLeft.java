@@ -27,6 +27,6 @@ public class Auto_RedLeft extends CommandGroup {
     		addSequential(new DriveForward(distToGoal - Robot.springLength));
     	}
     	
-    	addSequential(new GearSolenoidFlip());
+    	//addSequential(new GearSolenoidFlip());
     }
 }

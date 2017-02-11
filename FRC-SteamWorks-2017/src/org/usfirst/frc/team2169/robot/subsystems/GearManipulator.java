@@ -21,7 +21,7 @@ public class GearManipulator extends Subsystem {
 	//creating an instance of the gear motor
     public CANTalon gearMotor;
     //manual speed of the gear manipulator
-    public double gearMotorSpeed = .4;
+    public double gearMotorSpeed = 1.0;
     
     //creating an instance of a deciding boolean
     public boolean isSliderAutomatic;
@@ -42,12 +42,12 @@ public class GearManipulator extends Subsystem {
     
     public GearManipulator(){
     	//creating the gear manipulator at this port
-    	gearMotor = new CANTalon(8);
+    	gearMotor = new CANTalon(3);
     	//this resets the position of the slider
     	//to 0. This should be at the center of 
     	//every match to ensure the slider can return to 
     	//the middle during a match
-    	gearMotor.setEncPosition(0);
+    	//gearMotor.setEncPosition(0);
     	
     	isSliderAutomatic = true;
     	
@@ -56,12 +56,12 @@ public class GearManipulator extends Subsystem {
     	rightButton = new DigitalInput(5);
     	
     	//creating the buttons at these DIO ports 
-    	springButton = new DigitalInput(4);
+    	springButton = new DigitalInput(6);
     	
     	//creating two solenoids that flip pistons
     	//on these modules and ports
-    	playerSol = new DoubleSolenoid(0,6,7);
-    	gearDoorSol = new DoubleSolenoid(0,4,5);
+    	playerSol = new DoubleSolenoid(12,6,7);
+    	gearDoorSol = new DoubleSolenoid(12,2,5);
     }
     
     //this method sets the value of the gear 
@@ -86,8 +86,8 @@ public class GearManipulator extends Subsystem {
     public void manualGearManip(){
     	//this statement tests if the gear manipulator should move at all, 
     	//otherwise the gear manipulator should not move at all
-    	if(Robot.oi.secondaryStick.getRawButton(0) || Robot.oi.secondaryStick.getRawButton(1)){
-    		if(Robot.oi.secondaryStick.getRawButton(0)){
+    	if(Robot.oi.secondaryStick.getRawButton(1) || Robot.oi.secondaryStick.getRawButton(2)){
+    		if(Robot.oi.secondaryStick.getRawButton(1)){
     			Robot.gearManipulator.gearManipLeft(gearMotorSpeed);
     		} else {
     			Robot.gearManipulator.gearManipRight(gearMotorSpeed);
@@ -161,6 +161,11 @@ public class GearManipulator extends Subsystem {
     	} else {
     		gearDoorSol.set(Value.kForward);
     	}
+    }
+    
+    public void closeDoor(){
+    	if(Robot.oi.leftStick.getRawButton(5))
+    	gearDoorSol.set(Value.kReverse);
     }
     
     //checks if any of the buttons on the slider

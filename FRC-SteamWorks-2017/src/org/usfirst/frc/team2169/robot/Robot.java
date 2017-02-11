@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team2169.robot;
 
+
 import org.usfirst.frc.team2169.robot.commands.Auto_BlueLeft;
 import org.usfirst.frc.team2169.robot.commands.Auto_BlueRight;
 import org.usfirst.frc.team2169.robot.commands.Auto_CentralGoal;
@@ -12,6 +13,8 @@ import org.usfirst.frc.team2169.robot.commands.GearManip;
 import org.usfirst.frc.team2169.robot.commands.Hanging;
 import org.usfirst.frc.team2169.robot.commands.Intake;
 import org.usfirst.frc.team2169.robot.commands.TankDrive;
+import org.usfirst.frc.team2169.robot.commands.TankDriveSolenoidFlip;
+import org.usfirst.frc.team2169.robot.commands.VisionCommand;
 import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
@@ -44,7 +47,7 @@ public class Robot extends IterativeRobot {
 	public static final Intakes intakes = new Intakes();
 	
 	//creating an instance of the vision
-	public static final Vision vision = new Vision();
+	//public static final Vision vision = new Vision();
 	
 	//creating an instance of the hanger
 	public static final Hanger hanger = new Hanger();
@@ -70,7 +73,8 @@ public class Robot extends IterativeRobot {
 	public Command intakeCom;
 	public Command hangCom;
 	public Command autonomousCommand;
-	
+	public Command driveTrainShift;
+	//public Command visionCommand;
 	//creating an instance of the sendable object that
 	//displays the commands to the SmartDashboard in a match
 	public SendableChooser<Command> chooser = new SendableChooser<>();
@@ -86,6 +90,8 @@ public class Robot extends IterativeRobot {
 		gearManipCom = new GearManip();
 		intakeCom = new Intake();
 		hangCom = new Hanging();
+		driveTrainShift = new TankDriveSolenoidFlip();
+		//visionCommand = new VisionCommand();
 		
 		//adding all of the commands that go to the 
 		//SmartDashbaord at the beginning of the match
@@ -97,11 +103,11 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Red Center", new Auto_CentralGoal());
 		chooser.addObject("Red Right", new Auto_RedRight());
 		chooser.addObject("Test Auto", new Auto_Tester());
-		SmartDashboard.putData("Auto mode", chooser);
+		SmartDashboard.putData("Auto Info", chooser);
 		
 		//robot restarting setup at startup
 		Robot.driveTrain.imu.reset();
-		Robot.driveTrain.resetEncoders();
+		//Robot.driveTrain.resetEncoders();
 		//Robot.driveTrain.startCompressor();
 	}
 
@@ -170,22 +176,25 @@ public class Robot extends IterativeRobot {
 		
 		//this is the place to start all commands that run
 		//continuously through the autonomous period
+		//Robot.driveTrain.startCompressor();
 		tankDriveCom.start();
 		gearManipCom.start();
-		intakeCom.start();
+		driveTrainShift.start();
+		//visionCommand.start();
+		//intakeCom.start();
 		//hangCom.start();
 	}
 
 	/**
 	 * This function is called periodically during operator control
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
 		//any continously updated SmartDashboard data goes here
 		Robot.driveTrain.log();
-		Robot.gearManipulator.log();
+		//Robot.gearManipulator.log();\
 		
 	}
 
