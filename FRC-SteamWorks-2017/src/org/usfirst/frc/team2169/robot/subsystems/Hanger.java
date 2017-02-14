@@ -64,6 +64,7 @@ public class Hanger extends Subsystem {
   	//on UI during a match
     //MANUAL
     public void manualHanging(){
+    	//if button not pressed
     	if(Robot.oi.secondaryStick.getRawButton(10)){
     		Robot.hanger.pullUp();
     	} else {

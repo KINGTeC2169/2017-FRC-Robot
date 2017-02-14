@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveTrainTurn extends Command {
 
-	public double refiningMotorSpeed = .35;
+	public double refiningMotorSpeed = .25;
 	public double refinedTolerance = .25;
 	public double motorSpeed = .45;
 	public double tolerance = 3;
-	public double waitTime = 2;
+	public double waitTime = .2;
 	public double timer = 0;
 	public double want = 90;
 	public double kP = .05;
@@ -23,6 +23,8 @@ public class DriveTrainTurn extends Command {
 	public boolean refinedAngle;
 	public boolean finished;
 	public boolean timerOn;
+	
+	public int flip = 1;
     
     public DriveTrainTurn(double angle){
     	requires(Robot.driveTrain);
@@ -30,6 +32,9 @@ public class DriveTrainTurn extends Command {
     	refinedAngle = false;
     	finished = false;
     	timerOn = false;
+    	
+    	if(angle < 0)
+    		flip = -1;
     }
 
     // Called just before this Command runs the first time

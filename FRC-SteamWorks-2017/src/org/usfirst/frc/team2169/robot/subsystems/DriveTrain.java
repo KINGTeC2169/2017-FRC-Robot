@@ -55,7 +55,7 @@ public class DriveTrain extends Subsystem {
 		compressor = new Compressor(12);
 		
 		//creating a solenoid at these ports
-		dogShift = new DoubleSolenoid(11,3,4);
+		dogShift = new DoubleSolenoid(12,3,4);
 		dogShift.set(Value.kForward);
 
 		//creating the encoders at these DIO ports 

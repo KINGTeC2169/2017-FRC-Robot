@@ -39,11 +39,10 @@ public class GearManip extends Command {
     	
     	//if the sping button is hit, then the gear manipulator 
     	//stays closed or closes
+    	//AUTOMATIC
     	if(Robot.gearManipulator.springButtonHit()){
     		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
-    	}else {
-    		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
-    	}
+    	} 
     	
     	
     }

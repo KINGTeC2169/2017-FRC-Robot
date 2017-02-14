@@ -2,6 +2,7 @@ package org.usfirst.frc.team2169.robot.commands;
 
 import org.usfirst.frc.team2169.robot.Robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -10,18 +11,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class Auto_CentralGoal extends CommandGroup {
 	
-	private double distToGoal = 2.8912566;
+	private double distToGoal = 3.85;
 	
     public Auto_CentralGoal() {
     	
-    	addSequential(new GetVisonData());
-    	addParallel(new GearManip());    	
-    	
-    	if(Robot.isVisionDataGood){
-    		addSequential(new DriveForward(Robot.visionDistance - Robot.springLength));
-    	} else {
-    		addSequential(new DriveForward(distToGoal - Robot.springLength));
-    	}
+    	addSequential(new DriveForward(distToGoal));
+    	addSequential(new SetGearDoor(Value.kReverse));
+    	addSequential(new DriveForward(-1.5));
     	
     	//addSequential(new GearSolenoidFlip());
     }

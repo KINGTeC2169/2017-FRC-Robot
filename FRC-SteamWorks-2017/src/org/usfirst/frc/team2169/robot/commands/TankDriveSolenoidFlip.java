@@ -24,11 +24,11 @@ public class TankDriveSolenoidFlip extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Robot.oi.leftStick.getRawButton(2)){
-    		Robot.driveTrain.shiftDriveTrainDown();
+    	if (Robot.oi.rightStick.getRawButton(3)){
+    		Robot.driveTrain.dogShift.set(Value.kReverse);
     	}
-    	else if (Robot.oi.leftStick.getRawButton(3)){
-    		Robot.driveTrain.shiftDriveTrainUp();
+    	else if (Robot.oi.rightStick.getRawButton(2)){
+    		Robot.driveTrain.dogShift.set(Value.kForward);
     	}
     }
 
@@ -36,7 +36,7 @@ public class TankDriveSolenoidFlip extends Command {
     protected boolean isFinished() {
     	//returns true right away because it is only flipping the 
     	//pistons once
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

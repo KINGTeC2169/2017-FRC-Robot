@@ -26,10 +26,10 @@ public class Intakes extends Subsystem {
 	
 	public Intakes(){
 		//creating the intake motor at this port
-		/*intakeMotor = new CANTalon(5);
+		intakeMotor = new CANTalon(4);
 		
-		//creats the solenoid module at these ports
-		intakeSol = new DoubleSolenoid(0,6,7);*/
+		//creates the solenoid module at these ports
+		intakeSol = new DoubleSolenoid(12,0,7);
 	}
 	
 	//sets the motor so objects can be lodged
@@ -54,8 +54,8 @@ public class Intakes extends Subsystem {
 	//on UI during a match
     //MANUAL
 	public void manualIntakes(){
-		if(Robot.oi.secondaryStick.getRawButton(3) || Robot.oi.secondaryStick.getRawButton(4)){
-    		if(Robot.oi.secondaryStick.getRawButton(3)){
+		if(Robot.oi.secondaryStick.getPOV() == 180 || Robot.oi.secondaryStick.getPOV() == 0){
+    		if(Robot.oi.secondaryStick.getPOV() == 180){
     			Robot.intakes.intakeIn();
     		} 
     		else {

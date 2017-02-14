@@ -59,8 +59,7 @@ public class GearManipulator extends Subsystem {
     	springButton = new DigitalInput(6);
     	
     	//creating two solenoids that flip pistons
-    	//on these modules and ports
-    	playerSol = new DoubleSolenoid(12,6,7);
+    	playerSol = new DoubleSolenoid(12,1,6);
     	gearDoorSol = new DoubleSolenoid(12,2,5);
     }
     
@@ -87,7 +86,7 @@ public class GearManipulator extends Subsystem {
     	//this statement tests if the gear manipulator should move at all, 
     	//otherwise the gear manipulator should not move at all
     	if(Robot.oi.secondaryStick.getRawButton(1) || Robot.oi.secondaryStick.getRawButton(2)){
-    		if(Robot.oi.secondaryStick.getRawButton(1)){
+    		if(Robot.oi.secondaryStick.getRawButton(2)){
     			Robot.gearManipulator.gearManipLeft(gearMotorSpeed);
     		} else {
     			Robot.gearManipulator.gearManipRight(gearMotorSpeed);
@@ -148,6 +147,12 @@ public class GearManipulator extends Subsystem {
     		playerSol.set(Value.kForward);
     	}
     	
+    	//if we want a gear and are loading one in,
+    	//we make sure the gear doors are closed
+    	if(playerSol.get() == Value.kReverse){
+    		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
+    	}
+    	
     }
     
     //flips the state of the solenoids
@@ -164,8 +169,10 @@ public class GearManipulator extends Subsystem {
     }
     
     public void closeDoor(){
-    	if(Robot.oi.leftStick.getRawButton(5))
-    	gearDoorSol.set(Value.kReverse);
+    	if(Robot.oi.leftStick.getRawButton(5)){
+    		
+    	}
+    	//gearDoorSol.set(Value.kReverse);
     }
     
     //checks if any of the buttons on the slider

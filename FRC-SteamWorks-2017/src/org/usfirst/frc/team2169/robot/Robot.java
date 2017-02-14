@@ -14,13 +14,12 @@ import org.usfirst.frc.team2169.robot.commands.Hanging;
 import org.usfirst.frc.team2169.robot.commands.Intake;
 import org.usfirst.frc.team2169.robot.commands.TankDrive;
 import org.usfirst.frc.team2169.robot.commands.TankDriveSolenoidFlip;
-import org.usfirst.frc.team2169.robot.commands.VisionCommand;
 import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
 import org.usfirst.frc.team2169.robot.subsystems.Intakes;
-import org.usfirst.frc.team2169.robot.subsystems.Vision;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -72,6 +71,7 @@ public class Robot extends IterativeRobot {
 	public Command gearManipCom;
 	public Command intakeCom;
 	public Command hangCom;
+	public Command tankDriveSol;
 	public Command autonomousCommand;
 	public Command driveTrainShift;
 	//public Command visionCommand;
@@ -90,6 +90,7 @@ public class Robot extends IterativeRobot {
 		gearManipCom = new GearManip();
 		intakeCom = new Intake();
 		hangCom = new Hanging();
+		tankDriveSol = new TankDriveSolenoidFlip();
 		driveTrainShift = new TankDriveSolenoidFlip();
 		//visionCommand = new VisionCommand();
 		
@@ -103,7 +104,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Red Center", new Auto_CentralGoal());
 		chooser.addObject("Red Right", new Auto_RedRight());
 		chooser.addObject("Test Auto", new Auto_Tester());
-		SmartDashboard.putData("Auto Info", chooser);
+		SmartDashboard.putData("Auto Infoz", chooser);
 		
 		//robot restarting setup at startup
 		Robot.driveTrain.imu.reset();
@@ -180,8 +181,9 @@ public class Robot extends IterativeRobot {
 		tankDriveCom.start();
 		gearManipCom.start();
 		driveTrainShift.start();
+		tankDriveSol.start();
 		//visionCommand.start();
-		//intakeCom.start();
+		intakeCom.start();
 		//hangCom.start();
 	}
 
@@ -195,6 +197,9 @@ public class Robot extends IterativeRobot {
 		//any continously updated SmartDashboard data goes here
 		Robot.driveTrain.log();
 		//Robot.gearManipulator.log();\
+		
+		Robot.oi.secondaryStick.setRumble(RumbleType.kLeftRumble, 1);
+		Robot.oi.secondaryStick.setRumble(RumbleType.kRightRumble, 1);
 		
 	}
 
