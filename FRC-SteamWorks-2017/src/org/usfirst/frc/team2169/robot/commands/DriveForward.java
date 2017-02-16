@@ -14,24 +14,24 @@ import org.usfirst.frc.team2169.robot.Robot;
 public class DriveForward extends Command {
 	
 	public double refiningMotorSpeed = .15;
-	public double distanceTolerance = 1;
+	public double distanceTolerance = .2;
 	public double angleTolerance = .5;
 	public double rateTolerance = 1;
 	public double motorChange = .001;
-	public double tolerance = 5;
+	public double tolerance = 3;
 	public double rightSpeed = .65;
 	public double leftSpeed = .65;
-	public double minSpeed = .5;
-	public double maxSpeed = .7;
+	public double minSpeed = .6;
+	public double maxSpeed = .8;
 	public double timer = 0;
-	public double kP = .01;
+	public double kP = .1;
 	public double waitTime = .4;
 	public double currentAngle;
 	public double distance;
 	public double errorDistance;
 	public double errorAngle;
 	public double refinedTolerance = 2;
-	
+	public double currentMotorSpeed = 0;
 	public static double meterToTickConversion = 128;
 	//in to meters to diamter to circumfrence
 	public static double wheelCircumfrence = 4 * .0254 * 2 * Math.PI;
@@ -50,13 +50,14 @@ public class DriveForward extends Command {
 		refinedDistance = false;
 		timerOn = false;
 		
-		double numOfRevs = distance / wheelCircumfrence;
-		
-		actualTickDistance = numOfRevs * meterToTickConversion;
-		
 		//if the distance is negeative then the robot drives backwards
 		if(dist < 0)
 			flip = -1;
+		
+		leftSpeed = .65;
+		rightSpeed = .65;
+		
+		refinedDistance = false;
 	}
 
 	@Override
@@ -67,11 +68,15 @@ public class DriveForward extends Command {
 		currentAngle = Robot.driveTrain.imu.getAngleZ() / 4;
 		finished = false;
 		
+		leftSpeed = .65;
+		rightSpeed = .65;
+		
+		refinedDistance = false;
 	}
 
 	@Override
 	protected void execute() {
-		errorDistance = Math.abs((actualTickDistance - Robot.driveTrain.getEncDistance()));
+		errorDistance = Math.abs((distance - Robot.driveTrain.getEncDistance()));
 		errorAngle = Robot.driveTrain.getTurnAngle(currentAngle, Robot.driveTrain.imu.getAngleZ() / 4);
 		
 		SmartDashboard.putDouble("errorDist", errorDistance);
@@ -79,6 +84,7 @@ public class DriveForward extends Command {
 		//if the robot drives out of the angle tolerance to drive 
 		//forward, a motor speed up or cool down is applied
 		if(!(Math.abs(errorAngle) < angleTolerance)){
+			SmartDashboard.putDouble("Out of range", errorAngle);
 			//turning too far right
 			if(errorAngle < 0){
 				if(rightSpeed < maxSpeed){
@@ -112,15 +118,16 @@ public class DriveForward extends Command {
 		
 		if(refinedDistance == false){
 			//Update driving speeds on both sides of the driveTrain
-			if (leftSpeed * kP * errorDistance >= leftSpeed) {
+			if (leftSpeed * kP * errorDistance * flip >= leftSpeed * flip) {
 				Robot.driveTrain.leftDrive.set(leftSpeed * flip);
 				Robot.driveTrain.leftDrive2.set(leftSpeed * flip);
+				currentMotorSpeed = leftSpeed * flip;
 			} else {
 				Robot.driveTrain.leftDrive.set(leftSpeed * kP * errorDistance * flip);
 				Robot.driveTrain.leftDrive2.set(leftSpeed * kP * errorDistance * flip);
 			}
 			
-			if (rightSpeed * kP * errorDistance >= rightSpeed) {
+			if (rightSpeed * kP * errorDistance * flip >= rightSpeed * flip) {
 				Robot.driveTrain.rightDrive.set(-rightSpeed * flip);
 				Robot.driveTrain.rightDrive2.set(-rightSpeed * flip);
 			} else {
@@ -129,17 +136,21 @@ public class DriveForward extends Command {
 			}
 			
 			if(Math.abs(errorDistance) < tolerance){
-	    		if (!timerOn) {
-	    			timerOn = true;
-	    			timer = Timer.getFPGATimestamp();
-	    		}
-	    		
-	    		refinedDistance = true;
-	    	} 
-    		
-	    	if (timerOn && timer + waitTime < Timer.getFPGATimestamp()) {
-	    		refinedDistance = true;
-	    	}
+				refinedDistance = true;
+			}
+			
+//			if(Math.abs(errorDistance) < tolerance){
+//	    		if (!timerOn) {
+//	    			timerOn = true;
+//	    			timer = Timer.getFPGATimestamp();
+//	    		}
+//	    		
+//	    		refinedDistance = true;
+//	    	} 
+//    		
+//	    	if (timerOn && timer + waitTime < Timer.getFPGATimestamp()) {
+//	    		refinedDistance = true;
+//	    	}
 		} else {
 			if(errorDistance > 0){
     			Robot.driveTrain.leftDrive.set(refiningMotorSpeed * flip);

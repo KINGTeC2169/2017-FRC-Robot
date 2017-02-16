@@ -184,7 +184,7 @@ public class Robot extends IterativeRobot {
 		tankDriveSol.start();
 		//visionCommand.start();
 		intakeCom.start();
-		//hangCom.start();
+		hangCom.start();
 	}
 
 	/**
@@ -196,6 +196,8 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		//any continously updated SmartDashboard data goes here
 		Robot.driveTrain.log();
+		Robot.hanger.log();
+		//SmartDashboard.putDouble("Amps", Robot.hanger.hangMotor.getOutputCurrent());
 		//Robot.gearManipulator.log();\
 		
 		Robot.oi.secondaryStick.setRumble(RumbleType.kLeftRumble, 1);

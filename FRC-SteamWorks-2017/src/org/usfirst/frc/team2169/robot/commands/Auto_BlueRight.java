@@ -9,16 +9,14 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class Auto_BlueRight extends CommandGroup {
 
-	private double driveOffset = 3.75;
-	private double distToGoal = 4.3;
+	private double driveOffset = 92;
+	private double distToGoal = 20;
 	
     public Auto_BlueRight() {
     	 
-    	//offset and faces target
     	addSequential(new DriveForward(driveOffset));
-    	addSequential(new DriveTrainTurn(-59.9));
+    	addSequential(new DriveTrainTurn(-71));
     	
-    	//drives towards, hangs gear, and backs up
     	addSequential(new DriveForward(distToGoal));
     	addSequential(new SetGearDoor(Value.kReverse));
     	addSequential(new DriveForward(-1.5));

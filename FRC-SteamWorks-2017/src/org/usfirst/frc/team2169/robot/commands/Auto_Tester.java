@@ -28,6 +28,8 @@ public class Auto_Tester extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	
-    	addSequential(new DriveTrainTurn(-90));
+    	//drive 1 meter forwward
+    	addSequential(new DriveForward(76));
+    	addSequential(new DriveTrainTurn(90));
     }
 }

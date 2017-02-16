@@ -2,6 +2,7 @@ package org.usfirst.frc.team2169.robot.commands;
 
 import org.usfirst.frc.team2169.robot.Robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -10,23 +11,17 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class Auto_BlueLeft extends CommandGroup {
 
-	private double driveOffset = 2.891256;
-	private double distToGoal = 2.289068;
+	private double driveOffset = 90;
+	private double distToGoal = 17;
 	
     public Auto_BlueLeft() {
     	 
     	addSequential(new DriveForward(driveOffset));
-    	addSequential(new DriveTrainTurn(60));
+    	addSequential(new DriveTrainTurn(68));
     	
-    	addSequential(new GetVisonData());
-    	addParallel(new GearManip());
+    	addSequential(new DriveForward(distToGoal));
+    	addSequential(new SetGearDoor(Value.kReverse));
+    	addSequential(new DriveForward(-1.5));
     	
-    	if(Robot.isVisionDataGood){
-    		addSequential(new DriveForward(Robot.visionDistance - Robot.springLength));
-    	} else {
-    		addSequential(new DriveForward(distToGoal - Robot.springLength));
-    	}
-    	
-    	//addSequential(new GearSolenoidFlip());
     }
 }

@@ -12,6 +12,7 @@ public class Hanging extends Command {
     public Hanging() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.hanger);
     }
 
     // Called just before this Command runs the first time

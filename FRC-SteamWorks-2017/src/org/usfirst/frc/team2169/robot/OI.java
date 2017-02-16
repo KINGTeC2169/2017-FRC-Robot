@@ -35,12 +35,14 @@ public class OI {
 		JoystickButton gearManipChangeButton = new JoystickButton(secondaryStick, 6);
 		JoystickButton manualCloseDoors = new JoystickButton(leftStick,1);
 		
+		
 		//runs an instance of a command until its end() function is called
 		//when the button is pressed during teleOp
 		//intakeShiftButton.whenPressed(new IntakeSolenoidFlip());
 		humanPlayerShiftButton.whenPressed(new HumanPlayerSolenoidFlip());
 		gearDoorFlipButton.whenPressed(new AnotherGearFlipCom());
 		//gearManipChangeButton.whenPressed(new GearManipulationChange());
+	
 		
 	}
 }

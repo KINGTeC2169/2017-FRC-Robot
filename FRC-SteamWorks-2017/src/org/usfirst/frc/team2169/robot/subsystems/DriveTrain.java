@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
+import org.usfirst.frc.team2169.robot.Robot;
+
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -61,10 +63,11 @@ public class DriveTrain extends Subsystem {
 		//creating the encoders at these DIO ports 
 		//NEEDS A DISTANCE PER PULSE FACTOR
 		leftEnc = new Encoder(0,1);
-		leftEnc.setDistancePerPulse(1);
+		leftEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI); // (1 rev / number of ticks) * unit conversion for circumfrence
 		leftEnc.reset();
 		rightEnc = new Encoder(2,3);
-		rightEnc.setDistancePerPulse(1);
+		rightEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI); // (1 rev / number of ticks) * unit conversion  for circumfrence
+		rightEnc.reset();
 		
 		//these set the control mode of one of the motors on each side
 		//of the drive train to the port of one of the drive motors
@@ -144,8 +147,7 @@ public class DriveTrain extends Subsystem {
 		SmartDashboard.putDouble("Robot Angle X:", imu.getAngleX());
 		SmartDashboard.putDouble("Robot Angle Y:", imu.getAngleY());
     	SmartDashboard.putDouble("Robot Angle Z:", imu.getAngleZ() / (720 / 180));
-    	
-    }
+    	}
 	
     public void initDefaultCommand() {}
 

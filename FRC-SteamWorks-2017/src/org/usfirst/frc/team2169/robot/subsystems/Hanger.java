@@ -19,29 +19,31 @@ public class Hanger extends Subsystem {
     public CANTalon hangMotor;
     //an instance of the motor max speed
     public double hangSpeed = 1.0;
+    //public double modifier = Robot.oi.secondaryStick.getRawAxis(4);
     
     //creating an instance of the buttons on the hang
     //mechanism
     public DigitalInput hangButton;
-    public DigitalInput hangButton2;
+    //public DigitalInput hangButton2;
     
     public Hanger(){
     	//creating the hang motor at this port
-    	/*hangMotor = new CANTalon(9);
+    	hangMotor = new CANTalon(8);
     	
     	//cerating the buttons at these DIO ports
-    	hangButton = new DigitalInput(5);
-    	hangButton2 = new DigitalInput(6);*/
+    	//hangButton = new DigitalInput(4);
     }
     
     //applied a full force on the rope so the robot
     //can hang
     public void pullUp(){
-    	if(hangButton.get() == false){
-    		hangMotor.set(hangSpeed);
-    	} else {
-    		hangMotor.set(0);
-    	}
+    	hangMotor.set(-hangSpeed);
+    }
+    
+    //applied a full force on the rope so the robot
+    //can hang
+    public void pullDown(){
+    	hangMotor.set(hangSpeed);
     }
     
     //an idle function that keeps the motor 
@@ -53,7 +55,7 @@ public class Hanger extends Subsystem {
     //checks if any of the buttons on the hanger
     //are pressed, if any are pressed, then return true
     public boolean hangButtonHit(){
-    	if(hangButton.get() == false || hangButton2.get() == false){
+    	if(hangButton.get() == false ){
     		return true;
     	} else {
     		return false;
@@ -65,19 +67,29 @@ public class Hanger extends Subsystem {
     //MANUAL
     public void manualHanging(){
     	//if button not pressed
-    	if(Robot.oi.secondaryStick.getRawButton(10)){
-    		Robot.hanger.pullUp();
+    	if(Robot.oi.secondaryStick.getRawButton(4)){
+    		pullUp();
+    	} else if(Robot.oi.secondaryStick.getRawButton(3)){
+    		pullDown();
     	} else {
-    		Robot.hanger.hangIdle();
+    		hangIdle();
     	}
     }
     
+    @SuppressWarnings("deprecation")
+	public void log(){
+		SmartDashboard.putDouble("Aamps:", hangMotor.getOutputCurrent());
+		SmartDashboard.putDouble("Volts:", hangMotor.getOutputVoltage());
+		}
+    
     //a standard log function that outputs data about the hanging mecahnism
     //to the SmarDashboard using .putInt() .putDouble() or .putData()
-    public void log(){
+    /*
+    @SuppressWarnings("deprecation")
+	public void log(){
     	SmartDashboard.putBoolean("hangButtonHit", hangButtonHit());
     }
-
+     */
     public void initDefaultCommand() {}
 }
 

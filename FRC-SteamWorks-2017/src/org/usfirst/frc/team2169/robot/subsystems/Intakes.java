@@ -7,6 +7,7 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	This is the Intakes Subsystem. It is responsible
@@ -19,6 +20,7 @@ public class Intakes extends Subsystem {
 	public CANTalon intakeMotor;
 	
 	//setting the intake motor speed
+	//public double modifier = Robot.oi.secondaryStick.getRawAxis(4);
 	public double speed = 1.0;
 	
 	//creating an instance of the intake solenoid
@@ -35,7 +37,7 @@ public class Intakes extends Subsystem {
 	//sets the motor so objects can be lodged
 	//into the robot
 	public void intakeIn(){
-		intakeMotor.set(speed);
+		intakeMotor.set(speed - (Robot.oi.secondaryStick.getRawAxis(4)+1 / 2));
 	}
 	
 	//an idle function that keeps the intakes
@@ -47,7 +49,7 @@ public class Intakes extends Subsystem {
 	//sets the motor so the gear can be pushed
 	//out in a rare case that they could not use a gear
 	public void intakeOut(){
-		intakeMotor.set(-speed);
+		intakeMotor.set(-speed + (Robot.oi.secondaryStick.getRawAxis(4)+1 / 2));
 	}
 	
 	//this method sets the value of the intakes based 
@@ -55,7 +57,7 @@ public class Intakes extends Subsystem {
     //MANUAL
 	public void manualIntakes(){
 		if(Robot.oi.secondaryStick.getPOV() == 180 || Robot.oi.secondaryStick.getPOV() == 0){
-    		if(Robot.oi.secondaryStick.getPOV() == 180){
+    		if(Robot.oi.secondaryStick.getPOV() == 0){
     			Robot.intakes.intakeIn();
     		} 
     		else {
@@ -83,7 +85,7 @@ public class Intakes extends Subsystem {
     		intakeSol.set(Value.kForward);
     	}
 	}
-
+	
     public void initDefaultCommand() {}
 }
 

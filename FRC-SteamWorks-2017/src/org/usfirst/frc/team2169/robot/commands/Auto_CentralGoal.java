@@ -11,10 +11,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class Auto_CentralGoal extends CommandGroup {
 	
-	private double distToGoal = 3.85;
+	private double distToGoal = 72;
 	
     public Auto_CentralGoal() {
     	
+    	addSequential(new TankDriveSolenoidFlipOnce(Value.kForward));
     	addSequential(new DriveForward(distToGoal));
     	addSequential(new SetGearDoor(Value.kReverse));
     	addSequential(new DriveForward(-1.5));
