@@ -1,9 +1,13 @@
 package org.usfirst.frc.team2169.robot.commands;
 
+import java.util.Set;
+
 import org.usfirst.frc.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -13,14 +17,17 @@ public class GearManip extends Command {
     public GearManip() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.gearManipulator);
+        Robot.visionGearMotor = 0.0;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.visionGearMotor = 0.0;
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    @SuppressWarnings("deprecation")
+	protected void execute() {
     	//if the gear manipualtor is desireed to be running
     	//automatically, then it will do so and vise versa for manual
     	//control
@@ -30,7 +37,28 @@ public class GearManip extends Command {
     	//	Robot.gearManipulator.manualGearManip();
     	//}
     	
-    	Robot.gearManipulator.manualGearManip();
+    	try{
+    		
+    		NetworkTable table = NetworkTable.getTable("vTable");
+    		Set<String> list = table.getKeys();
+    		Robot.visionGearMotor = table.getNumber("centX");
+    	}catch(Exception e){
+    		Robot.visionGearMotor = 0.0;
+    	}
+    	
+    	SmartDashboard.putNumber("vision", Robot.visionGearMotor);
+    	
+    	if(Robot.oi.secondaryStick.getRawButton(1) || Robot.oi.secondaryStick.getRawButton(2)){
+    		Robot.gearManipulator.manualGearManip();
+    	} else {
+    		if(Robot.visionGearMotor > 0.01){
+    			Robot.gearManipulator.gearManipLeft(.2);
+    		} else if (Robot.visionGearMotor < -0.01){
+    			Robot.gearManipulator.gearManipRight(.2);
+    		} else {
+    			Robot.gearManipulator.gearManipIdle();
+    		}
+    	}
     	
     	//this statement flips the door open when it is in
     	//a closed door state and when the springButton is hit

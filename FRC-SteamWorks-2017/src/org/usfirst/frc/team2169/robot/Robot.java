@@ -14,6 +14,7 @@ import org.usfirst.frc.team2169.robot.commands.Hanging;
 import org.usfirst.frc.team2169.robot.commands.Intake;
 import org.usfirst.frc.team2169.robot.commands.TankDrive;
 import org.usfirst.frc.team2169.robot.commands.TankDriveSolenoidFlip;
+import org.usfirst.frc.team2169.robot.subsystems.ADIS16448_IMU;
 import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -37,6 +39,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	//defining the imu so log values can be pushed later on
+	public ADIS16448_IMU imu;
 	//creating an instance of the gearManipulator
 	public static final GearManipulator gearManipulator = new GearManipulator();
 	
@@ -83,6 +87,10 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void robotInit() {
+		
+		NetworkTable.setClientMode();
+		NetworkTable.setIPAddress("10.21.69.79");
+		
 		//creating an instance of the OI class
 		oi = new OI();
 		
@@ -113,6 +121,8 @@ public class Robot extends IterativeRobot {
 		Robot.driveTrain.imu.reset();
 		//Robot.driveTrain.resetEncoders();
 		//Robot.driveTrain.startCompressor();
+		
+		
 	}
 
 	/**
@@ -204,11 +214,10 @@ public class Robot extends IterativeRobot {
 		//any continously updated SmartDashboard data goes here
 		Robot.driveTrain.log();
 		Robot.hanger.log();
+		//SmartDashboard.putDouble("Robot Acceleration X:", imu.getAccelX());
 		//SmartDashboard.putDouble("Amps", Robot.hanger.hangMotor.getOutputCurrent());
 		//Robot.gearManipulator.log();\
 		
-		Robot.oi.secondaryStick.setRumble(RumbleType.kLeftRumble, 1);
-		Robot.oi.secondaryStick.setRumble(RumbleType.kRightRumble, 1);
 		
 	}
 
