@@ -1,8 +1,6 @@
 package org.usfirst.frc.team2169.robot.commands;
 
-import org.usfirst.frc.team2169.robot.Robot;
-
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -30,6 +28,9 @@ public class Auto_Tester extends CommandGroup {
     	
     	//drive 1 meter forwward
     	addSequential(new DriveForward(76));
-    	addSequential(new DriveTrainTurn(90));
+    	
+    	Timer.delay(40);
+    	
+    	addSequential(new DriveBackwards(76));
     }
 }

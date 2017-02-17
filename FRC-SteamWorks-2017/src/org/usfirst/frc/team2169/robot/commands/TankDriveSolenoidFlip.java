@@ -24,10 +24,10 @@ public class TankDriveSolenoidFlip extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Robot.oi.rightStick.getRawButton(3)){
+    	if (Robot.oi.rightStick.getRawButton(2)){
     		Robot.driveTrain.dogShift.set(Value.kReverse);
     	}
-    	else if (Robot.oi.rightStick.getRawButton(2)){
+    	else if (Robot.oi.rightStick.getRawButton(3)){
     		Robot.driveTrain.dogShift.set(Value.kForward);
     	}
     }

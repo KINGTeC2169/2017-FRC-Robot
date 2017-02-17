@@ -186,7 +186,9 @@ public class DriveForward extends Command {
 	@Override
 	protected void end() {
 		Robot.driveTrain.leftDrive.set(0);
+		Robot.driveTrain.leftDrive2.set(0);
 		Robot.driveTrain.rightDrive.set(0);
+		Robot.driveTrain.rightDrive2.set(0);
 		Robot.driveTrain.resetEncoders();
 	}
 }

@@ -19,6 +19,7 @@ import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
 import org.usfirst.frc.team2169.robot.subsystems.Intakes;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -104,7 +105,9 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Red Center", new Auto_CentralGoal());
 		chooser.addObject("Red Right", new Auto_RedRight());
 		chooser.addObject("Test Auto", new Auto_Tester());
-		SmartDashboard.putData("Auto Infoz", chooser);
+		SmartDashboard.putData("Auto Infkutfkt", chooser);
+		
+		
 		
 		//robot restarting setup at startup
 		Robot.driveTrain.imu.reset();
@@ -140,6 +143,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		
+		//sets the drive train to low gear for all autonomous options
+		Robot.driveTrain.dogShift.set(Value.kReverse);
+		
 		//pulls the checked command on the SmartDashboard
 		//that the drivers want to use for that match
 		autonomousCommand = chooser.getSelected();
