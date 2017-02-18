@@ -47,7 +47,7 @@ public class GearManipulator extends Subsystem {
     	//to 0. This should be at the center of 
     	//every match to ensure the slider can return to 
     	//the middle during a match
-    	//gearMotor.setEncPosition(0);
+    	gearMotor.setEncPosition(0);
     	
     	isSliderAutomatic = true;
     	
@@ -191,7 +191,6 @@ public class GearManipulator extends Subsystem {
     	SmartDashboard.putBoolean("Spring Button", springButtonHit());
     	SmartDashboard.putBoolean("Left Slider Button", leftButton.get());
     	SmartDashboard.putBoolean("Right Slider Button", rightButton.get());
-    	SmartDashboard.putBoolean("IsSliderAutomatic", isSliderAutomatic);
     	
     }
 

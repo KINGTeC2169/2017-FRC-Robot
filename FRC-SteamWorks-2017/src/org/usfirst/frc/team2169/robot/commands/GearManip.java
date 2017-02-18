@@ -37,24 +37,13 @@ public class GearManip extends Command {
     	//	Robot.gearManipulator.manualGearManip();
     	//}
     	
-    	try{
-    		
-    		NetworkTable table = NetworkTable.getTable("vTable");
-    		Set<String> list = table.getKeys();
-    		Robot.visionGearMotor = table.getNumber("centX");
-    	}catch(Exception e){
-    		Robot.visionGearMotor = 0.0;
-    	}
-    	
-    	SmartDashboard.putNumber("vision", Robot.visionGearMotor);
-    	
     	if(Robot.oi.secondaryStick.getRawButton(1) || Robot.oi.secondaryStick.getRawButton(2)){
     		Robot.gearManipulator.manualGearManip();
     	} else {
     		if(Robot.visionGearMotor > 0.01){
-    			Robot.gearManipulator.gearManipLeft(.2);
+    			//Robot.gearManipulator.gearManipLeft(.2);
     		} else if (Robot.visionGearMotor < -0.01){
-    			Robot.gearManipulator.gearManipRight(.2);
+    			//Robot.gearManipulator.gearManipRight(.2);
     		} else {
     			Robot.gearManipulator.gearManipIdle();
     		}

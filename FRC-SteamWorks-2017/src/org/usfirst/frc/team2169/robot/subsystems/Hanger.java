@@ -31,13 +31,17 @@ public class Hanger extends Subsystem {
     	hangMotor = new CANTalon(8);
     	
     	//cerating the buttons at these DIO ports
-    	//hangButton = new DigitalInput(4);
+    	hangButton = new DigitalInput(7);
     }
     
     //applied a full force on the rope so the robot
     //can hang
     public void pullUp(){
-    	hangMotor.set(-hangSpeed);
+    	if(!hangButtonHit()){
+    		hangMotor.set(-hangSpeed);
+    	} else {
+    		hangMotor.set(0);
+    	}
     }
     
     //applied a full force on the rope so the robot
@@ -69,8 +73,6 @@ public class Hanger extends Subsystem {
     	//if button not pressed
     	if(Robot.oi.secondaryStick.getRawButton(4)){
     		pullUp();
-    	} else if(Robot.oi.secondaryStick.getRawButton(3)){
-    		pullDown();
     	} else {
     		hangIdle();
     	}
