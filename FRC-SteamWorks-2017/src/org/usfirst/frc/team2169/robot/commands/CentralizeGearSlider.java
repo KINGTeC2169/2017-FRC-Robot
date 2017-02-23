@@ -10,21 +10,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class CentralizeGearSlider extends Command {
 
-	public double positionTolerance = .2;
-	public double velocityTolerance = 1;
+	public double positionTolerance = 10;
+	public double roughTolerance = 200;
+	public double velocityTolerance = 250;
 	public double gearMaxSpeed = .35;
 	public double error;
+	public double kP = .004;
 	
 	private boolean finished;
 	
     public CentralizeGearSlider() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	gearMaxSpeed = .35;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	finished = false;
+    	gearMaxSpeed = .35;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -34,10 +38,27 @@ public class CentralizeGearSlider extends Command {
     	error = Robot.gearManipulator.gearMotor.getEncPosition();
     	SmartDashboard.putDouble("Centralize Gear Error", error);
     	
+    	/*if(Robot.gearManipulator.gearMotor.getEncVelocity() < velocityTolerance && 
+    	   Robot.gearManipulator.gearMotor.getEncVelocity() > -velocityTolerance && 
+    	   Robot.gearManipulator.gearMotor.getEncPosition() < roughTolerance &&
+    	   Robot.gearManipulator.gearMotor.getEncPosition() > -roughTolerance){
+    		gearMaxSpeed /= 2;
+    	}*/
+    	
+    		
+    		
     	if(error > 0){
-    		Robot.gearManipulator.gearManipLeft(-gearMaxSpeed);
+    		if(error * gearMaxSpeed * kP >= gearMaxSpeed){
+    			Robot.gearManipulator.gearManipLeft(gearMaxSpeed);
+        	} else {
+        		Robot.gearManipulator.gearManipLeft(error * gearMaxSpeed * kP);
+        	}
     	} else if(error < 0 ) {
-    		Robot.gearManipulator.gearManipRight(gearMaxSpeed);
+    		if(error * gearMaxSpeed * kP <= -gearMaxSpeed){
+    			Robot.gearManipulator.gearManipRight(gearMaxSpeed);
+        	} else {
+        		Robot.gearManipulator.gearManipRight(error * gearMaxSpeed * kP);
+        	}
     	} else {
     		Robot.gearManipulator.gearManipIdle();
     	}
@@ -51,7 +72,7 @@ public class CentralizeGearSlider extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return finished;
+        return finished || Robot.oi.secondaryStick.getRawButton(2);
     }
 
     // Called once after isFinished returns true

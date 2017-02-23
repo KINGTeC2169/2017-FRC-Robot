@@ -37,7 +37,7 @@ public class GearManip extends Command {
     	//	Robot.gearManipulator.manualGearManip();
     	//}
     	
-    	if(Robot.oi.secondaryStick.getRawButton(1) || Robot.oi.secondaryStick.getRawButton(2)){
+    	if(Robot.oi.secondaryStick.getRawAxis(4) != 0){
     		Robot.gearManipulator.manualGearManip();
     	} else {
     		if(Robot.visionGearMotor > 0.01){
@@ -49,6 +49,10 @@ public class GearManip extends Command {
     		}
     	}
     	
+    	/*if(Robot.oi.secondaryStick.getRawAxis(4) > 0){
+    		Robot.gearManipulator.gearManipLeft(Robot.oi.secondaryStick.getRawAxis(4));
+    	} else if(Robot.oi.secondaryStick.getRawAxis(4) < 0)*/
+    	
     	//this statement flips the door open when it is in
     	//a closed door state and when the springButton is hit
     	//if(Robot.gearManipulator.springButtonHit() && Robot.gearManipulator.gearDoorSol.get() == Value.kForward)
@@ -58,7 +62,7 @@ public class GearManip extends Command {
     	//stays closed or closes
     	//AUTOMATIC
     	if(Robot.gearManipulator.springButtonHit()){
-    		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
+    		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
     	} 
     	
     	

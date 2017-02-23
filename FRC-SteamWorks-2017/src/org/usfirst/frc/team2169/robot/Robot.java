@@ -2,7 +2,6 @@
 package org.usfirst.frc.team2169.robot;
 
 
-import org.usfirst.frc.team2169.robot.commands.Auto_CrossLine;
 import org.usfirst.frc.team2169.robot.commands.Auto_Master;
 import org.usfirst.frc.team2169.robot.commands.Auto_PickAlliance;
 import org.usfirst.frc.team2169.robot.commands.Auto_PickPosition;
@@ -77,6 +76,7 @@ public class Robot extends IterativeRobot {
 	public Command autonomousCommand2;
 	public Command autonomousCommand3;
 	public Command driveTrainShift;
+	public static boolean centralize;
 	//public Command visionCommand;
 	//creating an instance of the sendable object that
 	//displays the commands to the SmartDashboard in a match
@@ -128,9 +128,9 @@ public class Robot extends IterativeRobot {
 		positionChooser.addDefault("Right", new Auto_PickPosition(1));
 		SmartDashboard.putData("Position Chooser", positionChooser);
 		
-		lineCrossChooser.addDefault("No Cross", new Auto_CrossLine(false));
-		lineCrossChooser.addDefault("Cross", new Auto_CrossLine(true));
-		SmartDashboard.putData("Line Chooser", lineCrossChooser);
+		//lineCrossChooser.addDefault("No Cross", new Auto_CrossLine(false));
+		//lineCrossChooser.addDefault("Cross", new Auto_CrossLine(true));
+		//SmartDashboard.putData("Line Chooser", lineCrossChooser);
 		
 		allianceChooser.addDefault("Nothing", new Auto_PickAlliance(0));
 		allianceChooser.addDefault("Blue", new Auto_PickAlliance(1));
@@ -237,6 +237,7 @@ public class Robot extends IterativeRobot {
 		//visionCommand.start();
 		intakeCom.start();
 		hangCom.start();
+		centralize = false;
 	}
 
 	/**
@@ -249,8 +250,8 @@ public class Robot extends IterativeRobot {
 		//centX = vTable.getDouble("centX");
 		//any continously updated SmartDashboard data goes here
 		Robot.driveTrain.log();
-		Robot.hanger.log();
 		Robot.gearManipulator.log();
+		//SmartDashboard.putDouble("Left Stick", Robot.oi.secondaryStick.getRawAxis(1));
 		//SmartDashboard.putDouble("Robot Acceleration X:", imu.getAccelX());
 		//SmartDashboard.putDouble("Amps", Robot.hanger.hangMotor.getOutputCurrent());
 		//Robot.gearManipulator.log();\

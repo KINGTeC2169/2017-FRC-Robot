@@ -54,18 +54,18 @@ public class DriveTrain extends Subsystem {
 		imu = new ADIS16448_IMU();
 		
 		//creating the compressor at port 0
-		compressor = new Compressor(12);
+		compressor = new Compressor(0);
 		
 		//creating a solenoid at these ports
-		dogShift = new DoubleSolenoid(12,3,4);
+		dogShift = new DoubleSolenoid(0,0,7);
 		dogShift.set(Value.kForward);
 
 		//creating the encoders at these DIO ports 
 		//NEEDS A DISTANCE PER PULSE FACTOR
-		leftEnc = new Encoder(0,1);
+		leftEnc = new Encoder(2,3,false);
 		leftEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI); // (1 rev / number of ticks) * unit conversion for circumfrence
 		leftEnc.reset();
-		rightEnc = new Encoder(2,3);
+		rightEnc = new Encoder(0,1,true);
 		rightEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI); // (1 rev / number of ticks) * unit conversion  for circumfrence
 		rightEnc.reset();
 		
@@ -144,8 +144,8 @@ public class DriveTrain extends Subsystem {
 		SmartDashboard.putDouble("right Enc", rightEnc.getDistance());
     	//.getAngleZ() is the robots Z rotation or its top down rotation
     	//relative to the field
-		SmartDashboard.putDouble("Robot Angle X:", imu.getAngleX());
-		SmartDashboard.putDouble("Robot Angle Y:", imu.getAngleY());
+		//SmartDashboard.putDouble("Robot Angle X:", imu.getAngleX());
+		//SmartDashboard.putDouble("Robot Angle Y:", imu.getAngleY());
     	SmartDashboard.putDouble("Robot Angle Z:", imu.getAngleZ() / (720 / 180));
     	}
 	

@@ -59,8 +59,8 @@ public class GearManipulator extends Subsystem {
     	springButton = new DigitalInput(6);
     	
     	//creating two solenoids that flip pistons
-    	playerSol = new DoubleSolenoid(12,1,6);
-    	gearDoorSol = new DoubleSolenoid(12,2,5);
+    	playerSol = new DoubleSolenoid(0,3,4);
+    	gearDoorSol = new DoubleSolenoid(0,1,6);
     }
     
     //this method sets the value of the gear 
@@ -85,15 +85,14 @@ public class GearManipulator extends Subsystem {
     public void manualGearManip(){
     	//this statement tests if the gear manipulator should move at all, 
     	//otherwise the gear manipulator should not move at all
-    	if(Robot.oi.secondaryStick.getRawButton(1) || Robot.oi.secondaryStick.getRawButton(2)){
-    		if(Robot.oi.secondaryStick.getRawButton(2)){
-    			Robot.gearManipulator.gearManipLeft(gearMotorSpeed);
-    		} else {
-    			Robot.gearManipulator.gearManipRight(gearMotorSpeed);
-    		}
+    	if (Robot.oi.secondaryStick.getRawAxis(4) > 0.3) {
+    		gearManipRight(Robot.oi.secondaryStick.getRawAxis(4) * 0.5);
+    	} else if (Robot.oi.secondaryStick.getRawAxis(4) < -0.3) {
+    		gearManipLeft(-Robot.oi.secondaryStick.getRawAxis(4) * 0.5);
     	} else {
-    		Robot.gearManipulator.gearManipIdle();
+    		gearManipIdle();
     	}
+    		
     }
     
     //when this method is called, it flips the boolean that decides
@@ -109,7 +108,7 @@ public class GearManipulator extends Subsystem {
     //MANUAL
     public void gearManipLeft(double speed){
     	if(leftButton.get() == true){
-    		gearMotor.set(speed);
+    		gearMotor.set(-speed);
     	} else {
     		gearMotor.set(0);
     	}
@@ -129,7 +128,7 @@ public class GearManipulator extends Subsystem {
     //MANUAL
     public void gearManipRight(double speed){
     	if(rightButton.get() == true){
-    		gearMotor.set(-speed);
+    		gearMotor.set(speed);
     	} else {
     		gearMotor.set(0);
     	}
@@ -149,8 +148,8 @@ public class GearManipulator extends Subsystem {
     	
     	//if we want a gear and are loading one in,
     	//we make sure the gear doors are closed
-    	if(playerSol.get() == Value.kReverse){
-    		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
+    	if(playerSol.get() == Value.kForward){
+    		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
     	}
     	
     }
@@ -169,8 +168,7 @@ public class GearManipulator extends Subsystem {
     }
     
     public void closeDoor(){
-    	if(Robot.oi.leftStick.getRawButton(5)){
-    		
+    	if(Robot.oi.secondaryStick.getRawButton(5)){
     	}
     	//gearDoorSol.set(Value.kReverse);
     }
@@ -191,7 +189,8 @@ public class GearManipulator extends Subsystem {
     	SmartDashboard.putBoolean("Spring Button", springButtonHit());
     	SmartDashboard.putBoolean("Left Slider Button", leftButton.get());
     	SmartDashboard.putBoolean("Right Slider Button", rightButton.get());
-    	
+    	SmartDashboard.putDouble("Slider Enc Velocity", gearMotor.getEncVelocity());
+    	//SmartDashboard.putDouble("Right Stick", Robot.oi.secondaryStick.getRawAxis(4));
     }
 
     public void initDefaultCommand() {}

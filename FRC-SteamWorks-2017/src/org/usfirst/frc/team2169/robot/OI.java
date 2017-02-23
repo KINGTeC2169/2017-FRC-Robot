@@ -2,6 +2,7 @@ package org.usfirst.frc.team2169.robot;
 
 import org.usfirst.frc.team2169.robot.commands.AnotherGearFlipCom;
 import org.usfirst.frc.team2169.robot.commands.CentralizeGearSlider;
+import org.usfirst.frc.team2169.robot.commands.GearManip;
 import org.usfirst.frc.team2169.robot.commands.HumanPlayerSolenoidFlip;
 import org.usfirst.frc.team2169.robot.commands.IntakeSolenoidFlip;
 
@@ -31,13 +32,14 @@ public class OI {
 		//creates and declares buttons for a specific joystick and button id
 		JoystickButton intakeShiftButton = new JoystickButton(secondaryStick, 3);
 		JoystickButton humanPlayerShiftButton = new JoystickButton(secondaryStick, 5);
-		JoystickButton gearDoorFlipButton = new JoystickButton(secondaryStick,7);
-		JoystickButton centralizeGearButton = new JoystickButton(secondaryStick,8);
+		JoystickButton gearDoorFlipButton = new JoystickButton(secondaryStick,4);
+		JoystickButton centralizeGearButton = new JoystickButton(secondaryStick,1);
 	
 		
 		
 		//runs an instance of a command until its end() function is called
 		//when the button is pressed during teleOp
+		//centralizeGearButton.whenPressed(new CentralizeGearSlider());
 		centralizeGearButton.whenPressed(new CentralizeGearSlider());
 		intakeShiftButton.whenPressed(new IntakeSolenoidFlip());
 		humanPlayerShiftButton.whenPressed(new HumanPlayerSolenoidFlip());

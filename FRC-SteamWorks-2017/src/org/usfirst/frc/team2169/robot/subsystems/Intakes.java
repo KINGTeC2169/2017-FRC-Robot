@@ -28,16 +28,16 @@ public class Intakes extends Subsystem {
 	
 	public Intakes(){
 		//creating the intake motor at this port
-		intakeMotor = new CANTalon(4);
+		intakeMotor = new CANTalon(8);
 		
 		//creates the solenoid module at these ports
-		intakeSol = new DoubleSolenoid(12,0,7);
+		intakeSol = new DoubleSolenoid(0,2,5);
 	}
 	
 	//sets the motor so objects can be lodged
 	//into the robot
 	public void intakeIn(){
-		intakeMotor.set(speed - (Robot.oi.secondaryStick.getRawAxis(4)+1 / 2));
+		//intakeMotor.set(speed - (Robot.oi.secondaryStick.getRawAxis(4)+1 / 2));
 	}
 	
 	//an idle function that keeps the intakes
@@ -49,14 +49,14 @@ public class Intakes extends Subsystem {
 	//sets the motor so the gear can be pushed
 	//out in a rare case that they could not use a gear
 	public void intakeOut(){
-		intakeMotor.set(-speed + (Robot.oi.secondaryStick.getRawAxis(4)+1 / 2));
+		//intakeMotor.set(-speed + (Robot.oi.secondaryStick.getRawAxis(4)+1 / 2));
 	}
 	
 	//this method sets the value of the intakes based 
 	//on UI during a match
     //MANUAL
 	public void manualIntakes(){
-		if(Robot.oi.secondaryStick.getPOV() == 180 || Robot.oi.secondaryStick.getPOV() == 0){
+		/*if(Robot.oi.secondaryStick.getPOV() == 180 || Robot.oi.secondaryStick.getPOV() == 0){
     		if(Robot.oi.secondaryStick.getPOV() == 0){
     			Robot.intakes.intakeIn();
     		} 
@@ -66,7 +66,12 @@ public class Intakes extends Subsystem {
     	} 
 		else {
     		Robot.intakes.intakeIdle();
-    	}
+    	}*/
+		if (true){
+		
+			intakeMotor.set(-Robot.oi.secondaryStick.getRawAxis(1));
+			
+		}
 	}
 	
 	public void intakeInit(){
