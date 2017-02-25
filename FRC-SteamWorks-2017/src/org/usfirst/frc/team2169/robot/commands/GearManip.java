@@ -17,6 +17,7 @@ public class GearManip extends Command {
     public GearManip() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.gearManipulator);
+        
         Robot.visionGearMotor = 0.0;
     }
 

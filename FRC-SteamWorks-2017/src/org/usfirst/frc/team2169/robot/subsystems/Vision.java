@@ -14,12 +14,12 @@ public class Vision extends Subsystem {
 
 	//creating an instance of the network table class
 	public NetworkTable networkTable;
-	public String name = "vtable";
+	public String name = "vTable";
 	
 	public Vision(){
 		//creates an instance of the network table at the name
 		//identifier
-		//networkTable = NetworkTable.getTable(name);
+		networkTable = NetworkTable.getTable(name);
 		//NetworkTable.setClientMode();
     	//NetworkTable.setIPAddress("10.21.69.79");
     	//networkTable = NetworkTable.getTable("Root/vTable");
@@ -30,9 +30,9 @@ public class Vision extends Subsystem {
 	@SuppressWarnings("deprecation")
 	public void getVisionData(){
 		try{
-			Robot.visionGearMotor = networkTable.getNumber("motor");
-			Robot.visionDistance = networkTable.getNumber("TargetOnLeft");
-			Robot.visionAngle = networkTable.getNumber("TargetOnLeft");
+			Robot.visionGearMotor = networkTable.getNumber("centX");
+			//Robot.visionDistance = networkTable.getNumber("TargetOnLeft");
+			//Robot.visionAngle = networkTable.getNumber("TargetOnLeft");
 		
 			Robot.isVisionDataGood = true;
 		}catch(Exception e){
