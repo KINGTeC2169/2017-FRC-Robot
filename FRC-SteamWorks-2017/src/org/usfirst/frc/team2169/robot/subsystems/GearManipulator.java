@@ -52,8 +52,8 @@ public class GearManipulator extends Subsystem {
     	isSliderAutomatic = true;
     	
     	//creating the buttons at these DIO ports 
-    	leftButton = new DigitalInput(4);
-    	rightButton = new DigitalInput(5);
+    	leftButton = new DigitalInput(5);
+    	rightButton = new DigitalInput(4);
     	
     	//creating the buttons at these DIO ports 
     	springButton = new DigitalInput(6);
@@ -69,10 +69,10 @@ public class GearManipulator extends Subsystem {
     //calculated on the Pi side
     //AUTOMATIC
     public void automaticGearManip(){
-    	if(Robot.visionGearMotor > 0){
-    		Robot.gearManipulator.gearManipLeft(Robot.visionGearMotor);
-    	} else if(Robot.visionGearMotor < 0){
-    		Robot.gearManipulator.gearManipRight(Robot.visionGearMotor);
+    	if(Robot.sliderVisionError > 0){
+    		//Robot.gearManipulator.gearManipLeft(Robot.visionGearMotor);
+    	} else if(Robot.sliderVisionError < 0){
+    		//Robot.gearManipulator.gearManipRight(Robot.visionGearMotor);
     	} else {
     		Robot.gearManipulator.gearManipIdle();
     	}

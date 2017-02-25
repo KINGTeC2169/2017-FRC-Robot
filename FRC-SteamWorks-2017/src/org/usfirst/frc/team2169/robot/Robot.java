@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -54,10 +55,8 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	//vision setup variables
-	public static boolean isVisionDataGood;
-	public static Double visionGearMotor;
-	public static Double visionDistance;
-	public static Double visionAngle;
+	public NetworkTable table;
+	public static double sliderVisionError;
 	
 	//standard spring length in m to calculate 
 	//the offset distance from the edge of the spring
@@ -107,6 +106,8 @@ public class Robot extends IterativeRobot {
 		hangCom = new Hanging();
 		tankDriveSol = new TankDriveSolenoidFlip();
 		driveTrainShift = new TankDriveSolenoidFlip();
+		
+		table = NetworkTable.getTable("SmartDashboard");
 		
 		
 		//visionCommand = new VisionCommand();
@@ -257,6 +258,9 @@ public class Robot extends IterativeRobot {
 		//Robot.gearManipulator.log();\
 		SmartDashboard.putBoolean("Hang Buttons:", Robot.hanger.hangButtonHit());
 		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
+		
+		sliderVisionError = table.getNumber("centX");
+		SmartDashboard.putDouble("bb", sliderVisionError);
 		
 	}
 

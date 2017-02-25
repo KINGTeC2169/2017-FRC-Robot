@@ -18,12 +18,12 @@ public class GearManip extends Command {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.gearManipulator);
         
-        Robot.visionGearMotor = 0.0;
+        //Robot.visionGearMotor = 0.0;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.visionGearMotor = 0.0;
+    	//Robot.visionGearMotor = 0.0;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -38,16 +38,20 @@ public class GearManip extends Command {
     	//	Robot.gearManipulator.manualGearManip();
     	//}
     	
-    	if(Robot.oi.secondaryStick.getRawAxis(4) != 0){
+    	if(!(Robot.oi.secondaryStick.getRawAxis(4) < 0.4 && Robot.oi.secondaryStick.getRawAxis(4) > -0.4)){
     		Robot.gearManipulator.manualGearManip();
     	} else {
-    		if(Robot.visionGearMotor > 0.01){
-    			//Robot.gearManipulator.gearManipLeft(.2);
-    		} else if (Robot.visionGearMotor < -0.01){
-    			//Robot.gearManipulator.gearManipRight(.2);
-    		} else {
+    		
+    		if(Robot.sliderVisionError == 0){
     			Robot.gearManipulator.gearManipIdle();
+    		} else {
+    			if(Robot.sliderVisionError < 0.01){
+        			Robot.gearManipulator.gearManipRight(.2);
+        		} else if (Robot.sliderVisionError > -0.01){
+        			Robot.gearManipulator.gearManipLeft(.2);
+        		}
     		}
+    		
     	}
     	
     	/*if(Robot.oi.secondaryStick.getRawAxis(4) > 0){
