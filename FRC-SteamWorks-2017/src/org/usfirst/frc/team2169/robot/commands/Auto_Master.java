@@ -16,6 +16,8 @@ public class Auto_Master extends CommandGroup {
     	if(Robot.alliance == 0)
     		return;
     	
+    	addParallel(new Auto_ContinouslyUpdateSlider());
+    	
     	//blue side options
     	if(Robot.alliance == 1){
     		if(Robot.position == -1){

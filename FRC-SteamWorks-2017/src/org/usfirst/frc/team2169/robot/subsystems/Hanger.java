@@ -28,7 +28,7 @@ public class Hanger extends Subsystem {
     
     public Hanger(){
     	//creating the hang motor at this port
-    	hangMotor = new CANTalon(9);
+    	hangMotor = new CANTalon(8);
     	
     	//cerating the buttons at these DIO ports
     	hangButton = new DigitalInput(7);
@@ -72,13 +72,13 @@ public class Hanger extends Subsystem {
     //MANUAL
     public void manualHanging(){
     	//if button not pressed
-    	if (hangButtonHit()){
-    		hangIdle();
-    	} else if(Robot.oi.secondaryStick.getRawButton(7)){
-    		pullUp();
-    	} else {
-    		hangIdle();
-    	}
+//    	if (hangButtonHit()){
+//    		hangIdle();
+//    	} else if(Robot.oi.secondaryStick.getRawButton(7)){
+//    		pullUp();
+//    	} else {
+//    		hangIdle();
+//    	}
     }
     
     @SuppressWarnings("deprecation")

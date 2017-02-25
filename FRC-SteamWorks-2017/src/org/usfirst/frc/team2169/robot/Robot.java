@@ -182,9 +182,9 @@ public class Robot extends IterativeRobot {
 		
 		//pulls the checked command on the SmartDashboard
 		//that the drivers want to use for that match
-		autonomousCommand1 = positionChooser.getSelected();
-		autonomousCommand2 = allianceChooser.getSelected();
-		autonomousCommand3 = lineCrossChooser.getSelected();
+//		autonomousCommand1 = positionChooser.getSelected();
+//		autonomousCommand2 = allianceChooser.getSelected();
+//		autonomousCommand3 = lineCrossChooser.getSelected();
 		autonomousCommand = new Auto_Master();
 		
 
@@ -195,15 +195,15 @@ public class Robot extends IterativeRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-		// schedule the autonomous command (example)
-		if (autonomousCommand1 != null)
-			autonomousCommand1.start();
-		
-		if (autonomousCommand2 != null)
-			autonomousCommand2.start();
-		
-		if (autonomousCommand3 != null)
-			autonomousCommand3.start();
+//		// schedule the autonomous command (example)
+//		if (autonomousCommand1 != null)
+//			autonomousCommand1.start();
+//		
+//		if (autonomousCommand2 != null)
+//			autonomousCommand2.start();
+//		
+//		if (autonomousCommand3 != null)
+//			autonomousCommand3.start();
 		
 		if (autonomousCommand != null)
 			autonomousCommand.start();
@@ -215,6 +215,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		
+		sliderVisionError = table.getNumber("centX");
 	}
 
 	@Override

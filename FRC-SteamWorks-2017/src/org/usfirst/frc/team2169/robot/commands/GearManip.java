@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class GearManip extends Command {
 	
+	public double maxSpeed = .8;
+	public double kP = .01;
+	
     public GearManip() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.gearManipulator);
@@ -45,23 +48,34 @@ public class GearManip extends Command {
     		if(Robot.sliderVisionError == 0){
     			Robot.gearManipulator.gearManipIdle();
     		} else {
-    			if(Robot.sliderVisionError < 0.01){
-        			Robot.gearManipulator.gearManipRight(.2);
-        		} else if (Robot.sliderVisionError > -0.01){
-        			Robot.gearManipulator.gearManipLeft(.2);
-        		}
+    			if(Robot.sliderVisionError < -0.01){
+    				
+    				if(Robot.sliderVisionError * kP < -maxSpeed){
+    					Robot.gearManipulator.gearManipRight(-maxSpeed);
+    				} else {
+    					Robot.gearManipulator.gearManipRight(-Robot.sliderVisionError * kP);
+    				}
+            	} else if (Robot.sliderVisionError > 0.01){
+            		
+            		if(Robot.sliderVisionError * kP > maxSpeed){
+    					Robot.gearManipulator.gearManipLeft(maxSpeed);
+    				} else {
+    					Robot.gearManipulator.gearManipLeft(Robot.sliderVisionError * kP);
+    				}
+            		
+            	}
     		}
     		
+   		
     	}
     	
-    	/*if(Robot.oi.secondaryStick.getRawAxis(4) > 0){
-    		Robot.gearManipulator.gearManipLeft(Robot.oi.secondaryStick.getRawAxis(4));
-    	} else if(Robot.oi.secondaryStick.getRawAxis(4) < 0)*/
-    	
-    	//this statement flips the door open when it is in
-    	//a closed door state and when the springButton is hit
-    	//if(Robot.gearManipulator.springButtonHit() && Robot.gearManipulator.gearDoorSol.get() == Value.kForward)
-    		//Robot.gearManipulator.flipDoorSolenoids();
+//    	if(Robot.oi.secondaryStick.getRawAxis(4) > .5){
+//    		Robot.gearManipulator.gearManipLeft(1);
+//    	} else if(Robot.oi.secondaryStick.getRawAxis(4) < -.5){
+//    		Robot.gearManipulator.gearManipRight(1);
+//    	} else {
+//    		Robot.gearManipulator.gearManipIdle();
+//    	}
     	
     	//if the sping button is hit, then the gear manipulator 
     	//stays closed or closes
