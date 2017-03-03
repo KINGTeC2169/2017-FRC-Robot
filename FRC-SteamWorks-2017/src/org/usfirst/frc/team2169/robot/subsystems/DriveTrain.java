@@ -54,10 +54,10 @@ public class DriveTrain extends Subsystem {
 		imu = new ADIS16448_IMU();
 		
 		//creating the compressor at port 0
-		compressor = new Compressor(0);
+		compressor = new Compressor(12);
 		
 		//creating a solenoid at these ports
-		dogShift = new DoubleSolenoid(0,0,7);
+		dogShift = new DoubleSolenoid(12,2,5);
 		dogShift.set(Value.kForward);
 
 		//creating the encoders at these DIO ports 
@@ -134,6 +134,30 @@ public class DriveTrain extends Subsystem {
     		difference = difference - 360;
     	
     	return difference;
+    }
+    
+    public void setAlliance(int alliance){
+    	
+    	Robot.alliance = alliance;
+    	
+    }
+    
+    public void setPosition(int position){
+    	
+    	Robot.position = position;
+    	
+    }
+    
+    public void setCrossLine(boolean crossLine){
+    	
+    	Robot.crossLine = crossLine;
+    	
+    }
+    
+    public void saveAutoVariables(){
+    	Robot.savedCrossLine = Robot.crossLine;
+    	Robot.savedPosition = Robot.position;
+    	Robot.savedAlliance = Robot.alliance;
     }
     
     //a standard log function that outputs data about the driver train

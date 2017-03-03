@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class Auto_ContinouslyUpdateSlider extends Command {
 
-	private double maxSpeed = .6;
-	public double kP = .05;
+	public double angleThreshold = 10;
 	
     public Auto_ContinouslyUpdateSlider() {
         // Use requires() here to declare subsystem dependencies
@@ -23,26 +22,12 @@ public class Auto_ContinouslyUpdateSlider extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.sliderVisionError == 0){
-			Robot.gearManipulator.gearManipIdle();
-		} else {
-			if(Robot.sliderVisionError < -0.01){
-				
-				if(Robot.sliderVisionError * kP < -maxSpeed){
-					Robot.gearManipulator.gearManipRight(maxSpeed);
-				} else {
-					Robot.gearManipulator.gearManipRight(Robot.sliderVisionError * kP);
-				}
-        	} else if (Robot.sliderVisionError > 0.01){
-        		
-        		if(Robot.sliderVisionError * kP > maxSpeed){
-					Robot.gearManipulator.gearManipLeft(maxSpeed);
-				} else {
-					Robot.gearManipulator.gearManipLeft(Robot.sliderVisionError * kP);
-				}
-        		
-        	}
-		}
+    	if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
+    		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 60);
+    	}
+    	else{
+    		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 30);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

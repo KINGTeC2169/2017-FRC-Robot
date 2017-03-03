@@ -2,6 +2,7 @@
 package org.usfirst.frc.team2169.robot;
 
 
+import org.usfirst.frc.team2169.robot.commands.Auto_CrossLine;
 import org.usfirst.frc.team2169.robot.commands.Auto_Master;
 import org.usfirst.frc.team2169.robot.commands.Auto_PickAlliance;
 import org.usfirst.frc.team2169.robot.commands.Auto_PickPosition;
@@ -80,9 +81,9 @@ public class Robot extends IterativeRobot {
 	//creating an instance of the sendable object that
 	//displays the commands to the SmartDashboard in a match
 	public SendableChooser<Command> chooser = new SendableChooser<>();
-	public SendableChooser<Command> allianceChooser = new SendableChooser<>();
-	public SendableChooser<Command> positionChooser = new SendableChooser<>();
-	public SendableChooser<Command> lineCrossChooser = new SendableChooser<>();
+	public SendableChooser<Command> allianceChooser;// = new SendableChooser<>();
+	public SendableChooser<Command> positionChooser;// = new SendableChooser<>();
+	public SendableChooser<Command> lineCrossChooser;//= new SendableChooser<>();
 	
 	public static boolean crossLine;
 	public static int alliance;
@@ -90,7 +91,7 @@ public class Robot extends IterativeRobot {
 	
 	public static boolean savedCrossLine;
 	public static int savedAlliance;
-	public static int savedPsosition;
+	public static int savedPosition;
 	
 
 	@Override
@@ -107,44 +108,36 @@ public class Robot extends IterativeRobot {
 		tankDriveSol = new TankDriveSolenoidFlip();
 		driveTrainShift = new TankDriveSolenoidFlip();
 		
+		//Alliance Chooser
+		allianceChooser = new SendableChooser<>();
+		allianceChooser.addObject("None", new Auto_PickAlliance(0));
+		allianceChooser.addObject("Blue", new Auto_PickAlliance(1));
+		allianceChooser.addObject("Red", new Auto_PickAlliance(2));
+		SmartDashboard.putData("Alliance Selection", allianceChooser);
+		
+		//Position Chooser
+		positionChooser = new SendableChooser<>();
+		positionChooser.addObject("Left", new Auto_PickPosition(-1));
+		positionChooser.addObject("Center", new Auto_PickPosition(0));
+		positionChooser.addObject("Right", new Auto_PickPosition(1));
+		SmartDashboard.putData("Position Selection", positionChooser);
+		
+		//CrossLine Chooser
+		lineCrossChooser = new SendableChooser<>();
+		lineCrossChooser.addObject("Yes", new Auto_CrossLine(true));
+		lineCrossChooser.addObject("No", new Auto_CrossLine(false));
+		SmartDashboard.putData("Cross Line Selection", lineCrossChooser);
+
+		
+		
 		table = NetworkTable.getTable("SmartDashboard");
-		
-		
-		//visionCommand = new VisionCommand();
-		
-		//adding all of the commands that go to the 
-		//SmartDashbaord at the beginning of the match
-		/*chooser.addDefault("Do Nothing", new Auto_DoNothing());
-		chooser.addObject("Blue Left", new Auto_BlueLeft());
-		chooser.addObject("Blue Center", new Auto_CentralGoal());
-		chooser.addObject("Blue Right", new Auto_BlueRight());
-		chooser.addObject("Red Left", new Auto_RedLeft());
-		chooser.addObject("Red Center", new Auto_CentralGoal());
-		chooser.addObject("Red Right", new Auto_RedRight());
-		chooser.addObject("Test Auto", new Auto_Tester());
-		SmartDashboard.putData("Auto Infkutfkt", chooser);*/
-		
-		positionChooser.addDefault("Left", new Auto_PickPosition(-1));
-		positionChooser.addDefault("Center", new Auto_PickPosition(0));
-		positionChooser.addDefault("Right", new Auto_PickPosition(1));
-		SmartDashboard.putData("Position Chooser", positionChooser);
-		
-		//lineCrossChooser.addDefault("No Cross", new Auto_CrossLine(false));
-		//lineCrossChooser.addDefault("Cross", new Auto_CrossLine(true));
-		//SmartDashboard.putData("Line Chooser", lineCrossChooser);
-		
-		allianceChooser.addDefault("Nothing", new Auto_PickAlliance(0));
-		allianceChooser.addDefault("Blue", new Auto_PickAlliance(1));
-		allianceChooser.addDefault("Red", new Auto_PickAlliance(2));
-		SmartDashboard.putData("Alliance Chooser", allianceChooser);
 		
 		
 		
 		//robot restarting setup at startup
 		Robot.driveTrain.imu.reset();
-		//Robot.driveTrain.resetEncoders();
+		Robot.driveTrain.resetEncoders();
 		//Robot.driveTrain.startCompressor();
-		
 		
 	}
 
@@ -181,10 +174,7 @@ public class Robot extends IterativeRobot {
 		Robot.driveTrain.dogShift.set(Value.kReverse);
 		
 		//pulls the checked command on the SmartDashboard
-		//that the drivers want to use for that match
-//		autonomousCommand1 = positionChooser.getSelected();
-//		autonomousCommand2 = allianceChooser.getSelected();
-//		autonomousCommand3 = lineCrossChooser.getSelected();
+		//that the drivers want to use for that 
 		autonomousCommand = new Auto_Master();
 		
 
@@ -195,15 +185,6 @@ public class Robot extends IterativeRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-//		// schedule the autonomous command (example)
-//		if (autonomousCommand1 != null)
-//			autonomousCommand1.start();
-//		
-//		if (autonomousCommand2 != null)
-//			autonomousCommand2.start();
-//		
-//		if (autonomousCommand3 != null)
-//			autonomousCommand3.start();
 		
 		if (autonomousCommand != null)
 			autonomousCommand.start();
@@ -228,6 +209,7 @@ public class Robot extends IterativeRobot {
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		
+		
 		//Robot.driveTrain.compressor.start();
 		
 		//this is the place to start all commands that run
@@ -250,7 +232,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		//centX = vTable.getDouble("centX");
+		
 		//any continously updated SmartDashboard data goes here
 		Robot.driveTrain.log();
 		Robot.gearManipulator.log();
@@ -261,7 +243,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Hang Buttons:", Robot.hanger.hangButtonHit());
 		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
 		
-		sliderVisionError = table.getNumber("centX");
+		sliderVisionError = table.getNumber("centX", -1);
 		SmartDashboard.putDouble("bb", sliderVisionError);
 		
 	}

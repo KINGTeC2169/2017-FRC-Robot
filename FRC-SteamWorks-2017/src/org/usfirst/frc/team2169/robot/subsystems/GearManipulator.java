@@ -42,7 +42,7 @@ public class GearManipulator extends Subsystem {
     
     public GearManipulator(){
     	//creating the gear manipulator at this port
-    	gearMotor = new CANTalon(3);
+    	gearMotor = new CANTalon(5);
     	//this resets the position of the slider
     	//to 0. This should be at the center of 
     	//every match to ensure the slider can return to 
@@ -59,8 +59,8 @@ public class GearManipulator extends Subsystem {
     	springButton = new DigitalInput(6);
     	
     	//creating two solenoids that flip pistons
-    	playerSol = new DoubleSolenoid(0,3,4);
-    	gearDoorSol = new DoubleSolenoid(0,1,6);
+    	playerSol = new DoubleSolenoid(12,3,4);
+    	gearDoorSol = new DoubleSolenoid(12,0,7);
     }
     
     //this method sets the value of the gear 
@@ -128,12 +128,25 @@ public class GearManipulator extends Subsystem {
     //MANUAL
     public void gearManipRight(double speed){
     	if(rightButton.get() == true){
-    		gearMotor.set(speed);
+    		gearMotor.set(speed/60);
     	} else {
     		gearMotor.set(0);
     	}
     }
     
+    public void gearManipBoth(double speed){
+    	//Moving Left
+    	if (speed < 0 && leftButton.get() == true){
+    		gearMotor.set(speed);
+    	}
+    	//moving right
+    	else if (speed > 0 && rightButton.get() == true){
+    		gearMotor.set(speed);    		
+    	}
+    	else{
+    		gearMotor.set(0);
+    	}
+    }
     //flips the state of the solenoids
     //AKA flips the pneumatic pistons
     //on the human player door

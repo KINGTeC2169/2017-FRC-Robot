@@ -14,8 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class GearManip extends Command {
 	
-	public double maxSpeed = .8;
-	public double kP = .01;
+	public double maxSpeed = .5;
+	public double kP = .05;
+	public double angleThreshold = 10;
 	
     public GearManip() {
         // Use requires() here to declare subsystem dependencies
@@ -32,41 +33,17 @@ public class GearManip extends Command {
     // Called repeatedly when this Command is scheduled to run
     @SuppressWarnings("deprecation")
 	protected void execute() {
-    	//if the gear manipualtor is desireed to be running
-    	//automatically, then it will do so and vise versa for manual
-    	//control
-    	//if(Robot.gearManipulator.isSliderAutomatic){
-    	//	Robot.gearManipulator.automaticGearManip();
-    	//} else {
-    	//	Robot.gearManipulator.manualGearManip();
-    	//}
     	
     	if(!(Robot.oi.secondaryStick.getRawAxis(4) < 0.4 && Robot.oi.secondaryStick.getRawAxis(4) > -0.4)){
-    		Robot.gearManipulator.manualGearManip();
+    		//DRIVER CONTROLLED
+    		Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4));
     	} else {
-    		
-    		if(Robot.sliderVisionError == 0){
-    			Robot.gearManipulator.gearManipIdle();
-    		} else {
-    			if(Robot.sliderVisionError < -0.01){
-    				
-    				if(Robot.sliderVisionError * kP < -maxSpeed){
-    					Robot.gearManipulator.gearManipRight(-maxSpeed);
-    				} else {
-    					Robot.gearManipulator.gearManipRight(-Robot.sliderVisionError * kP);
-    				}
-            	} else if (Robot.sliderVisionError > 0.01){
-            		
-            		if(Robot.sliderVisionError * kP > maxSpeed){
-    					Robot.gearManipulator.gearManipLeft(maxSpeed);
-    				} else {
-    					Robot.gearManipulator.gearManipLeft(Robot.sliderVisionError * kP);
-    				}
-            		
-            	}
-    		}
-    		
-   		
+    		if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
+        		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 60);
+        	}
+        	else{
+        		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 30);
+        	}
     	}
     	
 //    	if(Robot.oi.secondaryStick.getRawAxis(4) > .5){
@@ -80,9 +57,10 @@ public class GearManip extends Command {
     	//if the sping button is hit, then the gear manipulator 
     	//stays closed or closes
     	//AUTOMATIC
-    	if(Robot.gearManipulator.springButtonHit()){
-    		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
-    	} 
+    	if(!Robot.gearManipulator.springButton.get()){
+    		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
+    	}
+    	
     	
     	
     }

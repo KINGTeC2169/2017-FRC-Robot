@@ -791,7 +791,7 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
     // ACCEL - Acceleration measurements.
     // MAG - Magnetic measurements.
     // TAU ACC - tau parameter used to set sensor balance between Accel and
-    //           Gyro for Roll and Pitch.
+    //           Gyro for Roll and PitWWch.
     // TAU MAG - tau parameter used to set sensor balance between Mag and Gyro
     //           for Yaw.
     // TILT COMP (Yaw) - Enables Yaw tilt-compensation if True.

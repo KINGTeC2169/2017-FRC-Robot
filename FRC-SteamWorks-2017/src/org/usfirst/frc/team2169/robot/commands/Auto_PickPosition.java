@@ -15,12 +15,12 @@ public class Auto_PickPosition extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	position = x;
-    	Robot.savedPsosition = x;
+    	Robot.savedPosition = x;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	position = Robot.savedPsosition;
+    	position = Robot.savedPosition;
     }
 
     // Called repeatedly when this Command is scheduled to run
