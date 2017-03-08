@@ -28,9 +28,9 @@ public class Hanger extends Subsystem {
     
     public Hanger(){
     	//creating the hang motor at this port
-    	hangMotor = new CANTalon(8);
+    	hangMotor = new CANTalon(9);
     	
-    	//cerating the buttons at these DIO ports
+    	//Cerating the buttons at these DIO ports
     	hangButton = new DigitalInput(7);
     }
     
@@ -42,13 +42,13 @@ public class Hanger extends Subsystem {
     	} else {
     		hangMotor.set(0);
     	}*/
-    	hangMotor.set(-hangSpeed);
+    	hangMotor.set(hangSpeed);
     }
     
     //applied a full force on the rope so the robot
     //can hang
     public void pullDown(){
-    	hangMotor.set(hangSpeed);
+    	hangMotor.set(-hangSpeed);
     }
     
     //an idle function that keeps the motor 
@@ -72,22 +72,26 @@ public class Hanger extends Subsystem {
     //MANUAL
     public void manualHanging(){
     	//if button not pressed
-//    	if (hangButtonHit()){
-//    		hangIdle();
-//    	} else if(Robot.oi.secondaryStick.getRawButton(7)){
-//    		pullUp();
-//    	} else {
-//    		hangIdle();
-//    	}
+    	
+    	if(Robot.oi.secondaryStick.getRawButton(8)){
+    		if(hangButtonHit()){
+    			hangMotor.set(0);
+    		} else {
+    			hangMotor.set(1);
+    		}
+    	} else {
+    		hangMotor.set(0);
+    	}
     }
     
     @SuppressWarnings("deprecation")
 	public void log(){
-		SmartDashboard.putDouble("Aamps:", hangMotor.getOutputCurrent());
-		SmartDashboard.putDouble("Volts:", hangMotor.getOutputVoltage());
+		SmartDashboard.putNumber("Aamps:", hangMotor.getOutputCurrent());
+		
+		//SmartDashboard.p("Volts:", hangMotor.getOutputVoltage());
 		}
     
-    //a standard log function that outputs data about the hanging mecahnism
+    //a standard log function that outputs data about the hanging mechanism
     //to the SmarDashboard using .putInt() .putDouble() or .putData()
     /*
     @SuppressWarnings("deprecation")

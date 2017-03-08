@@ -21,8 +21,8 @@ public class DriveForward extends Command {
 	public double tolerance = 3;
 	public double rightSpeed = .65;
 	public double leftSpeed = .65;
-	public double minSpeed = .6;
-	public double maxSpeed = .8;
+	public double minSpeed = .5;
+	public double maxSpeed = .7;
 	public double timer = 0;
 	public double kP = .1;
 	public double waitTime = .4;
@@ -54,8 +54,11 @@ public class DriveForward extends Command {
 		if(dist < 0)
 			flip = -1;
 		
-		leftSpeed = .65;
-		rightSpeed = .65;
+		leftSpeed = .6;
+		rightSpeed = .6;
+		
+		Robot.driveTrain.imu.reset();
+		Robot.driveTrain.resetEncoders();
 		
 		refinedDistance = false;
 	}
@@ -68,8 +71,8 @@ public class DriveForward extends Command {
 		currentAngle = Robot.driveTrain.imu.getAngleZ() / 4;
 		finished = false;
 		
-		leftSpeed = .65;
-		rightSpeed = .65;
+		leftSpeed = .6;
+		rightSpeed = .6;
 		
 		refinedDistance = false;
 	}
@@ -179,12 +182,15 @@ public class DriveForward extends Command {
 	protected boolean isFinished() {
 		//if the robot reaches its distance or the switches inside of the intakes
 		//are hit, it stops the command
-		return finished || Robot.gearManipulator.springButtonHit();
+		return finished || (Robot.gearManipulator.springButtonHit() && Math.abs(errorDistance) < 10);
 		
 	}
 
 	@Override
 	protected void end() {
+		if(Robot.gearManipulator.springButtonHit())
+			Robot.isSpringButtonPressed = true;
+		
 		Robot.driveTrain.leftDrive.set(0);
 		Robot.driveTrain.leftDrive2.set(0);
 		Robot.driveTrain.rightDrive.set(0);

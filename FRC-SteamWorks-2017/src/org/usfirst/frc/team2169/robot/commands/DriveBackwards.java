@@ -50,10 +50,15 @@ public class DriveBackwards extends Command {
 		refinedDistance = false;
 		timerOn = false;
 		
-		leftSpeed = .65;
-		rightSpeed = .65;
+		leftSpeed = -.65;
+		rightSpeed = -.65;
+		
+		Robot.driveTrain.imu.reset();
+		Robot.driveTrain.resetEncoders();
 		
 		refinedDistance = false;
+		
+		finished = false;
 	}
 
 	@Override
@@ -64,8 +69,8 @@ public class DriveBackwards extends Command {
 		currentAngle = Robot.driveTrain.imu.getAngleZ() / 4;
 		finished = false;
 		
-		leftSpeed = .65;
-		rightSpeed = .65;
+		leftSpeed = -.65;
+		rightSpeed = -.65;
 		
 		refinedDistance = false;
 	}
@@ -175,14 +180,16 @@ public class DriveBackwards extends Command {
 	protected boolean isFinished() {
 		//if the robot reaches its distance or the switches inside of the intakes
 		//are hit, it stops the command
-		return finished || Robot.gearManipulator.springButtonHit();
+		return finished;
 		
 	}
 
 	@Override
 	protected void end() {
 		Robot.driveTrain.leftDrive.set(0);
+		Robot.driveTrain.leftDrive2.set(0);
 		Robot.driveTrain.rightDrive.set(0);
+		Robot.driveTrain.rightDrive2.set(0);
 		Robot.driveTrain.resetEncoders();
 	}
 }

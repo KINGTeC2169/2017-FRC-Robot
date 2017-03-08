@@ -2,10 +2,7 @@
 package org.usfirst.frc.team2169.robot;
 
 
-import org.usfirst.frc.team2169.robot.commands.Auto_CrossLine;
 import org.usfirst.frc.team2169.robot.commands.Auto_Master;
-import org.usfirst.frc.team2169.robot.commands.Auto_PickAlliance;
-import org.usfirst.frc.team2169.robot.commands.Auto_PickPosition;
 import org.usfirst.frc.team2169.robot.commands.GearManip;
 import org.usfirst.frc.team2169.robot.commands.Hanging;
 import org.usfirst.frc.team2169.robot.commands.Intake;
@@ -19,6 +16,7 @@ import org.usfirst.frc.team2169.robot.subsystems.Intakes;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -56,7 +54,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	//vision setup variables
-	public NetworkTable table;
+	public static NetworkTable table;
 	public static double sliderVisionError;
 	
 	//standard spring length in m to calculate 
@@ -85,6 +83,8 @@ public class Robot extends IterativeRobot {
 	public SendableChooser<Command> positionChooser;// = new SendableChooser<>();
 	public SendableChooser<Command> lineCrossChooser;//= new SendableChooser<>();
 	
+	public Preferences prefs;
+	
 	public static boolean crossLine;
 	public static int alliance;
 	public static int position;
@@ -93,12 +93,18 @@ public class Robot extends IterativeRobot {
 	public static int savedAlliance;
 	public static int savedPosition;
 	
+	public static boolean sliderAutomatic;
+	public static boolean isSpringButtonPressed;
+	
 
 	@Override
 	public void robotInit() {
 		
 		//creating an instance of the OI class
 		oi = new OI();
+		
+		sliderAutomatic = true;
+		isSpringButtonPressed = false;
 		
 		//creating an instance of the commands shown above
 		tankDriveCom = new TankDrive();
@@ -109,7 +115,7 @@ public class Robot extends IterativeRobot {
 		driveTrainShift = new TankDriveSolenoidFlip();
 		
 		//Alliance Chooser
-		allianceChooser = new SendableChooser<>();
+		/*allianceChooser = new SendableChooser<>();
 		allianceChooser.addObject("None", new Auto_PickAlliance(0));
 		allianceChooser.addObject("Blue", new Auto_PickAlliance(1));
 		allianceChooser.addObject("Red", new Auto_PickAlliance(2));
@@ -126,12 +132,16 @@ public class Robot extends IterativeRobot {
 		lineCrossChooser = new SendableChooser<>();
 		lineCrossChooser.addObject("Yes", new Auto_CrossLine(true));
 		lineCrossChooser.addObject("No", new Auto_CrossLine(false));
-		SmartDashboard.putData("Cross Line Selection", lineCrossChooser);
+		SmartDashboard.putData("Cross Line Selection", lineCrossChooser);*/
 
 		
 		
 		table = NetworkTable.getTable("SmartDashboard");
+		prefs = Preferences.getInstance();
 		
+		Robot.alliance = prefs.getInt("Alliance", -1);
+		Robot.position = prefs.getInt("Position", -2);
+		Robot.crossLine = prefs.getBoolean("CrossLine", false);
 		
 		
 		//robot restarting setup at startup
@@ -177,6 +187,10 @@ public class Robot extends IterativeRobot {
 		//that the drivers want to use for that 
 		autonomousCommand = new Auto_Master();
 		
+		Robot.alliance = prefs.getInt("Alliance", -1);
+		Robot.position = prefs.getInt("Position", -2);
+		Robot.crossLine = prefs.getBoolean("CrossLine", false);
+		
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -197,7 +211,10 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		
-		sliderVisionError = table.getNumber("centX");
+		Robot.isSpringButtonPressed = Robot.gearManipulator.springButtonHit();
+		
+		sliderVisionError = table.getNumber("centX", -1);
+		SmartDashboard.putDouble("Auto Encoders", Robot.driveTrain.getEncDistance());
 	}
 
 	@Override
@@ -239,7 +256,7 @@ public class Robot extends IterativeRobot {
 		//SmartDashboard.putDouble("Left Stick", Robot.oi.secondaryStick.getRawAxis(1));
 		//SmartDashboard.putDouble("Robot Acceleration X:", imu.getAccelX());
 		//SmartDashboard.putDouble("Amps", Robot.hanger.hangMotor.getOutputCurrent());
-		//Robot.gearManipulator.log();\
+		//Robot.gearManipulator.log();
 		SmartDashboard.putBoolean("Hang Buttons:", Robot.hanger.hangButtonHit());
 		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
 		

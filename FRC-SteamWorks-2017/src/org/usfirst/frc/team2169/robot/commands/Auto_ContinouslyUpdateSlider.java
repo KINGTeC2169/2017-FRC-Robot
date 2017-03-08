@@ -2,7 +2,9 @@ package org.usfirst.frc.team2169.robot.commands;
 
 import org.usfirst.frc.team2169.robot.Robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -22,12 +24,19 @@ public class Auto_ContinouslyUpdateSlider extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
-    		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 60);
-    	}
-    	else{
-    		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 30);
-    	}
+    	
+    		Robot.sliderVisionError = Robot.table.getNumber("centX", -1);
+    	
+			if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
+        		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 45);
+        	}
+        	else{
+        		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 30);
+        	}
+			
+			SmartDashboard.putDouble("Auto visionSliderError", Robot.sliderVisionError);
+		
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

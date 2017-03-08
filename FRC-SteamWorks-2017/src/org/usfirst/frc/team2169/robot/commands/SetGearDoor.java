@@ -24,7 +24,8 @@ public class SetGearDoor extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.gearManipulator.gearDoorSol.set(Value.kForward);
+    	if(Robot.isSpringButtonPressed)
+    		Robot.gearManipulator.gearDoorSol.set(val);
     }
 
     // Make this return true when this Command no longer needs to run execute()

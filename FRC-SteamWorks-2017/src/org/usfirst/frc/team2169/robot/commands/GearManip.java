@@ -34,16 +34,20 @@ public class GearManip extends Command {
     @SuppressWarnings("deprecation")
 	protected void execute() {
     	
-    	if(!(Robot.oi.secondaryStick.getRawAxis(4) < 0.4 && Robot.oi.secondaryStick.getRawAxis(4) > -0.4)){
-    		//DRIVER CONTROLLED
-    		Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4));
+    	if(Robot.sliderAutomatic){
+    		
+    		if(Robot.gearManipulator.gearDoorSol.get() == Value.kReverse){
+    			if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
+            		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 45);
+            	}
+            	else{
+            		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 30);
+            	}
+    		} else {
+    			Robot.gearManipulator.gearMotor.set(0);
+    		}
     	} else {
-    		if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
-        		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 60);
-        	}
-        	else{
-        		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 30);
-        	}
+    		Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4));
     	}
     	
 //    	if(Robot.oi.secondaryStick.getRawAxis(4) > .5){

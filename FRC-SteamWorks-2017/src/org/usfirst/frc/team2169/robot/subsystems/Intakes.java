@@ -37,7 +37,7 @@ public class Intakes extends Subsystem {
 	//sets the motor so objects can be lodged
 	//into the robot
 	public void intakeIn(){
-		//intakeMotor.set(speed - (Robot.oi.secondaryStick.getRawAxis(4)+1 / 2));
+		intakeMotor.set(speed);
 	}
 	
 	//an idle function that keeps the intakes
@@ -49,28 +49,21 @@ public class Intakes extends Subsystem {
 	//sets the motor so the gear can be pushed
 	//out in a rare case that they could not use a gear
 	public void intakeOut(){
-		//intakeMotor.set(-speed + (Robot.oi.secondaryStick.getRawAxis(4)+1 / 2));
+		intakeMotor.set(-speed);
 	}
 	
 	//this method sets the value of the intakes based 
 	//on UI during a match
     //MANUAL
 	public void manualIntakes(){
-		/*if(Robot.oi.secondaryStick.getPOV() == 180 || Robot.oi.secondaryStick.getPOV() == 0){
-    		if(Robot.oi.secondaryStick.getPOV() == 0){
-    			Robot.intakes.intakeIn();
-    		} 
-    		else {
-    			Robot.intakes.intakeOut();
-    		}
-    	} 
-		else {
-    		Robot.intakes.intakeIdle();
-    	}*/
-		if (true){
+		double axisTolerance = .3;
 		
-			intakeMotor.set(-Robot.oi.secondaryStick.getRawAxis(1));
-			
+		if(Robot.oi.secondaryStick.getRawAxis(1) < -axisTolerance){
+			intakeIn();
+		} else if(Robot.oi.secondaryStick.getRawAxis(1) > axisTolerance) {
+			intakeOut();
+		} else {
+			intakeIdle();
 		}
 	}
 	

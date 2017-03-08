@@ -42,7 +42,7 @@ public class GearManipulator extends Subsystem {
     
     public GearManipulator(){
     	//creating the gear manipulator at this port
-    	gearMotor = new CANTalon(5);
+    	gearMotor = new CANTalon(4);
     	//this resets the position of the slider
     	//to 0. This should be at the center of 
     	//every match to ensure the slider can return to 
@@ -53,10 +53,10 @@ public class GearManipulator extends Subsystem {
     	
     	//creating the buttons at these DIO ports 
     	leftButton = new DigitalInput(5);
-    	rightButton = new DigitalInput(4);
+    	rightButton = new DigitalInput(6);
     	
     	//creating the buttons at these DIO ports 
-    	springButton = new DigitalInput(6);
+    	springButton = new DigitalInput(4);
     	
     	//creating two solenoids that flip pistons
     	playerSol = new DoubleSolenoid(12,3,4);
@@ -85,9 +85,9 @@ public class GearManipulator extends Subsystem {
     public void manualGearManip(){
     	//this statement tests if the gear manipulator should move at all, 
     	//otherwise the gear manipulator should not move at all
-    	if (Robot.oi.secondaryStick.getRawAxis(4) > 0.3) {
+    	if (Robot.oi.secondaryStick.getRawAxis(4) > 0.7) {
     		gearManipRight(Robot.oi.secondaryStick.getRawAxis(4) * 0.5);
-    	} else if (Robot.oi.secondaryStick.getRawAxis(4) < -0.3) {
+    	} else if (Robot.oi.secondaryStick.getRawAxis(4) < -0.7) {
     		gearManipLeft(-Robot.oi.secondaryStick.getRawAxis(4) * 0.5);
     	} else {
     		gearManipIdle();
@@ -161,8 +161,8 @@ public class GearManipulator extends Subsystem {
     	
     	//if we want a gear and are loading one in,
     	//we make sure the gear doors are closed
-    	if(playerSol.get() == Value.kForward){
-    		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
+    	if(playerSol.get() == Value.kReverse){
+    		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
     	}
     	
     }

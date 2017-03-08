@@ -60,9 +60,8 @@ public class DriveTrain extends Subsystem {
 		dogShift = new DoubleSolenoid(12,2,5);
 		dogShift.set(Value.kForward);
 
-		//creating the encoders at these DIO ports 
-		//NEEDS A DISTANCE PER PULSE FACTOR
-		leftEnc = new Encoder(2,3,false);
+		//creating the encoders at these DIO ports
+		leftEnc = new Encoder(2,3,true);
 		leftEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI); // (1 rev / number of ticks) * unit conversion for circumfrence
 		leftEnc.reset();
 		rightEnc = new Encoder(0,1,true);

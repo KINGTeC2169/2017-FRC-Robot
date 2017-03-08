@@ -10,13 +10,22 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class Auto_Master extends CommandGroup {
 
+	// AUTONOMOUS KEY
+	// addSequential(new DriveForward(double x)) - drives the robot forward x number of inches
+	// addSequential(new DriveBackward(double x)) - drives the robot backward x number of inches
+	// addSequential(new DriveTrainTurn(double x)) - turns the robot x number of degrees 
+	//												 x > 0 turns clockwise
+	//												 x < 0 turns counter-clockwise
+	// addSequential(new SetGearDoor(Value.kReverse)); - flip the gear slider door solenoids outward to the peg
+	// addParallel(new Auto_ContinouslyUpdateSlider()) - updates slider to track the target
+	
+	
+	
     public Auto_Master() {
     	
     	//if robot does not want to move
     	if(Robot.alliance == 0)
     		return;
-    	
-    	addParallel(new Auto_ContinouslyUpdateSlider());
     	
     	//blue side options
     	if(Robot.alliance == 1){
@@ -26,10 +35,12 @@ public class Auto_Master extends CommandGroup {
     				addSequential(new DriveForward(90));
         	    	addSequential(new DriveTrainTurn(68));
         	    	
+        	    	addParallel(new Auto_ContinouslyUpdateSlider());
+        	    	
         	    	//drive towards the target, hang the gear, and back up
         	    	addSequential(new DriveForward(17));
-        	    	addSequential(new SetGearDoor(Value.kReverse));
-        	    	addSequential(new DriveBackwards(17));
+        	    	addSequential(new SetGearDoor(Value.kForward));
+        	    	addSequential(new DriveBackwards(27));
         	    	
         	    	//turn away from the airship
         	    	addSequential(new DriveTrainTurn(-76));
@@ -41,34 +52,40 @@ public class Auto_Master extends CommandGroup {
     				addSequential(new DriveForward(90));
         	    	addSequential(new DriveTrainTurn(68));
         	    	
+        	    	addParallel(new Auto_ContinouslyUpdateSlider());
+        	    	
         	    	//drive towards the target, hang the gear, and back up
         	    	addSequential(new DriveForward(17));
-        	    	addSequential(new SetGearDoor(Value.kReverse));
-        	    	addSequential(new DriveBackwards(17));
+        	    	addSequential(new SetGearDoor(Value.kForward));
+        	    	addSequential(new DriveBackwards(27));
     			}
     		} else if(Robot.position == 0){
     			if(Robot.crossLine){
+    				addParallel(new Auto_ContinouslyUpdateSlider());
     				//hang gear
-    		    	addSequential(new DriveForward(72));
+    		    	addSequential(new DriveForward(85));
     		    	//addParallel(new DriveBackwards());
-    		    	addSequential(new SetGearDoor(Value.kReverse));
+    		    	
+    		    	addSequential(new SetGearDoor(Value.kForward));
+    		    	
     		    	//Go back from the gear hanger
-    		    	addSequential(new DriveBackwards(42));
-    		    	//turn 90
-    		    	addSequential(new DriveTrainTurn(-90));
-    		    	//forward
-    		    	addSequential(new DriveForward(70));
+    		    	addSequential(new DriveBackwards(52));
     		    	//turn 90
     		    	addSequential(new DriveTrainTurn(90));
+    		    	//forward
+    		    	addSequential(new DriveForward(80));
+    		    	//turn 90
+    		    	addSequential(new DriveTrainTurn(-90));
     		    	//forward Crossfield
-    		    	addSequential(new DriveForward(120));
+    		    	addSequential(new DriveForward(180));
     			} else {
+    				addParallel(new Auto_ContinouslyUpdateSlider());
     				//hang gear
-    		    	addSequential(new DriveForward(72));
+    		    	addSequential(new DriveForward(85));
     		    	//addParallel(new DriveBackwards());
-    		    	addSequential(new SetGearDoor(Value.kReverse));
+    		    	addSequential(new SetGearDoor(Value.kForward));
     		    	//Go back from the gear hanger
-    		    	addSequential(new DriveBackwards(42));
+    		    	addSequential(new DriveBackwards(52));
     			}
     			
     		} else if(Robot.position == 1){
@@ -76,25 +93,29 @@ public class Auto_Master extends CommandGroup {
     				//drive forward and align with the target
     		    	addSequential(new DriveForward(92));
     		    	addSequential(new DriveTrainTurn(-71));
+    		    	
+    		    	addParallel(new Auto_ContinouslyUpdateSlider());
     		   	
     		    	//drive towards the target, hang the gear, and back up
-    		    	addSequential(new DriveForward(20));
-    		    	addSequential(new SetGearDoor(Value.kReverse));
-    		    	addSequential(new DriveBackwards(20));
+    		    	addSequential(new DriveForward(30));
+    		    	addSequential(new SetGearDoor(Value.kForward));
+    		    	addSequential(new DriveBackwards(30));
     		   	
     		    	//turn away from the airship
     		    	addSequential(new DriveTrainTurn(79));
     		   	
     		    	//drive across line
-    		    	addSequential(new DriveForward(50));
+    		    	addSequential(new DriveForward(60));
     			} else {
     				//drive forward and align with the target
     		    	addSequential(new DriveForward(92));
     		    	addSequential(new DriveTrainTurn(-71));
+    		    	
+    		    	addParallel(new Auto_ContinouslyUpdateSlider());
     		   	
     		    	//drive towards the target, hang the gear, and back up
     		    	addSequential(new DriveForward(20));
-    		    	addSequential(new SetGearDoor(Value.kReverse));
+    		    	addSequential(new SetGearDoor(Value.kForward));
     		    	addSequential(new DriveBackwards(20));
     			}
     		}
@@ -108,11 +129,13 @@ public class Auto_Master extends CommandGroup {
     				//drive forward and align with the target
     		    	addSequential(new DriveForward(92));
     		    	addSequential(new DriveTrainTurn(71));
+    		    	
+    		    	addParallel(new Auto_ContinouslyUpdateSlider());
     		   	
     		    	//drive towards the target, hang the gear, and back up
     		    	addSequential(new DriveForward(20));
-    		    	addSequential(new SetGearDoor(Value.kReverse));
-    		    	addSequential(new DriveBackwards(20));
+    		    	addSequential(new SetGearDoor(Value.kForward));
+    		    	addSequential(new DriveBackwards(27));
     		   	
     		    	//turn away from the airship
     		    	addSequential(new DriveTrainTurn(-79));
@@ -123,20 +146,23 @@ public class Auto_Master extends CommandGroup {
     				//drive forward and align with the target
     		    	addSequential(new DriveForward(92));
     		    	addSequential(new DriveTrainTurn(71));
+    		    	
+    		    	addParallel(new Auto_ContinouslyUpdateSlider());
     		   	
     		    	//drive towards the target, hang the gear, and back up
     		    	addSequential(new DriveForward(20));
-    		    	addSequential(new SetGearDoor(Value.kReverse));
-    		    	addSequential(new DriveBackwards(20));
+    		    	addSequential(new SetGearDoor(Value.kForward));
+    		    	addSequential(new DriveBackwards(27));
     			}
     		} else if(Robot.position == 0){
     			if(Robot.crossLine){
+    				addParallel(new Auto_ContinouslyUpdateSlider());
     				//hang gear
-    		    	addSequential(new DriveForward(72));
+    		    	addSequential(new DriveForward(85));
     		    	//addParallel(new DriveBackwards());
-    		    	addSequential(new SetGearDoor(Value.kReverse));
+    		    	addSequential(new SetGearDoor(Value.kForward));
     		    	//Go back from the gear hanger
-    		    	addSequential(new DriveBackwards(42));
+    		    	addSequential(new DriveBackwards(52));
     		    	//turn 90
     		    	addSequential(new DriveTrainTurn(-90));
     		    	//forward
@@ -146,12 +172,13 @@ public class Auto_Master extends CommandGroup {
     		    	//forward Crossfield
     		    	addSequential(new DriveForward(120));
     			} else {
+    				addParallel(new Auto_ContinouslyUpdateSlider());
     				//hang gear
-    		    	addSequential(new DriveForward(72));
+    		    	addSequential(new DriveForward(85));
     		    	//addParallel(new DriveBackwards());
-    		    	addSequential(new SetGearDoor(Value.kReverse));
+    		    	addSequential(new SetGearDoor(Value.kForward));
     		    	//Go back from the gear hanger
-    		    	addSequential(new DriveBackwards(42));
+    		    	addSequential(new DriveBackwards(52));
     			}
     			
     		} else if(Robot.position == 1){
@@ -160,9 +187,12 @@ public class Auto_Master extends CommandGroup {
     				addSequential(new DriveForward(90));
         	    	addSequential(new DriveTrainTurn(-68));
         	    	
+        	    	addParallel(new Auto_ContinouslyUpdateSlider());
+        	    	
         	    	//drive towards the target, hang the gear, and back up
         	    	addSequential(new DriveForward(17));
-        	    	addSequential(new SetGearDoor(Value.kReverse));
+        	    	addSequential(new SetGearDoor(Value.kForward));
+        	    	
         	    	addSequential(new DriveBackwards(17));
         	    	
         	    	//turn away from the airship
@@ -175,9 +205,11 @@ public class Auto_Master extends CommandGroup {
     				addSequential(new DriveForward(90));
         	    	addSequential(new DriveTrainTurn(-68));
         	    	
+        	    	addParallel(new Auto_ContinouslyUpdateSlider());
+        	    	
         	    	//drive towards the target, hang the gear, and back up
         	    	addSequential(new DriveForward(17));
-        	    	addSequential(new SetGearDoor(Value.kReverse));
+    		    	addSequential(new SetGearDoor(Value.kForward));
         	    	addSequential(new DriveBackwards(17));
     			}
     		}
