@@ -38,7 +38,7 @@ public class GearManip extends Command {
     		
     		if(Robot.gearManipulator.gearDoorSol.get() == Value.kReverse){
     			if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
-            		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 45);
+            		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 40);
             	}
             	else{
             		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 30);
@@ -47,7 +47,12 @@ public class GearManip extends Command {
     			Robot.gearManipulator.gearMotor.set(0);
     		}
     	} else {
-    		Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4));
+    		
+    		if(Math.abs(Robot.oi.secondaryStick.getRawAxis(4)) > .4){
+    			Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4));
+    		} else {
+    			Robot.gearManipulator.gearMotor.set(0);
+    		}
     	}
     	
 //    	if(Robot.oi.secondaryStick.getRawAxis(4) > .5){

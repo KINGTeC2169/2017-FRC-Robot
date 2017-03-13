@@ -62,6 +62,28 @@ public class DriveForward extends Command {
 		
 		refinedDistance = false;
 	}
+	
+	public DriveForward(double dist, double minSpeed2,double maxSpeed2) {
+		requires(Robot.driveTrain);
+		distance = dist;
+		refinedDistance = false;
+		timerOn = false;
+		
+		//if the distance is negeative then the robot drives backwards
+		if(dist < 0)
+			flip = -1;
+		
+		minSpeed = minSpeed2;
+		maxSpeed = maxSpeed2;
+		
+		leftSpeed = (minSpeed + maxSpeed) / 2;
+		rightSpeed = (minSpeed + maxSpeed) / 2;
+		
+		Robot.driveTrain.imu.reset();
+		Robot.driveTrain.resetEncoders();
+		
+		refinedDistance = false;
+	}
 
 	@Override
 	protected void initialize() {
@@ -182,7 +204,7 @@ public class DriveForward extends Command {
 	protected boolean isFinished() {
 		//if the robot reaches its distance or the switches inside of the intakes
 		//are hit, it stops the command
-		return finished || (Robot.gearManipulator.springButtonHit() && Math.abs(errorDistance) < 10);
+		return finished || Robot.gearManipulator.springButtonHit();
 		
 	}
 

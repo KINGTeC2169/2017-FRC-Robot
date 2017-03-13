@@ -28,7 +28,7 @@ public class Auto_ContinouslyUpdateSlider extends Command {
     		Robot.sliderVisionError = Robot.table.getNumber("centX", -1);
     	
 			if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
-        		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 45);
+        		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 40);
         	}
         	else{
         		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 30);

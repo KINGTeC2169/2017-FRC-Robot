@@ -34,14 +34,14 @@ public class OI {
 		JoystickButton humanPlayerShiftButton = new JoystickButton(secondaryStick, 5);
 		JoystickButton gearDoorFlipButton = new JoystickButton(secondaryStick,4);
 		JoystickButton switchSliderLocoButton = new JoystickButton(secondaryStick,2);
-		//JoystickButton centralizeGearButton = new JoystickButton(secondaryStick,1);
+		JoystickButton centralizeGearButton = new JoystickButton(secondaryStick,1);
 	
 		
 		
 		//runs an instance of a command until its end() function is called
 		//when the button is pressed during teleOp
 		//centralizeGearButton.whenPressed(new CentralizeGearSlider());
-		//centralizeGearButton.whenPressed(new CentralizeGearSlider());
+		centralizeGearButton.whenPressed(new CentralizeGearSlider());
 		intakeShiftButton.whenPressed(new IntakeSolenoidFlip());
 		humanPlayerShiftButton.whenPressed(new HumanPlayerSolenoidFlip());
 		gearDoorFlipButton.whenPressed(new AnotherGearFlipCom());

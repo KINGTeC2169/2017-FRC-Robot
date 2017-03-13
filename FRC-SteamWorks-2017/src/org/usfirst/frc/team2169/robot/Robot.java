@@ -15,6 +15,7 @@ import org.usfirst.frc.team2169.robot.subsystems.Hanger;
 import org.usfirst.frc.team2169.robot.subsystems.Intakes;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
@@ -62,6 +63,8 @@ public class Robot extends IterativeRobot {
 	//to the reflective tape
 	public static double springLength = .035255;
 	
+	public static boolean sliderCentralizing;
+	
 	//creating an instance of each command that
 	//runs continuously in teleOp
 	public Command tankDriveCom;
@@ -105,6 +108,7 @@ public class Robot extends IterativeRobot {
 		
 		sliderAutomatic = true;
 		isSpringButtonPressed = false;
+		sliderCentralizing = false;
 		
 		//creating an instance of the commands shown above
 		tankDriveCom = new TankDrive();
@@ -113,6 +117,8 @@ public class Robot extends IterativeRobot {
 		hangCom = new Hanging();
 		tankDriveSol = new TankDriveSolenoidFlip();
 		driveTrainShift = new TankDriveSolenoidFlip();
+		
+		CameraServer.getInstance().startAutomaticCapture();
 		
 		//Alliance Chooser
 		/*allianceChooser = new SendableChooser<>();
@@ -182,14 +188,15 @@ public class Robot extends IterativeRobot {
 		
 		//sets the drive train to low gear for all autonomous options
 		Robot.driveTrain.dogShift.set(Value.kReverse);
-		
-		//pulls the checked command on the SmartDashboard
-		//that the drivers want to use for that 
-		autonomousCommand = new Auto_Master();
+		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
 		
 		Robot.alliance = prefs.getInt("Alliance", -1);
 		Robot.position = prefs.getInt("Position", -2);
 		Robot.crossLine = prefs.getBoolean("CrossLine", false);
+		
+		//pulls the checked command on the SmartDashboard
+		//that the drivers want to use for that 
+		autonomousCommand = new Auto_Master();
 		
 
 		/*
@@ -240,6 +247,9 @@ public class Robot extends IterativeRobot {
 		intakeCom.start();
 		hangCom.start();
 		centralize = false;
+		
+		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
+		Robot.intakes.intakeSol.set(Value.kForward);
 	}
 
 	/**
@@ -259,6 +269,10 @@ public class Robot extends IterativeRobot {
 		//Robot.gearManipulator.log();
 		SmartDashboard.putBoolean("Hang Buttons:", Robot.hanger.hangButtonHit());
 		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
+		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
+		SmartDashboard.putDouble("Right Enc", Robot.driveTrain.rightEnc.getDistance());
+		SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());
+		SmartDashboard.putBoolean("SliderAutomatic", sliderAutomatic);
 		
 		sliderVisionError = table.getNumber("centX", -1);
 		SmartDashboard.putDouble("bb", sliderVisionError);

@@ -11,11 +11,20 @@ import edu.wpi.first.wpilibj.command.Command;
 public class SetGearDoor extends Command {
 
 	private Value val;
+	private boolean go;
 	
     public SetGearDoor(Value val2) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	val = val2;
+    	go = false;
+    }
+    
+    public SetGearDoor(Value val2, boolean x) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	val = val2;
+    	go = x;
     }
 
     // Called just before this Command runs the first time
@@ -24,7 +33,7 @@ public class SetGearDoor extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.isSpringButtonPressed)
+    	if(Robot.isSpringButtonPressed || go)
     		Robot.gearManipulator.gearDoorSol.set(val);
     }
 

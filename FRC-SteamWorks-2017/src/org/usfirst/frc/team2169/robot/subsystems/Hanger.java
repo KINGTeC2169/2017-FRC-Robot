@@ -74,11 +74,7 @@ public class Hanger extends Subsystem {
     	//if button not pressed
     	
     	if(Robot.oi.secondaryStick.getRawButton(8)){
-    		if(hangButtonHit()){
-    			hangMotor.set(0);
-    		} else {
-    			hangMotor.set(1);
-    		}
+    		hangMotor.set(1);
     	} else {
     		hangMotor.set(0);
     	}
