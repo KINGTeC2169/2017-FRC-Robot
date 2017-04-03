@@ -18,7 +18,7 @@ public class DriveBackwards extends Command {
 	public double angleTolerance = .5;
 	public double rateTolerance = 1;
 	public double motorChange = .001;
-	public double tolerance = 3;
+	public double tolerance = 10;
 	public double rightSpeed = -.65;
 	public double leftSpeed = -.65;
 	public double minSpeed = -.6;
@@ -103,7 +103,7 @@ public class DriveBackwards extends Command {
 	protected void execute() {
 		errorAngle = Robot.driveTrain.getTurnAngle(currentAngle, Robot.driveTrain.imu.getAngleZ() / 4);
 		
-		//after waitime has passed, run a check to see if 
+		//after wait time has passed, run a check to see if 
 		//the encoders are working properly, otherwise run off of just one encoder
     	if (timer + waitTime < Timer.getFPGATimestamp()) {
     		checkEnc = true;

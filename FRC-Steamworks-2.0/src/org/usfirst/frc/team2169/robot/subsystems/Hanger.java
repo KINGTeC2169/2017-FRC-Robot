@@ -15,33 +15,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Hanger extends Subsystem {
 
-	//creating an instance of the hang motor
-    public CANTalon hangMotor;
-    //an instance of the motor max speed
-    public double hangSpeed = 1.0;
+    public CANTalon hangMotor; //creating an instance of the hang motor
+    public double hangSpeed = 1.0; //an instance of the motor max speed
+    
     //public double modifier = Robot.oi.secondaryStick.getRawAxis(4);
     
-    //creating an instance of the buttons on the hang
-    //mechanism
-    public DigitalInput hangButton;
+    public DigitalInput hangButton;  //creating an instance of the buttons on the hang mechanism
     //public DigitalInput hangButton2;
     
     public Hanger(){
-    	//creating the hang motor at this port
-    	hangMotor = new CANTalon(9);
-    	
-    	//Cerating the buttons at these DIO ports
-    	hangButton = new DigitalInput(8);
+    	hangMotor = new CANTalon(10); //creating the hang motor at this port
+    	hangButton = new DigitalInput(8); //Cerating the buttons at these DIO ports
     }
     
-    //applied a full force on the rope so the robot
-    //can hang
+    //applies a full force on the rope so the robot can hang
     public void pullUp(){
-    	/*if(!hangButtonHit()){
-    		hangMotor.set(-hangSpeed);
-    	} else {
-    		hangMotor.set(0);
-    	}*/
     	hangMotor.set(hangSpeed);
     }
     
@@ -72,7 +60,6 @@ public class Hanger extends Subsystem {
     //MANUAL
     public void manualHanging(){
     	//if button not pressed
-    	
     	if(Robot.oi.secondaryStick.getRawButton(8)){
     		hangMotor.set(-1);
     	} else {

@@ -13,19 +13,20 @@ import org.usfirst.frc.team2169.robot.Robot;
  */
 public class DriveForward extends Command {
 	
+	// What is this, AveryDog?
 	public double refiningMotorSpeed = .15;
 	public double distanceTolerance = .2;
 	public double angleTolerance = .5;
 	public double rateTolerance = 1;
 	public double motorChange = .001;
-	public double tolerance = 3;
+	public double tolerance = 10;
 	public double rightSpeed = .65;
 	public double leftSpeed = .65;
 	public double minSpeed = .5;
 	public double maxSpeed = .7;
 	public double timer = 0;
 	public double kP = .1;
-	public double waitTime = .4;
+	public double waitTime = .1;
 	public double currentAngle;
 	public double distance;
 	public double errorDistance;
@@ -33,6 +34,8 @@ public class DriveForward extends Command {
 	public double refinedTolerance = 2;
 	public double currentMotorSpeed = 0;
 	public static double meterToTickConversion = 128;
+	
+	public boolean checkForSpring;
 	//in to meters to diamter to circumfrence
 	public static double wheelCircumfrence = 4 * .0254 * 2 * Math.PI;
 	
@@ -62,6 +65,7 @@ public class DriveForward extends Command {
 		Robot.driveTrain.resetEncoders();
 		
 		refinedDistance = false;
+		checkForSpring = false;
 	}
 	
 	public DriveForward(double dist, double minSpeed2,double maxSpeed2) {
@@ -84,6 +88,30 @@ public class DriveForward extends Command {
 		Robot.driveTrain.resetEncoders();
 		
 		refinedDistance = false;
+		checkForSpring = false;
+	}
+	
+	public DriveForward(double dist, double minSpeed2,double maxSpeed2, boolean checkingForPeg) {
+		requires(Robot.driveTrain);
+		distance = dist;
+		refinedDistance = false;
+		timerOn = false;
+		
+		//if the distance is negeative then the robot drives backwards
+		if(dist < 0)
+			flip = -1;
+		
+		minSpeed = minSpeed2;
+		maxSpeed = maxSpeed2;
+		
+		leftSpeed = (minSpeed + maxSpeed) / 2;
+		rightSpeed = (minSpeed + maxSpeed) / 2;
+		
+		Robot.driveTrain.imu.reset();
+		Robot.driveTrain.resetEncoders();
+		
+		refinedDistance = false;
+		checkForSpring = checkingForPeg;
 	}
 
 	@Override
@@ -117,7 +145,7 @@ public class DriveForward extends Command {
     		} else if(Robot.driveTrain.rightEnc.getDistance() == 0){
     			errorDistance = Math.abs((distance - Robot.driveTrain.leftEnc.getDistance()));
     		} else {
-    			errorDistance = Math.abs((distance - Robot.driveTrain.getEncDistance()));
+    			errorDistance = Math.abs(distance - Robot.driveTrain.getEncDistance());
     		}
     	} else {
     		errorDistance = Math.abs((distance - Robot.driveTrain.getEncDistance()));
@@ -146,19 +174,19 @@ public class DriveForward extends Command {
 			}
 		} 
 				
-				//clamp set speeds so they can be applied to the 
-				//motors without errors or exceptions
-				if(leftSpeed < minSpeed){
-					leftSpeed = minSpeed;
-				} else if(leftSpeed > maxSpeed){
-					leftSpeed = maxSpeed;
-				}
-				
-				if(rightSpeed < minSpeed){
-					rightSpeed = minSpeed;
-				} else if(rightSpeed > maxSpeed){
-					rightSpeed = maxSpeed;
-				}
+		//clamp set speeds so they can be applied to the 
+		//motors without errors or exceptions
+		if(leftSpeed < minSpeed){
+			leftSpeed = minSpeed;
+		} else if(leftSpeed > maxSpeed){
+			leftSpeed = maxSpeed;
+		}
+		
+		if(rightSpeed < minSpeed){
+			rightSpeed = minSpeed;
+		} else if(rightSpeed > maxSpeed){
+			rightSpeed = maxSpeed;
+		}
 		
 		if(refinedDistance == false){
 			//Update driving speeds on both sides of the driveTrain
@@ -202,15 +230,14 @@ public class DriveForward extends Command {
     		}
 		}
 		
-		SmartDashboard.putDouble("Auto enc average", errorDistance);
-		SmartDashboard.putDouble("Auto drive forward angle error", errorAngle);
+		SmartDashboard.putDouble("aut driveforward dist", errorDistance);
 	}
 
 	@Override
 	protected boolean isFinished() {
 		//if the robot reaches its distance or the switches inside of the intakes
 		//are hit, it stops the command
-		return finished || Robot.gearManipulator.springButtonHit();
+		return finished || (Robot.gearManipulator.springButtonHit() && checkForSpring);
 		
 	}
 

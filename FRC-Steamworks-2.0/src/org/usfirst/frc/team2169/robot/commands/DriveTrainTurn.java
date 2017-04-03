@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrainTurn extends Command {
 
 	public double refiningMotorSpeed = .15;
-	public double refinedTolerance = .25;
+	public double refinedTolerance = 1;
 	public double motorSpeed = .45;
 	public double tolerance = 3;
 	public double waitTime = .2;

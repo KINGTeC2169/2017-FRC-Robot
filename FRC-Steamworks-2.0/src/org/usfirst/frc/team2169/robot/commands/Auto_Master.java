@@ -28,7 +28,8 @@ public class Auto_Master extends CommandGroup {
     	if(Robot.alliance == 0)
     		return;
     	
-    	//blue side options
+    	//BLUE ALLIANCE
+    	// Pick Alliance
     	if(Robot.alliance == 1){
     		if(Robot.position == -1){
     			if(Robot.crossLine){
@@ -36,11 +37,12 @@ public class Auto_Master extends CommandGroup {
     				addSequential(new DriveForward(72));
         	    	addSequential(new DriveTrainTurn(60));
         	    	
+        	    	//update slider
         	    	addParallel(new Auto_ContinouslyUpdateSlider());
         	    	
         	    	//drive towards the target, hang the gear, and back up
         	    	addSequential(new DriveForward(50));
-        	    	addSequential(new DriveForward(50, .25, .35));
+        	    	addSequential(new DriveForward(50, .25, .35, true));
         	    	addSequential(new SetGearDoor(doorRelease));
         	    	addSequential(new DriveBackwards(47));
         	    	
@@ -54,20 +56,22 @@ public class Auto_Master extends CommandGroup {
     				addSequential(new DriveForward(72));
         	    	addSequential(new DriveTrainTurn(60));
         	    	
+        	    	//update slider
         	    	addParallel(new Auto_ContinouslyUpdateSlider());
         	    	
         	    	//drive towards the target, hang the gear, and back up
         	    	addSequential(new DriveForward(50));
-        	    	addSequential(new DriveForward(50, .25, .35));
+        	    	addSequential(new DriveForward(50, .25, .35, true));
         	    	addSequential(new SetGearDoor(doorRelease));
         	    	addSequential(new DriveBackwards(47));
     			}
+    			//pick Position
     		} else if(Robot.position == 0){
     			if(Robot.crossLine){
     				addParallel(new Auto_ContinouslyUpdateSlider());
     				//hang gear
-    		    	addSequential(new DriveForward(50));
-    		    	addSequential(new DriveForward(32, .3, .4));
+    		    	addSequential(new DriveForward(45));
+    		    	addSequential(new DriveForward(42, .3, .4, true));
     		    	
     		    	addSequential(new SetGearDoor(doorRelease));
     		    	
@@ -85,7 +89,7 @@ public class Auto_Master extends CommandGroup {
     				addParallel(new Auto_ContinouslyUpdateSlider());
     				//hang gear
     		    	addSequential(new DriveForward(50));
-    		    	addSequential(new DriveForward(32, .3, .4));
+    		    	addSequential(new DriveForward(32, .3, .4, true));
     		    	
     		    	addSequential(new SetGearDoor(doorRelease));
     		    	
@@ -102,8 +106,8 @@ public class Auto_Master extends CommandGroup {
     		    	addParallel(new Auto_ContinouslyUpdateSlider());
     		   	
     		    	//drive towards the target, hang the gear, and back up
-    		    	addSequential(new DriveForward(30));
-    		    	addSequential(new DriveForward(55, .2, .3));
+    		    	addSequential(new DriveForward(20));
+    		    	addSequential(new DriveForward(55, .2, .3, true));
     		    	addSequential(new SetGearDoor(doorRelease));
     		    	addSequential(new DriveBackwards(38));
     		   	
@@ -120,8 +124,8 @@ public class Auto_Master extends CommandGroup {
     		    	addParallel(new Auto_ContinouslyUpdateSlider());
     		   	
     		    	//drive towards the target, hang the gear, and back up
-    		    	addSequential(new DriveForward(30));
-    		    	addSequential(new DriveForward(55, .2, .3));
+    		    	addSequential(new DriveForward(20));
+    		    	addSequential(new DriveForward(55, .2, .3, true));
     		    	addSequential(new SetGearDoor(doorRelease));
     		    	addSequential(new DriveBackwards(38));
     		   	
@@ -141,8 +145,8 @@ public class Auto_Master extends CommandGroup {
     		    	addParallel(new Auto_ContinouslyUpdateSlider());
     		   	
     		    	//drive towards the target, hang the gear, and back up
-    		    	addSequential(new DriveForward(30));
-    		    	addSequential(new DriveForward(55, .2, .3));
+    		    	addSequential(new DriveForward(20));
+    		    	addSequential(new DriveForward(55, .2, .3, true));
     		    	addSequential(new SetGearDoor(doorRelease));
     		    	addSequential(new DriveBackwards(38));
     		   	
@@ -159,8 +163,8 @@ public class Auto_Master extends CommandGroup {
     		    	addParallel(new Auto_ContinouslyUpdateSlider());
     		   	
     		    	//drive towards the target, hang the gear, and back up
-    		    	addSequential(new DriveForward(30));
-    		    	addSequential(new DriveForward(55, .2, .3));
+    		    	addSequential(new DriveForward(20));
+    		    	addSequential(new DriveForward(55, .2, .3, true));
     		    	addSequential(new SetGearDoor(doorRelease));
     		    	addSequential(new DriveBackwards(38));
     		   	
@@ -169,8 +173,8 @@ public class Auto_Master extends CommandGroup {
     			if(Robot.crossLine){
     				addParallel(new Auto_ContinouslyUpdateSlider());
     				//hang gear
-    		    	addSequential(new DriveForward(50));
-    		    	addSequential(new DriveForward(32, .3, .4));
+    		    	addSequential(new DriveForward(45));
+    		    	addSequential(new DriveForward(42, .3, .4, true));
     		    	
     		    	addSequential(new SetGearDoor(doorRelease));
     		    	
@@ -188,7 +192,7 @@ public class Auto_Master extends CommandGroup {
     				addParallel(new Auto_ContinouslyUpdateSlider());
     				//hang gear
     		    	addSequential(new DriveForward(50));
-    		    	addSequential(new DriveForward(32, .3, .4));
+    		    	addSequential(new DriveForward(32, .3, .4, true));
     		    	
     		    	addSequential(new SetGearDoor(doorRelease));
     		    	
@@ -206,7 +210,7 @@ public class Auto_Master extends CommandGroup {
         	    	
         	    	//drive towards the target, hang the gear, and back up
         	    	addSequential(new DriveForward(50));
-        	    	addSequential(new DriveForward(50, .25, .35));
+        	    	addSequential(new DriveForward(50, .25, .35, true));
         	    	addSequential(new SetGearDoor(doorRelease));
         	    	addSequential(new DriveBackwards(47));
         	    	
@@ -224,7 +228,7 @@ public class Auto_Master extends CommandGroup {
         	    	
         	    	//drive towards the target, hang the gear, and back up
         	    	addSequential(new DriveForward(50));
-        	    	addSequential(new DriveForward(50, .25, .35));
+        	    	addSequential(new DriveForward(50, .25, .35, true));
         	    	addSequential(new SetGearDoor(doorRelease));
         	    	addSequential(new DriveBackwards(47));
     			}
@@ -236,8 +240,8 @@ public class Auto_Master extends CommandGroup {
     	} else if(Robot.alliance == 4){
     		
     		//hang first gear
-    		addSequential(new DriveForward(50));
-	    	addSequential(new DriveForward(32, .3, .4));
+    		addSequential(new DriveForward(54, .9, 1));
+	    	addSequential(new DriveForward(34, .2, .3));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	
 	    	//setup for second gear
@@ -246,21 +250,20 @@ public class Auto_Master extends CommandGroup {
 	    	addSequential(new DriveTrainTurn(-90));
 	    	
 	    	//drive forward and pickup second gear
-	    	addParallel(new Auto_RunIntake(8));
-	    	addSequential(new DriveBackwards(20, -.2, -.3));
+	    	addParallel(new Auto_RunIntake(5));
+	    	addSequential(new DriveBackwards(15, -.5, -.6));
 	    	
 	    	//setup for second gear hang
-	    	addSequential(new DriveForward(10,.3,.4));
-	    	addSequential(new DriveForward(10,.1,.2));
+	    	addSequential(new DriveForward(15, .5, .6));
 	    	addSequential(new DriveTrainTurn(90));
 	    	
 	    	//hang the second gear
-	    	addSequential(new DriveForward(20));
-	    	addSequential(new DriveForward(20, .3, .4));
+	    	addSequential(new DriveForward(35, .9, 1));
+	    	addSequential(new DriveForward(10, .3, .4));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	
-	    	//back up from second gear
-	    	addSequential(new DriveBackwards(52));
+	    	//back up from second gear hanger
+	    	addSequential(new DriveBackwards(30));
     	}
     	
     	addSequential(new SetGearDoor(Value.kForward, true)); //closes the doors at the end of autonomous

@@ -14,9 +14,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class GearManip extends Command {
 	
-	public double maxSpeed = .5;
-	public double kP = .05;
-	public double angleThreshold = 10;
+	public double maxSpeed = .45;
+	public double kP = .25;
+	public double angleThreshold = 5;
+	public double speed = 1;
 	
     public GearManip() {
         // Use requires() here to declare subsystem dependencies
@@ -33,42 +34,54 @@ public class GearManip extends Command {
     // Called repeatedly when this Command is scheduled to run
     @SuppressWarnings("deprecation")
 	protected void execute() {
-   	
-    	if(Robot.sliderAutomatic == true && Robot.sliderCentralizing == false){
-    		
-    		if(Robot.gearManipulator.gearDoorSol.get() == Value.kReverse){
+   	/* Run the slider based off of vision input if sliderAutomatic is set to true,
+   	 * sliderCentralizing is set to false, and if the gear door is closed, otherwise,
+   	 * set the speed of the slider to the value from the X axis of the right stick on the
+   	 * secondary controller.
+   	 */
+    	Robot.sliderVisionError = Robot.table.getNumber("centx", 0);
+    	
+    	if(Math.abs(Robot.oi.secondaryStick.getRawAxis(4)) > 0.3){
+			Robot.sliderVisionError = Robot.sliderVisionError + (Robot.oi.secondaryStick.getRawAxis(4)*10);
+		}
+    	if(Robot.sliderAutomatic == true && Robot.sliderCentralizing == false){	
+    		if(Robot.gearManipulator.gearDoorSol.get() == Value.kForward){
+
     			if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
-            		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 40);
+            		Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 40));
             	}
             	else{
-            		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 30);
+            		Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 30));
             	}
+    			
     		} else {
     			Robot.gearManipulator.gearMotor.set(0);
     		}
     	} else {
     		
     		if(Math.abs(Robot.oi.secondaryStick.getRawAxis(4)) > .4){
-    			Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4));
+    			Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4)*speed);
     		} else {
     			Robot.gearManipulator.gearMotor.set(0);
     		}
     	}
     	
-//    	if(Robot.oi.secondaryStick.getRawAxis(4) > .5){
-//    		Robot.gearManipulator.gearManipLeft(1);
-//    	} else if(Robot.oi.secondaryStick.getRawAxis(4) < -.5){
-//    		Robot.gearManipulator.gearManipRight(1);
-//    	} else {
-//    		Robot.gearManipulator.gearManipIdle();
-//    	}
     	
-    	//if the sping button is hit, then the gear manipulator 
+    	if (Robot.oi.secondaryStick.getRawAxis(3) > .7){
+    		speed = 0.5;
+    	} else {
+    		speed = 1;
+    	}
+    	
+    	//If the spring button is hit, then the gear manipulator 
     	//stays closed or closes
     	//AUTOMATIC
     	if(!Robot.gearManipulator.springButton.get() && Robot.oi.secondaryStick.getRawButton(6)){
     		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
+    	}else if(!Robot.gearManipulator.springButton.get() && (Robot.oi.secondaryStick.getRawAxis(3) > .7)){
+    		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
     	}
+    	
     	
     	
     	

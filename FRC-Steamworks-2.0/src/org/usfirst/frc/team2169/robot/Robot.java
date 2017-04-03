@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
+/**ce
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
@@ -107,7 +107,7 @@ public class Robot extends IterativeRobot {
 		//creating an instance of the OI class
 		oi = new OI();
 		
-		sliderAutomatic = true;
+		sliderAutomatic = false;
 		isSpringButtonPressed = false;
 		sliderCentralizing = false;
 		
@@ -207,7 +207,7 @@ public class Robot extends IterativeRobot {
 		
 		Robot.isSpringButtonPressed = Robot.gearManipulator.springButtonHit();
 		
-		sliderVisionError = table.getNumber("centX", -1);
+		sliderVisionError = table.getNumber("centx", -1);
 	}
 
 	@Override
@@ -245,18 +245,28 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		
 		//any continously updated SmartDashboard data goes here
-		Robot.driveTrain.log();
+		/*Robot.driveTrain.log();
 		Robot.gearManipulator.log();
 		SmartDashboard.putDouble("ENC DIST", Robot.driveTrain.getEncDistance());
 		SmartDashboard.putBoolean("Hang Buttons:", Robot.hanger.hangButtonHit());
-		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
+		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());*/
 		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
-		SmartDashboard.putDouble("Right Enc", Robot.driveTrain.rightEnc.getDistance());
-		SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());
 		SmartDashboard.putBoolean("SliderAutomatic", sliderAutomatic);
+		/*SmartDashboard.putBoolean("SliderCentralizing", sliderCentralizing);
+		SmartDashboard.putDouble("Right Enc", Robot.driveTrain.rightEnc.getDistance());
+		SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());*/
 		
-		sliderVisionError = table.getNumber("centX", -1);
-		SmartDashboard.putDouble("bb", sliderVisionError);
+		Robot.driveTrain.imu.updateTable();
+		sliderVisionError = table.getNumber("centx", 0);
+		SmartDashboard.putDouble("centx2", sliderVisionError);
+		
+		if(Robot.oi.secondaryStick.getRawButton(6)){
+			sliderAutomatic = true;
+		} else if(Robot.oi.secondaryStick.getRawButton(6) == false){
+			sliderAutomatic = false;
+		} else {
+			
+		}
 		
 		if(Robot.oi.secondaryStick.getRawButton(1)){
 			centralizeSlider.start();
@@ -265,7 +275,8 @@ public class Robot extends IterativeRobot {
 		} else {
 		}
 		
-		SmartDashboard.putBoolean("LEFT BUTTON", Robot.gearManipulator.leftButton.get());
+		//SmartDashboard.putBoolean("LEFT BUTTON", Robot.gearManipulator.leftButton.get());
+		SmartDashboard.putDouble("hang AMP", Robot.hanger.hangMotor.getOutputCurrent());
 		
 	}
 

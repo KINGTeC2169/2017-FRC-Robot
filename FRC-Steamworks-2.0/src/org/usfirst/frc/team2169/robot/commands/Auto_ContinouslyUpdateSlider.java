@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Auto_ContinouslyUpdateSlider extends Command {
 
-	public double angleThreshold = 10;
+	public double angleThreshold = 5;
 	
     public Auto_ContinouslyUpdateSlider() {
         // Use requires() here to declare subsystem dependencies
@@ -25,16 +25,14 @@ public class Auto_ContinouslyUpdateSlider extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
-    		Robot.sliderVisionError = Robot.table.getNumber("centX", -1);
+    		Robot.sliderVisionError = Robot.table.getNumber("centx", 0);
     	
-			if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
-        		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 40);
+    		if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
+        		Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 40));
         	}
         	else{
-        		Robot.gearManipulator.gearManipBoth(-Robot.sliderVisionError / 30);
+        		Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 30));
         	}
-			
-			SmartDashboard.putDouble("Auto visionSliderError", Robot.sliderVisionError);
 		
     	
     }

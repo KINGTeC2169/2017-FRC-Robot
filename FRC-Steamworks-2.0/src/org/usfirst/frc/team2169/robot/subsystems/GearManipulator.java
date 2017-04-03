@@ -18,31 +18,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class GearManipulator extends Subsystem {
 
-	//creating an instance of the gear motor
-    public CANTalon gearMotor;
-    //manual speed of the gear manipulator
-    public double gearMotorSpeed = 1.0;
+	
+    public CANTalon gearMotor;				//Creating an instance of the gear motor	
     
-    //creating an instance of a deciding boolean
-    public boolean isSliderAutomatic;
+    public double gearMotorSpeed = 1.0;		//Manual speed of the gear manipulator
     
-    //creating an instance of the left and right
-    //button bounds on the slider
-    public DigitalInput leftButton;
-    public DigitalInput rightButton;
     
-    //creating an instance of the pressure plate 
-    //buttons on the slider
-    public DigitalInput springButton;
+    public boolean isSliderAutomatic;		//Creating an instance of a deciding boolean
     
-    //creating an instance of the gear solenoid
-    //and the human player door solenoid
-    public DoubleSolenoid playerSol;
-    public DoubleSolenoid gearDoorSol;
+    
+ 
+    public DigitalInput leftButton;			//Creating an instance of the left button on the slider
+    public DigitalInput rightButton;		//Creating an instance of the left button on the slider
+    
+    public DigitalInput springButton; 		//Creating an instance of the pressure plate buttons on the slider
+    
+    public DoubleSolenoid playerSol; 		//Creating an instance of the human player solenoid
+    public DoubleSolenoid gearDoorSol;		//Creating an instance of the gear door solenoid
     
     public GearManipulator(){
     	//creating the gear manipulator at this port
-    	gearMotor = new CANTalon(3);
+    	gearMotor = new CANTalon(4);
     	//this resets the position of the slider
     	//to 0. This should be at the center of 
     	//every match to ensure the slider can return to 
@@ -70,9 +66,9 @@ public class GearManipulator extends Subsystem {
     //AUTOMATIC
     public void automaticGearManip(){
     	if(Robot.sliderVisionError > 0){
-    		//Robot.gearManipulator.gearManipLeft(Robot.visionGearMotor);
+    		Robot.gearManipulator.gearManipLeft(Robot.sliderVisionError);
     	} else if(Robot.sliderVisionError < 0){
-    		//Robot.gearManipulator.gearManipRight(Robot.visionGearMotor);
+    		Robot.gearManipulator.gearManipRight(Robot.sliderVisionError);
     	} else {
     		Robot.gearManipulator.gearManipIdle();
     	}
@@ -83,8 +79,6 @@ public class GearManipulator extends Subsystem {
     //do not cooperate well in a match
     //MANUAL
     public void manualGearManip(){
-    	//this statement tests if the gear manipulator should move at all, 
-    	//otherwise the gear manipulator should not move at all
     	if (Robot.oi.secondaryStick.getRawAxis(4) > 0.7) {
     		gearManipRight(Robot.oi.secondaryStick.getRawAxis(4) * 0.5);
     	} else if (Robot.oi.secondaryStick.getRawAxis(4) < -0.7) {
@@ -161,7 +155,7 @@ public class GearManipulator extends Subsystem {
     	
     	//if we want a gear and are loading one in,
     	//we make sure the gear doors are closed
-    	if(playerSol.get() == Value.kForward){
+    	if(playerSol.get() == Value.kReverse){
     		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
     	}
     	
@@ -179,7 +173,7 @@ public class GearManipulator extends Subsystem {
     		gearDoorSol.set(Value.kForward);
     	}
     }
-    
+    //close door
     public void closeDoor(){
     	if(Robot.oi.secondaryStick.getRawButton(5)){
     	}

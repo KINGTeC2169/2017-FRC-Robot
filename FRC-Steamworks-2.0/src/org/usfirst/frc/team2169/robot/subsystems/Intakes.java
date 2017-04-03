@@ -16,27 +16,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Intakes extends Subsystem {
 
-	public CANTalon intakeMotor;		//creating an instance of a intake motor
-	public CANTalon topRollerMotor;		//creating an instance of a intake motor
-	public double speed = 1.0;		    //creating an instance of the intake speed
+	public CANTalon intakeMotor;				//Creating an instance of a intake motor
+	public CANTalon topRollerMotor;				//Creating an instance of a intake motor
+	public double speed = 1.0;		    		//Creating an instance of the intake speed
 	
-	//creating an instance of the intake solenoid
+	//Creating an instance of the intake solenoid
 	public DoubleSolenoid intakeSol;
 	
 	public Intakes(){
-		//creating the intake motor at this port
-		intakeMotor = new CANTalon(8);
-		topRollerMotor = new CANTalon(4);
 		
-		//creates the solenoid module at these ports
-		intakeSol = new DoubleSolenoid(0,2,5);
+		intakeMotor = new CANTalon(8); 			//Creating the intake motor at this port
+		topRollerMotor = new CANTalon(9);		//Creates the top roller motor at this port
+		intakeSol = new DoubleSolenoid(0,2,5);  //Creates the solenoid module at these ports
 	}
 	
 	//sets the motor so objects can be lodged
 	//into the robot
 	public void intakeIn(){
 		intakeMotor.set(speed);
-		topRollerMotor.set(speed);
+		topRollerMotor.set(-speed);
 	}
 	
 	//an idle function that keeps the intakes
@@ -50,7 +48,7 @@ public class Intakes extends Subsystem {
 	//out in a rare case that they could not use a gear
 	public void intakeOut(){
 		intakeMotor.set(-speed);
-		topRollerMotor.set(-speed);
+		topRollerMotor.set(speed);
 	}
 	
 	//this method sets the value of the intakes based 

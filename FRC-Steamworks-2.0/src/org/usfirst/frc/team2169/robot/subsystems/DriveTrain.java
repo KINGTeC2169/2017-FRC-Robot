@@ -19,41 +19,43 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveTrain extends Subsystem {
 
-    public CANTalon leftDrive;		//creating an instance of a drive motor
-    public CANTalon leftDrive2;		//creating an instance of a drive motor
-    public CANTalon rightDrive;		//creating an instance of a drive motor
-    public CANTalon rightDrive2;	//creating an instance of a drive motor
+    public CANTalon leftDrive;		// Creating an instance of a drive motor
+    public CANTalon leftDrive2;		// Creating an instance of a drive motor
+    public CANTalon rightDrive;		// Creating an instance of a drive motor
+    public CANTalon rightDrive2;	// Creating an instance of a drive motor
     
-    //creating an instance of the IMU Accel on the Robo-RIO MXP Port
-    public ADIS16448_IMU imu;
+    public ADIS16448_IMU imu;		// Creating an instance of the IMU Accel on the Robo-RIO MXP Port
     
-    //creating and instance of the compressor and the dog shifter that shifts the gear boxes between high and low gear
-    public Compressor compressor;
-    public DoubleSolenoid dogShift;
+    public Compressor compressor;	// Creating and instance of the compressor
+    
+    public DoubleSolenoid dogShift;	// Creating an instance of the dog shifter on the driver train
     
     //creating an instance of the two Encoders on each chain of the drive train
     public Encoder leftEnc;
     public Encoder rightEnc;
 	
 	public DriveTrain(){
-		leftDrive = new CANTalon(1);	//creating a talon at this port
-		leftDrive2 = new CANTalon(2);	//creating a talon at this port
-		rightDrive = new CANTalon(6);	//creating a talon at this port
-		rightDrive2 = new CANTalon(7);	//creating a talon at this port
+		leftDrive = new CANTalon(1);	// Setting left drive to talon at port 1
+		leftDrive2 = new CANTalon(2);	// Setting left drive to talon at port 2
+		rightDrive = new CANTalon(6);	// Setting right drive to talon at port 6
+		rightDrive2 = new CANTalon(7);	// Setting right drive to talon at port 7
 		
-		imu = new ADIS16448_IMU();	//creating the IMU (Inertial Measurement Unit) at the MXP Bus port as labeled in its class
+		imu = new ADIS16448_IMU();	// Creating the IMU (Inertial Measurement Unit) at the MXP Bus port as labeled in its class
 		
-		//creating the compressor at port 0
-		compressor = new Compressor(0);
+		compressor = new Compressor(0);	// Creating the compressor at port 0 on the PWM Module
 		
-		//creating a solenoid at these ports
 		dogShift = new DoubleSolenoid(0,0,7);
 		dogShift.set(Value.kForward);
 
 		//creating the encoders at these DIO ports
-		leftEnc = new Encoder(0,1,false);
+		leftEnc = new Encoder(0,1,true);
 		leftEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);		// (1 rev / number of ticks) * unit conversion for circumfrence
 		leftEnc.reset();
+		
+		/* Here is an example of the an initialization
+		 * and resetting of encoders. the initialization is at 0 and 1 on the DIO port.
+		 * and set distance per pulse function sets ticks per distance applied.
+		 */
 		rightEnc = new Encoder(2,3,true);
 		rightEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);	// (1 rev / number of ticks) * unit conversion  for circumfrence
 		rightEnc.reset();
@@ -68,7 +70,7 @@ public class DriveTrain extends Subsystem {
 	 * clamped between -1 to 1	
 	 */
 	public void tankDrive(double leftSide, double rightSide){
-		//flips the values of one side because the gear box is flipped 180 degrees
+		
 		leftSide = -leftSide;
 		leftDrive.set(leftSide);
 		leftDrive2.set(leftSide);
@@ -116,37 +118,13 @@ public class DriveTrain extends Subsystem {
     	return difference;
     }
     
-    public void setAlliance(int alliance){
-    	
-    	Robot.alliance = alliance;
-    	
-    }
-    
-    public void setPosition(int position){
-    	
-    	Robot.position = position;
-    	
-    }
-    
-    public void setCrossLine(boolean crossLine){
-    	
-    	Robot.crossLine = crossLine;
-    	
-    }
-    
-    public void saveAutoVariables(){
-    	Robot.savedCrossLine = Robot.crossLine;
-    	Robot.savedPosition = Robot.position;
-    	Robot.savedAlliance = Robot.alliance;
-    }
-    
     //a standard log function that outputs data about the driver train to the SmarDashboard using .putInt() .putDouble() or .putData()
 	@SuppressWarnings("deprecation")
 	public void log(){
-		SmartDashboard.putDouble("left Enc", leftEnc.getDistance());
-		SmartDashboard.putDouble("right Enc", rightEnc.getDistance());
-    	SmartDashboard.putDouble("Robot Angle Z:", imu.getAngleZ() / (720 / 180));
-    	}
+		//SmartDashboard.putDouble("left Enc", leftEnc.getDistance());
+		//SmartDashboard.putDouble("right Enc", rightEnc.getDistance());
+    	//SmartDashboard.putDouble("Robot Angle Z:", imu.getAngleZ() / (720 / 180));
+    }
 	
     public void initDefaultCommand() {}
 
