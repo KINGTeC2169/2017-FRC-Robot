@@ -64,7 +64,7 @@ public class DriveBackwards extends Command {
 	
 	public DriveBackwards(double dist, double minSpeed2,double maxSpeed2) {
 		requires(Robot.driveTrain);
-		distance = dist;
+		distance = -dist;
 		refinedDistance = false;
 		timerOn = false;
 		

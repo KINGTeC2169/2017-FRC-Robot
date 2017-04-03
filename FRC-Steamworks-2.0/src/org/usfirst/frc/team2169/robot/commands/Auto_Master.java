@@ -246,25 +246,25 @@ public class Auto_Master extends CommandGroup {
     		
     		//hang first gear
     		addSequential(new DriveForward(54, .9, 1));
-	    	addSequential(new DriveForward(34, .2, .3));
+	    	addSequential(new DriveForward(34, .2, .3, true));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	
 	    	//setup for second gear
-	    	addSequential(new DriveBackwards(40));
+	    	addSequential(new DriveBackwards(52));
 	    	addSequential(new SetGearDoor(Value.kForward, true));
 	    	addSequential(new DriveTrainTurn(-90));
 	    	
 	    	//drive forward and pickup second gear
 	    	addParallel(new Auto_RunIntake(5));
-	    	addSequential(new DriveBackwards(15, -.5, -.6));
+	    	addSequential(new DriveBackwards(40, -.5, -.6));
 	    	
 	    	//setup for second gear hang
-	    	addSequential(new DriveForward(15, .5, .6));
+	    	addSequential(new DriveForward(40, .5, .6));
 	    	addSequential(new DriveTrainTurn(90));
 	    	
 	    	//hang the second gear
-	    	addSequential(new DriveForward(35, .9, 1));
-	    	addSequential(new DriveForward(10, .3, .4));
+	    	addSequential(new DriveForward(45, .9, 1));
+	    	addSequential(new DriveForward(12, .3, .4, true));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	
 	    	//back up from second gear hanger
