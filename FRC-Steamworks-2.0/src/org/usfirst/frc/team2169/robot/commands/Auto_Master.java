@@ -28,6 +28,11 @@ public class Auto_Master extends CommandGroup {
     	if(Robot.alliance == 0)
     		return;
     	
+    	if(Robot.alliance == -1){
+    		addSequential(new Auto_SelfTest());
+    		return;
+    	}
+    	
     	//BLUE ALLIANCE
     	// Pick Alliance
     	if(Robot.alliance == 1){

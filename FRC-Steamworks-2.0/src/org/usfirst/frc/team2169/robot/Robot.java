@@ -252,9 +252,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());*/
 		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
 		SmartDashboard.putBoolean("SliderAutomatic", sliderAutomatic);
-		/*SmartDashboard.putBoolean("SliderCentralizing", sliderCentralizing);
+		/*SmartDashboard.putBoolean("SliderCentralizing", sliderCentralizing);*/
 		SmartDashboard.putDouble("Right Enc", Robot.driveTrain.rightEnc.getDistance());
-		SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());*/
+		SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());
 		
 		Robot.driveTrain.imu.updateTable();
 		sliderVisionError = table.getNumber("centx", 0);
