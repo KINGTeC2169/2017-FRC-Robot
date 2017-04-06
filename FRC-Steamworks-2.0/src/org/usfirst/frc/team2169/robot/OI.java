@@ -1,9 +1,9 @@
 package org.usfirst.frc.team2169.robot;
 
 import org.usfirst.frc.team2169.robot.commands.AnotherGearFlipCom;
+import org.usfirst.frc.team2169.robot.commands.CentralizeGearSlider;
 import org.usfirst.frc.team2169.robot.commands.HumanPlayerSolenoidFlip;
 import org.usfirst.frc.team2169.robot.commands.IntakeSolenoidFlip;
-import org.usfirst.frc.team2169.robot.commands.SetSliderAutomatic;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -33,7 +33,7 @@ public class OI {
 		JoystickButton humanPlayerShiftButton = new JoystickButton(secondaryStick, 5);	//creates and declares buttons for a specific joystick and button id
 		JoystickButton gearDoorFlipButton = new JoystickButton(secondaryStick,4);		//creates and declares buttons for a specific joystick and button id
 		//JoystickButton switchSliderLocoButton = new JoystickButton(secondaryStick,6);	//creates and declares buttons for a specific joystick and button id
-		//JoystickButton centralizeGearButton = new JoystickButton(secondaryStick,1);		
+		JoystickButton centralizeGearButton = new JoystickButton(secondaryStick,1);		
 		
 		/* runs an instance of a command until its end() function is called
 		 * when the button is pressed during teleOp
@@ -43,7 +43,7 @@ public class OI {
 		humanPlayerShiftButton.whenPressed(new HumanPlayerSolenoidFlip());	//Run the program to flip the human player solenoids if the human player button is pressed
 		gearDoorFlipButton.whenPressed(new AnotherGearFlipCom());			//Run the program to flip the gear door solenoids of the gear door button is pressed
 		//switchSliderLocoButton.whileHeld(new SetSliderAutomatic());			//Run the program to make the slider automatic while the button is held
-		
+		centralizeGearButton.whenPressed(new CentralizeGearSlider());
 	
 		
 	}

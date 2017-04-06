@@ -26,7 +26,7 @@ public class DriveForward extends Command {
 	public double maxSpeed = .7;
 	public double timer = 0;
 	public double kP = .1;
-	public double waitTime = .1;
+	public double waitTime = .5;
 	public double currentAngle;
 	public double distance;
 	public double errorDistance;
@@ -61,6 +61,8 @@ public class DriveForward extends Command {
 		leftSpeed = .6;
 		rightSpeed = .6;
 		
+		finished = false;
+		
 		Robot.driveTrain.imu.reset();
 		Robot.driveTrain.resetEncoders();
 		
@@ -80,6 +82,8 @@ public class DriveForward extends Command {
 		
 		minSpeed = minSpeed2;
 		maxSpeed = maxSpeed2;
+		
+		finished = false;
 		
 		leftSpeed = (minSpeed + maxSpeed) / 2;
 		rightSpeed = (minSpeed + maxSpeed) / 2;
@@ -103,6 +107,8 @@ public class DriveForward extends Command {
 		
 		minSpeed = minSpeed2;
 		maxSpeed = maxSpeed2;
+		
+		finished = false;
 		
 		leftSpeed = (minSpeed + maxSpeed) / 2;
 		rightSpeed = (minSpeed + maxSpeed) / 2;
@@ -138,7 +144,9 @@ public class DriveForward extends Command {
 		//the encoders are working properly, otherwise run off of just one encoder
     	if (timer + waitTime < Timer.getFPGATimestamp()) {
     		checkEnc = true;
+    		SmartDashboard.putString("WARNING", "checking");
     	}
+    	
     	if(checkEnc){
     		if(Robot.driveTrain.leftEnc.getDistance() == 0){
     			errorDistance = Math.abs((distance - Robot.driveTrain.rightEnc.getDistance()));
@@ -147,6 +155,12 @@ public class DriveForward extends Command {
     		} else {
     			errorDistance = Math.abs(distance - Robot.driveTrain.getEncDistance());
     		}
+    		
+    		/*if(Robot.driveTrain.leftEnc.getDistance() == 0 && Robot.driveTrain.rightEnc.getDistance() == 0){
+    			finished = true;
+    			Robot.autoFailed = true;
+    		}*/
+    		
     	} else {
     		errorDistance = Math.abs((distance - Robot.driveTrain.getEncDistance()));
     	}
@@ -237,7 +251,11 @@ public class DriveForward extends Command {
 	protected boolean isFinished() {
 		//if the robot reaches its distance or the switches inside of the intakes
 		//are hit, it stops the command
-		return finished || (Robot.gearManipulator.springButtonHit() && checkForSpring);
+		if(checkForSpring == false){
+			return finished;
+		} else {
+			return finished || (Robot.isSpringButtonPressed && checkForSpring);
+		}
 		
 	}
 
@@ -246,7 +264,6 @@ public class DriveForward extends Command {
 		if(Robot.gearManipulator.springButtonHit()){
 			SmartDashboard.putDouble("auto dist left", errorDistance);
 		}
-			Robot.isSpringButtonPressed = true;
 		
 		Robot.driveTrain.leftDrive.set(0);
 		Robot.driveTrain.leftDrive2.set(0);

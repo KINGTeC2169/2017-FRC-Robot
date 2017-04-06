@@ -9,6 +9,7 @@ import org.usfirst.frc.team2169.robot.commands.Hanging;
 import org.usfirst.frc.team2169.robot.commands.Intake;
 import org.usfirst.frc.team2169.robot.commands.TankDrive;
 import org.usfirst.frc.team2169.robot.commands.TankDriveSolenoidFlip;
+import org.usfirst.frc.team2169.robot.commands.TimedDriveForward;
 import org.usfirst.frc.team2169.robot.subsystems.ADIS16448_IMU;
 import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
@@ -100,6 +101,9 @@ public class Robot extends IterativeRobot {
 	public static boolean sliderAutomatic;
 	public static boolean isSpringButtonPressed;
 	
+	public static boolean autoFailed;
+	public static boolean autoRecovered;
+	
 
 	@Override
 	public void robotInit() {
@@ -134,6 +138,8 @@ public class Robot extends IterativeRobot {
 		Robot.crossLine = prefs.getBoolean("CrossLine", false);
 		Robot.timingOption = prefs.getInt("TimingThing", -1);
 		
+		autoFailed = false;
+		autoRecovered = false;
 		
 		//robot restarting setup at startup
 		Robot.driveTrain.imu.reset();
@@ -207,7 +213,17 @@ public class Robot extends IterativeRobot {
 		
 		Robot.isSpringButtonPressed = Robot.gearManipulator.springButtonHit();
 		
+		SmartDashboard.putBoolean("auto pressure plate", isSpringButtonPressed);
+		
 		sliderVisionError = table.getNumber("centx", -1);
+		
+		/*if(autoFailed && autoRecovered == false){
+			autonomousCommand.cancel();
+			autonomousCommand = new TimedDriveForward(2.5);
+			autonomousCommand.start();
+			
+			autoRecovered = true;
+		}*/
 	}
 
 	@Override

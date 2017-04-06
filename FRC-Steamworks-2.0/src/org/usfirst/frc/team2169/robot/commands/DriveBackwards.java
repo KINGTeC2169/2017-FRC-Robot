@@ -25,7 +25,7 @@ public class DriveBackwards extends Command {
 	public double maxSpeed = -.8;
 	public double timer = 0;
 	public double kP = .1;
-	public double waitTime = .4;
+	public double waitTime = .5;
 	public double currentAngle;
 	public double distance;
 	public double errorDistance;
@@ -75,6 +75,8 @@ public class DriveBackwards extends Command {
 		minSpeed = minSpeed2;
 		maxSpeed = maxSpeed2;
 		
+		finished = false;
+		
 		leftSpeed = (minSpeed + maxSpeed) / 2;
 		rightSpeed = (minSpeed + maxSpeed) / 2;
 		
@@ -116,6 +118,11 @@ public class DriveBackwards extends Command {
     		} else {
     			errorDistance = -Math.abs((distance - Robot.driveTrain.getEncDistance()));
     		}
+    		
+    		/*if(Robot.driveTrain.leftEnc.getDistance() == 0 && Robot.driveTrain.rightEnc.getDistance() == 0){
+    			finished = true;
+    			Robot.autoFailed = true;
+    		}*/
     	} else {
     		errorDistance = -Math.abs((distance - Robot.driveTrain.getEncDistance()));
     	}

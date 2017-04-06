@@ -56,7 +56,7 @@ public class DriveTrain extends Subsystem {
 		 * and resetting of encoders. the initialization is at 0 and 1 on the DIO port.
 		 * and set distance per pulse function sets ticks per distance applied.
 		 */
-		rightEnc = new Encoder(2,3,true);
+		rightEnc = new Encoder(2,3,false);
 		rightEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);	// (1 rev / number of ticks) * unit conversion  for circumfrence
 		rightEnc.reset();
 		

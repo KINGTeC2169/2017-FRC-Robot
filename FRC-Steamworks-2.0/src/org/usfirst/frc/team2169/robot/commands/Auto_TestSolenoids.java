@@ -38,7 +38,7 @@ public class Auto_TestSolenoids extends Command {
     }
     //finishes
     protected boolean isFinished() {
-        return finished;
+        return finished && Robot.gearManipulator.springButtonHit();
     }
     // End program
     protected void end() {

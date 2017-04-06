@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class CentralizeGearSlider extends Command {
 
-	public double positionTolerance = 200;
-	public double roughTolerance = 500;
+	public double positionTolerance = 500;
+	public double roughTolerance = 1000;
 	public double velocityTolerance = 250;
 	public double gearMaxSpeed = .45;
 	public double error;
@@ -21,12 +21,12 @@ public class CentralizeGearSlider extends Command {
 	private boolean finished;
 	
     public CentralizeGearSlider() {
-    	gearMaxSpeed = .45;   	
+    	gearMaxSpeed = .25;   	
     	finished = false;
     }
     // Initialize gear slider
     protected void initialize() {
-    	gearMaxSpeed = .45;
+    	gearMaxSpeed = .25;
     	finished = false;
     }
 
@@ -75,6 +75,7 @@ public class CentralizeGearSlider extends Command {
     // subsystems is scheduled to run.
     protected void interrupted() {
     	finished = false;
+    	Robot.sliderCentralizing = false;
     	Robot.gearManipulator.gearMotor.set(0);
     }
 }
