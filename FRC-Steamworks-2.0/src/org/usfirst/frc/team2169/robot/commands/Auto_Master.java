@@ -34,6 +34,79 @@ public class Auto_Master extends CommandGroup {
     	centralizer = new CentralizeGearSlider();
     	
     	//if robot does not want to move
+    	
+    	if(Robot.alliance == -2){
+    		if(Robot.position == -1){
+    			addParallel(new Auto_ContinouslyUpdateSlider());
+    			
+    			addParallel(new ReleaseIntake());
+
+        		//hang first gear
+        		addSequential(new DriveForward(50, .8, .9));
+    	    	addSequential(new DriveForward(38, .2, .3, true));
+    	    	addSequential(new SetGearDoor(doorRelease));
+    	    	
+    	    	//setup for second gear
+    	    	addSequential(centralizer);
+    	    	addSequential(new DriveBackwards(25, -.8, -.9));
+    	    	addSequential(new SetGearDoor(doorClose, true));
+    	    	addSequential(new DriveTrainTurn(46));
+    	    	
+    	    	//drive forward and pickup second gear
+    	    	addParallel(new Auto_RunIntake(5));
+    	    	addSequential(new DriveBackwards(48, -.8, -.9));
+    	    	
+    	    	//setup for second gear hang
+    	    	addSequential(new DriveForward(48, .8, .9));
+    	    	addSequential(new DriveTrainTurn(-46));
+    	    	
+    	    	//hang the second gear
+    	    	addSequential(new DriveForward(30, .3, .4, true));
+    	    	addSequential(new SetGearDoor(doorRelease));
+    	    	
+    	    	//back up from second gear hanger
+    	    	addSequential(new DriveBackwards(30));
+    		} else if(Robot.position == 1){
+    			addParallel(new Auto_ContinouslyUpdateSlider());
+    			
+    			addParallel(new ReleaseIntake());
+
+        		//hang first gear
+        		addSequential(new DriveForward(50, .8, .9));
+    	    	addSequential(new DriveForward(38, .2, .3, true));
+    	    	addSequential(new SetGearDoor(doorRelease));
+    	    	
+    	    	//setup for second gear
+    	    	addSequential(centralizer);
+    	    	addSequential(new DriveBackwards(25, -.8, -.9));
+    	    	addSequential(new SetGearDoor(doorClose, true));
+    	    	addSequential(new DriveTrainTurn(-46));
+    	    	
+    	    	//drive forward and pickup second gear
+    	    	addParallel(new Auto_RunIntake(5));
+    	    	addSequential(new DriveBackwards(48, -.8, -.9));
+    	    	
+    	    	//setup for second gear hang
+    	    	addSequential(new DriveForward(48, .8, .9));
+    	    	addSequential(new DriveTrainTurn(46));
+    	    	
+    	    	//hang the second gear
+    	    	addSequential(new DriveForward(30, .3, .4, true));
+    	    	addSequential(new SetGearDoor(doorRelease));
+    	    	
+    	    	//back up from second gear hanger
+    	    	addSequential(new DriveBackwards(30));
+    		}
+    	}
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     	if(Robot.alliance == 0)
     		return;
     	
@@ -267,8 +340,8 @@ public class Auto_Master extends CommandGroup {
 	    			addParallel(new ReleaseIntake());
 	
 	        		//hang first gear
-	        		addSequential(new DriveForward(60, .8, .9));
-	    	    	addSequential(new DriveForward(28, .2, .3, true));
+	        		addSequential(new DriveForward(50, .8, .9));
+	    	    	addSequential(new DriveForward(38, .2, .3, true));
 	    	    	addSequential(new SetGearDoor(doorRelease));
 	    	    	
 	    	    	//setup for second gear
@@ -297,8 +370,8 @@ public class Auto_Master extends CommandGroup {
 	    			addParallel(new ReleaseIntake());
 	
 	        		//hang first gear
-	        		addSequential(new DriveForward(60, .8, .9));
-	    	    	addSequential(new DriveForward(28, .2, .3, true));
+	        		addSequential(new DriveForward(50, .8, .9));
+	    	    	addSequential(new DriveForward(38, .2, .3, true));
 	    	    	addSequential(new SetGearDoor(doorRelease));
 	    	    	
 	    	    	//setup for second gear
