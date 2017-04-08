@@ -11,28 +11,37 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class CentralizeGearSlider extends Command {
 
-	public double positionTolerance = 500;
+	public double positionTolerance = 400;
 	public double roughTolerance = 1000;
 	public double velocityTolerance = 250;
 	public double gearMaxSpeed = .45;
 	public double error;
 	public double kP = .004;
+	public double center;
 	
 	private boolean finished;
 	
     public CentralizeGearSlider() {
-    	gearMaxSpeed = .25;   	
+    	gearMaxSpeed = .5;   	
     	finished = false;
+    	center = 0;
     }
+    
+    public CentralizeGearSlider(double cent) {
+    	gearMaxSpeed = .5;   	
+    	finished = false;
+    	center = cent;
+    }
+    
     // Initialize gear slider
     protected void initialize() {
-    	gearMaxSpeed = .25;
+    	gearMaxSpeed = .5;
     	finished = false;
     }
 
     protected void execute() {
     	// Central value is set to 0
-    	error = Robot.gearManipulator.gearMotor.getEncPosition();
+    	error = center - Robot.gearManipulator.gearMotor.getEncPosition();
     	
     	// Update the global variable to keep the locomotion of the slider as "centralizing"
     	Robot.sliderCentralizing = true;

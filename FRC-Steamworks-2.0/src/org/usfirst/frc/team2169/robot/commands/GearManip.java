@@ -42,7 +42,7 @@ public class GearManip extends Command {
     	Robot.sliderVisionError = Robot.table.getNumber("centx", 0);
     	
     	if(Math.abs(Robot.oi.secondaryStick.getRawAxis(4)) > 0.3){
-			Robot.sliderVisionError = Robot.sliderVisionError + (Robot.oi.secondaryStick.getRawAxis(4)*10);
+			//Robot.sliderVisionError = Robot.sliderVisionError + (Robot.oi.secondaryStick.getRawAxis(4)*10);
 		}
     	if(Robot.sliderAutomatic == true && Robot.sliderCentralizing == false){	
     		if(Robot.gearManipulator.gearDoorSol.get() == Value.kForward){

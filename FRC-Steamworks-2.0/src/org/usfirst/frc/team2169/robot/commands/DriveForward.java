@@ -34,6 +34,7 @@ public class DriveForward extends Command {
 	public double refinedTolerance = 2;
 	public double currentMotorSpeed = 0;
 	public static double meterToTickConversion = 128;
+	public double badEncTolerance = 1;
 	
 	public boolean checkForSpring;
 	//in to meters to diamter to circumfrence
@@ -148,9 +149,9 @@ public class DriveForward extends Command {
     	}
     	
     	if(checkEnc){
-    		if(Robot.driveTrain.leftEnc.getDistance() == 0){
+    		if(Robot.driveTrain.leftEnc.getDistance() < badEncTolerance){
     			errorDistance = Math.abs((distance - Robot.driveTrain.rightEnc.getDistance()));
-    		} else if(Robot.driveTrain.rightEnc.getDistance() == 0){
+    		} else if(Robot.driveTrain.rightEnc.getDistance() < badEncTolerance){
     			errorDistance = Math.abs((distance - Robot.driveTrain.leftEnc.getDistance()));
     		} else {
     			errorDistance = Math.abs(distance - Robot.driveTrain.getEncDistance());

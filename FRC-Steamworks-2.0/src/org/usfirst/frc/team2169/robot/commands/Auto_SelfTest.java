@@ -21,6 +21,7 @@ public class Auto_SelfTest extends CommandGroup {
         //test solenoids
         addSequential(new Auto_TestSolenoids(6));
         //test gyro
-        addSequential(new DriveTrainTurn(180));
+        addSequential(new DriveTrainTurn(90));
+        addSequential(new DriveTrainTurn(-90));
     }
 }

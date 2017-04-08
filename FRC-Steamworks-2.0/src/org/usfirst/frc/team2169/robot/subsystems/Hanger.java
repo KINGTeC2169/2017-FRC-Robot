@@ -5,6 +5,7 @@ import org.usfirst.frc.team2169.robot.Robot;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,7 +25,7 @@ public class Hanger extends Subsystem {
     //public DigitalInput hangButton2;
     
     public Hanger(){
-    	hangMotor = new CANTalon(10); //creating the hang motor at this port
+    	hangMotor = new CANTalon(9); //creating the hang motor at this port
     	hangButton = new DigitalInput(8); //Cerating the buttons at these DIO ports
     }
     
@@ -62,8 +63,12 @@ public class Hanger extends Subsystem {
     	//if button not pressed
     	if(Robot.oi.secondaryStick.getRawButton(8)){
     		hangMotor.set(-1);
+    		//Robot.oi.secondaryStick.setRumble(RumbleType.kLeftRumble, 1);
+    		//Robot.oi.secondaryStick.setRumble(RumbleType.kRightRumble, 1);
     	} else {
     		hangMotor.set(0);
+    		//Robot.oi.secondaryStick.setRumble(RumbleType.kLeftRumble, 0);
+    		//Robot.oi.secondaryStick.setRumble(RumbleType.kRightRumble, 0);
     	}
     }
     

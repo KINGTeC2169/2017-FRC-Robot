@@ -38,7 +38,7 @@ public class GearManipulator extends Subsystem {
     
     public GearManipulator(){
     	//creating the gear manipulator at this port
-    	gearMotor = new CANTalon(4);
+    	gearMotor = new CANTalon(3);
     	//this resets the position of the slider
     	//to 0. This should be at the center of 
     	//every match to ensure the slider can return to 
@@ -155,7 +155,7 @@ public class GearManipulator extends Subsystem {
     	
     	//if we want a gear and are loading one in,
     	//we make sure the gear doors are closed
-    	if(playerSol.get() == Value.kReverse){
+    	if(playerSol.get() == Value.kForward){
     		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
     	}
     	

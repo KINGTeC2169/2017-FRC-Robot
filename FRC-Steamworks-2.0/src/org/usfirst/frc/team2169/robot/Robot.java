@@ -92,6 +92,7 @@ public class Robot extends IterativeRobot {
 	public static boolean crossLine;
 	public static int alliance;
 	public static int position;
+	public static boolean ramming;
 	public static int timingOption;
 	
 	public static boolean savedCrossLine;
@@ -129,13 +130,14 @@ public class Robot extends IterativeRobot {
 		camera.setResolution(160, 120);
 		UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture("cam0", 0);
 		camera2.setResolution(160, 120);
-		
+
 		table = NetworkTable.getTable("SmartDashboard");
 		prefs = Preferences.getInstance();
 		
 		Robot.alliance = prefs.getInt("Alliance", -1);
 		Robot.position = prefs.getInt("Position", -2);
 		Robot.crossLine = prefs.getBoolean("CrossLine", false);
+		Robot.ramming = prefs.getBoolean("Ram", false);
 		Robot.timingOption = prefs.getInt("TimingThing", -1);
 		
 		autoFailed = false;
@@ -186,6 +188,7 @@ public class Robot extends IterativeRobot {
 		Robot.alliance = prefs.getInt("Alliance", -1);
 		Robot.position = prefs.getInt("Position", -2);
 		Robot.crossLine = prefs.getBoolean("CrossLine", false);
+		Robot.ramming = prefs.getBoolean("Ram", false);
 		Robot.timingOption = prefs.getInt("TimingThing", -1);
 		
 		//pulls the checked command on the SmartDashboard that the drivers want to use for that 
@@ -215,7 +218,7 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putBoolean("auto pressure plate", isSpringButtonPressed);
 		
-		sliderVisionError = table.getNumber("centx", -1);
+		sliderVisionError = table.getNumber("centx", 0);
 		
 		/*if(autoFailed && autoRecovered == false){
 			autonomousCommand.cancel();
@@ -268,9 +271,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());*/
 		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
 		SmartDashboard.putBoolean("SliderAutomatic", sliderAutomatic);
-		/*SmartDashboard.putBoolean("SliderCentralizing", sliderCentralizing);*/
 		SmartDashboard.putDouble("Right Enc", Robot.driveTrain.rightEnc.getDistance());
 		SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());
+		SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
+		SmartDashboard.putDouble("teleOp slider position", Robot.gearManipulator.gearMotor.getEncPosition());
 		
 		Robot.driveTrain.imu.updateTable();
 		sliderVisionError = table.getNumber("centx", 0);
@@ -291,9 +295,6 @@ public class Robot extends IterativeRobot {
 		} else {
 		}
 		
-		//SmartDashboard.putBoolean("LEFT BUTTON", Robot.gearManipulator.leftButton.get());
-		SmartDashboard.putDouble("hang AMP", Robot.hanger.hangMotor.getOutputCurrent());
-		
 	}
 
 	/**
@@ -302,5 +303,16 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+	}
+	
+	public void DriverOutputs(){
+		SmartDashboard.putBoolean("GearSolenoid", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
+	}
+	
+	public void Debug(){
+		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
+		SmartDashboard.putDouble("Right Enc", Robot.driveTrain.rightEnc.getDistance());
+		SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());
+		SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
 	}
 }

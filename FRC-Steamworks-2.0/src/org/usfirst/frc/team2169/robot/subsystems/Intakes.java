@@ -26,7 +26,7 @@ public class Intakes extends Subsystem {
 	public Intakes(){
 		
 		intakeMotor = new CANTalon(8); 			//Creating the intake motor at this port
-		topRollerMotor = new CANTalon(9);		//Creates the top roller motor at this port
+		topRollerMotor = new CANTalon(4);		//Creates the top roller motor at this port
 		intakeSol = new DoubleSolenoid(0,2,5);  //Creates the solenoid module at these ports
 	}
 	
@@ -34,7 +34,7 @@ public class Intakes extends Subsystem {
 	//into the robot
 	public void intakeIn(){
 		intakeMotor.set(speed);
-		topRollerMotor.set(-speed);
+		topRollerMotor.set(speed);
 	}
 	
 	//an idle function that keeps the intakes
@@ -48,7 +48,7 @@ public class Intakes extends Subsystem {
 	//out in a rare case that they could not use a gear
 	public void intakeOut(){
 		intakeMotor.set(-speed);
-		topRollerMotor.set(speed);
+		topRollerMotor.set(-speed);
 	}
 	
 	//this method sets the value of the intakes based 

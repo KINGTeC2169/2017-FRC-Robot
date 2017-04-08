@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2169.robot.commands;
 
 import org.usfirst.frc.team2169.robot.Robot;
-import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
@@ -9,11 +8,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class TankDriveSolenoidFlip extends Command {
+public class ReleaseIntake extends Command {
 
+	public Value val = Value.kReverse;
 	
-	
-    public TankDriveSolenoidFlip() {
+    public ReleaseIntake() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -24,26 +23,12 @@ public class TankDriveSolenoidFlip extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Robot.oi.rightStick.getRawButton(2)){
-    		Robot.driveTrain.dogShift.set(Value.kReverse);
-    	}
-    	else if (Robot.oi.rightStick.getRawButton(3)){
-    		Robot.driveTrain.dogShift.set(Value.kForward);
-    	}
-    	
-    	if (Robot.oi.leftStick.getRawButton(2)){
-    		Robot.driveTrain.dogShift.set(Value.kReverse);
-    	}
-    	else if (Robot.oi.leftStick.getRawButton(3)){
-    		Robot.driveTrain.dogShift.set(Value.kForward);
-    	}
+    	Robot.intakes.intakeSol.set(val);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	//returns true right away because it is only flipping the 
-    	//pistons once
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

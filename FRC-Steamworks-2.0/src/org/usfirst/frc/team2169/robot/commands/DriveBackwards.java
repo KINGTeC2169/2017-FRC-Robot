@@ -35,6 +35,7 @@ public class DriveBackwards extends Command {
 	public static double meterToTickConversion = 128;
 	//in to meters to diamter to circumfrence
 	public static double wheelCircumfrence = 4 * .0254 * 2 * Math.PI;
+	public double badEncTolerance = 1;
 	
 	public double actualTickDistance;
 	
@@ -111,9 +112,9 @@ public class DriveBackwards extends Command {
     		checkEnc = true;
     	}
     	if(checkEnc){
-    		if(Robot.driveTrain.leftEnc.getDistance() == 0){
+    		if(Robot.driveTrain.leftEnc.getDistance() < badEncTolerance){
     			errorDistance = -Math.abs((distance - Robot.driveTrain.rightEnc.getDistance()));
-    		} else if(Robot.driveTrain.rightEnc.getDistance() == 0){
+    		} else if(Robot.driveTrain.rightEnc.getDistance() < badEncTolerance){
     			errorDistance = -Math.abs((distance - Robot.driveTrain.leftEnc.getDistance()));
     		} else {
     			errorDistance = -Math.abs((distance - Robot.driveTrain.getEncDistance()));

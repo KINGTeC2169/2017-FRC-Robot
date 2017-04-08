@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Auto_ContinouslyUpdateSlider extends Command {
 
-	public double fullThreshold = 28;
+	public double fullThreshold = 35;
 	public double angleThreshold = 10;
 	
     public Auto_ContinouslyUpdateSlider() {
@@ -40,6 +40,10 @@ public class Auto_ContinouslyUpdateSlider extends Command {
     		}
 		
     		SmartDashboard.putDouble("centx auto", Robot.sliderVisionError);
+    		
+    		if(Robot.sliderVisionError > fullThreshold){
+    			SmartDashboard.putString("Error", "SLIDER OUT OF RANGE OF TARGET");
+    		}
     	
     }
 
