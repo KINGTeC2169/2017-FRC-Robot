@@ -126,10 +126,15 @@ public class Robot extends IterativeRobot {
 		centralizeSlider = new CentralizeGearSlider();
 
 		
-		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture("cam1", 1);
-		camera.setResolution(160, 120);
-		UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture("cam0", 0);
-		camera2.setResolution(160, 120);
+		try{
+			//UsbCamera camera = CameraServer.getInstance().startAutomaticCapture("cam1", 1);
+			//camera.setResolution(160, 120);
+			
+			UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture("cam0", 0);
+			camera2.setResolution(160, 120);
+		} catch(Exception e){
+			SmartDashboard.putString("CAMERA ERROR", e.getMessage());
+		}
 
 		table = NetworkTable.getTable("SmartDashboard");
 		prefs = Preferences.getInstance();

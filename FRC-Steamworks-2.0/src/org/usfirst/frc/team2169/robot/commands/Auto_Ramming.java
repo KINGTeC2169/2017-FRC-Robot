@@ -26,7 +26,7 @@ public class Auto_Ramming extends CommandGroup {
         while(Robot.isSpringButtonPressed == false){
         	//number of iterations for slider math
         	count++;
-        	sliderIterationChange = 1000;
+        	sliderIterationChange = 1500;
         	
         	//calculate alternating slider change
         	//Ex. if sliderIterationChange = 200
