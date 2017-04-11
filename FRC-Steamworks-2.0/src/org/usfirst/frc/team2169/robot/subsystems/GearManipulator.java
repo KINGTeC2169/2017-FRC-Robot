@@ -23,10 +23,7 @@ public class GearManipulator extends Subsystem {
     
     public double gearMotorSpeed = 1.0;		//Manual speed of the gear manipulator
     
-    
     public boolean isSliderAutomatic;		//Creating an instance of a deciding boolean
-    
-    
  
     public DigitalInput leftButton;			//Creating an instance of the left button on the slider
     public DigitalInput rightButton;		//Creating an instance of the left button on the slider
@@ -173,12 +170,6 @@ public class GearManipulator extends Subsystem {
     		gearDoorSol.set(Value.kForward);
     	}
     }
-    //close door
-    public void closeDoor(){
-    	if(Robot.oi.secondaryStick.getRawButton(5)){
-    	}
-    	//gearDoorSol.set(Value.kReverse);
-    }
     
     //checks if any of the buttons on the slider
     //are pressed, if any are pressed, then return true
@@ -196,8 +187,7 @@ public class GearManipulator extends Subsystem {
     	SmartDashboard.putBoolean("Spring Button", springButtonHit());
     	SmartDashboard.putBoolean("Left Slider Button", leftButton.get());
     	SmartDashboard.putBoolean("Right Slider Button", rightButton.get());
-    	SmartDashboard.putDouble("Slider Enc Velocity", gearMotor.getEncVelocity());
-    	//SmartDashboard.putDouble("Right Stick", Robot.oi.secondaryStick.getRawAxis(4));
+    	SmartDashboard.putNumber("Slider Enc Velocity", gearMotor.getEncVelocity());
     }
 
     public void initDefaultCommand() {}

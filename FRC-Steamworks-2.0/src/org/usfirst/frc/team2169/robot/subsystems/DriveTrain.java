@@ -1,16 +1,12 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
-import org.usfirst.frc.team2169.robot.Robot;
-
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	This is the DriveTrain subsystem that will control of all the

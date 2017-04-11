@@ -9,13 +9,11 @@ import org.usfirst.frc.team2169.robot.commands.Hanging;
 import org.usfirst.frc.team2169.robot.commands.Intake;
 import org.usfirst.frc.team2169.robot.commands.TankDrive;
 import org.usfirst.frc.team2169.robot.commands.TankDriveSolenoidFlip;
-import org.usfirst.frc.team2169.robot.commands.TimedDriveForward;
 import org.usfirst.frc.team2169.robot.subsystems.ADIS16448_IMU;
 import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
 import org.usfirst.frc.team2169.robot.subsystems.Intakes;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -28,7 +26,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**ce
+/**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
@@ -37,8 +35,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	//defining the imu so log values can be pushed later on
+	//creating an instance of the IMU accelerometers
 	public ADIS16448_IMU imu;
+	
 	//creating an instance of the gearManipulator
 	public static final GearManipulator gearManipulator = new GearManipulator();
 	
@@ -56,15 +55,6 @@ public class Robot extends IterativeRobot {
 	
 	//creating an instance of the OI
 	public static OI oi;
-
-	//vision setup variables
-	public static NetworkTable table;
-	public static double sliderVisionError;
-	
-	//standard spring length in m to calculate the offset distance from the edge of the spring to the reflective tape
-	public static double springLength = .035255;
-	
-	public static boolean sliderCentralizing;
 	
 	//creating an instance of each command that runs continuously in teleOp
 	public Command tankDriveCom;
@@ -78,29 +68,23 @@ public class Robot extends IterativeRobot {
 	public Command autonomousCommand3;
 	public Command driveTrainShift;
 	public Command centralizeSlider;
-	public static boolean centralize;
-	//public Command visionCommand;
 	
-	//creating an instance of the sendable object that displays the commands to the SmartDashboard in a match
-	public SendableChooser<Command> chooser = new SendableChooser<>();
-	public SendableChooser<Command> allianceChooser;	// = new SendableChooser<>();
-	public SendableChooser<Command> positionChooser;	// = new SendableChooser<>();
-	public SendableChooser<Command> lineCrossChooser;	//= new SendableChooser<>();
+	//vision setup variables
+	public static NetworkTable table;
+	
+	public static double sliderVisionError;
+	public static boolean centralize;
 	
 	public Preferences prefs;
+	public SendableChooser allianceChooser;
 	
-	public static boolean crossLine;
+	public static boolean ramming;
 	public static int alliance;
 	public static int position;
-	public static boolean ramming;
-	public static int timingOption;
-	
-	public static boolean savedCrossLine;
-	public static int savedAlliance;
-	public static int savedPosition;
-	
-	public static boolean sliderAutomatic;
+
 	public static boolean isSpringButtonPressed;
+	public static boolean sliderCentralizing;
+	public static boolean sliderAutomatic;
 	
 	public static boolean autoFailed;
 	public static boolean autoRecovered;
@@ -124,7 +108,6 @@ public class Robot extends IterativeRobot {
 		tankDriveSol = new TankDriveSolenoidFlip();
 		driveTrainShift = new TankDriveSolenoidFlip();
 		centralizeSlider = new CentralizeGearSlider();
-
 		
 		try{
 			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture("cam1", 1);
@@ -141,9 +124,7 @@ public class Robot extends IterativeRobot {
 		
 		Robot.alliance = prefs.getInt("Alliance", -1);
 		Robot.position = prefs.getInt("Position", -2);
-		Robot.crossLine = prefs.getBoolean("CrossLine", false);
 		Robot.ramming = prefs.getBoolean("Ram", false);
-		Robot.timingOption = prefs.getInt("TimingThing", -1);
 		
 		autoFailed = false;
 		autoRecovered = false;
@@ -151,7 +132,7 @@ public class Robot extends IterativeRobot {
 		//robot restarting setup at startup
 		Robot.driveTrain.imu.reset();
 		Robot.driveTrain.resetEncoders();
-		//Robot.driveTrain.startCompressor();
+		Robot.driveTrain.startCompressor();
 		
 	}
 
@@ -192,21 +173,10 @@ public class Robot extends IterativeRobot {
 		
 		Robot.alliance = prefs.getInt("Alliance", -1);
 		Robot.position = prefs.getInt("Position", -2);
-		Robot.crossLine = prefs.getBoolean("CrossLine", false);
 		Robot.ramming = prefs.getBoolean("Ram", false);
-		Robot.timingOption = prefs.getInt("TimingThing", -1);
 		
 		//pulls the checked command on the SmartDashboard that the drivers want to use for that 
-		autonomousCommand = new Auto_Master();
-		
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
+		autonomousCommand = new Auto_Master(Robot.alliance, Robot.position);
 		
 		if (autonomousCommand != null)
 			autonomousCommand.start();
@@ -244,8 +214,6 @@ public class Robot extends IterativeRobot {
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		
-		//Robot.driveTrain.compressor.start();
-		
 		//this is the place to start all commands that run
 		//continuously through the autonomous period
 		tankDriveCom.start();
@@ -254,50 +222,37 @@ public class Robot extends IterativeRobot {
 		tankDriveSol.start();
 		intakeCom.start();
 		hangCom.start();
-		centralize = false;
 		
-		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
+		//drop the intakes
 		Robot.intakes.intakeSol.set(Value.kReverse);
 	}
 
 	/**
 	 * This function is called periodically during operator control
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		//any continously updated SmartDashboard data goes here
-		/*Robot.driveTrain.log();
-		Robot.gearManipulator.log();
-		SmartDashboard.putDouble("ENC DIST", Robot.driveTrain.getEncDistance());
-		SmartDashboard.putBoolean("Hang Buttons:", Robot.hanger.hangButtonHit());
-		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());*/
-		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
-		SmartDashboard.putBoolean("SliderAutomatic", sliderAutomatic);
-		SmartDashboard.putDouble("Right Enc", Robot.driveTrain.rightEnc.getDistance());
-		SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());
-		SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
-		SmartDashboard.putDouble("teleOp slider position", Robot.gearManipulator.gearMotor.getEncPosition());
-		
-		Robot.driveTrain.imu.updateTable();
 		sliderVisionError = table.getNumber("centx", 0);
-		SmartDashboard.putDouble("centx2", sliderVisionError);
+		SmartDashboard.putNumber("centx2", sliderVisionError);
 		
 		if(Robot.oi.secondaryStick.getRawButton(6)){
 			sliderAutomatic = true;
 		} else if(Robot.oi.secondaryStick.getRawButton(6) == false){
 			sliderAutomatic = false;
-		} else {
-			
 		}
 		
 		if(Robot.oi.secondaryStick.getRawButton(1)){
 			centralizeSlider.start();
 		} else if(Robot.oi.secondaryStick.getRawButton(1) == false) {
 			centralizeSlider.cancel();
-		} else {
+		}
+		
+		if(Robot.oi.secondaryStick.getRawButton(4)){
+			Robot.intakes.speed = .5;
+		} else if(Robot.oi.secondaryStick.getRawButton(4) == false){
+			Robot.intakes.speed = 1;
 		}
 		
 	}
@@ -311,13 +266,13 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public void DriverOutputs(){
-		SmartDashboard.putBoolean("GearSolenoid", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
+		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
 	}
 	
 	public void Debug(){
-		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
-		SmartDashboard.putDouble("Right Enc", Robot.driveTrain.rightEnc.getDistance());
-		SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());
+		SmartDashboard.putNumber("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
+		SmartDashboard.putNumber("Right Enc", Robot.driveTrain.rightEnc.getDistance());
+		SmartDashboard.putNumber("Left Enc", Robot.driveTrain.leftEnc.getDistance());
 		SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
 	}
 }

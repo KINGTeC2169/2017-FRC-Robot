@@ -41,9 +41,6 @@ public class GearManip extends Command {
    	 */
     	Robot.sliderVisionError = Robot.table.getNumber("centx", 0);
     	
-    	if(Math.abs(Robot.oi.secondaryStick.getRawAxis(4)) > 0.3){
-			//Robot.sliderVisionError = Robot.sliderVisionError + (Robot.oi.secondaryStick.getRawAxis(4)*10);
-		}
     	if(Robot.sliderAutomatic == true && Robot.sliderCentralizing == false){	
     		if(Robot.gearManipulator.gearDoorSol.get() == Value.kForward){
 
@@ -60,30 +57,19 @@ public class GearManip extends Command {
     	} else {
     		
     		if(Math.abs(Robot.oi.secondaryStick.getRawAxis(4)) > .4){
-    			Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4)*speed);
+    			Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4) * speed);
     		} else {
     			Robot.gearManipulator.gearMotor.set(0);
     		}
     	}
     	
-    	
-    	if (Robot.oi.secondaryStick.getRawAxis(3) > .7){
-    		speed = 0.5;
-    	} else {
-    		speed = 1;
-    	}
-    	
     	//If the spring button is hit, then the gear manipulator 
     	//stays closed or closes
-    	//AUTOMATIC
-    	if(!Robot.gearManipulator.springButton.get() && Robot.oi.secondaryStick.getRawButton(6)){
+    	if(Robot.gearManipulator.springButtonHit() && Robot.oi.secondaryStick.getRawButton(6)){
     		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
-    	}else if(!Robot.gearManipulator.springButton.get() && (Robot.oi.secondaryStick.getRawAxis(3) > .7)){
+    	}else if(Robot.gearManipulator.springButtonHit() && (Robot.oi.secondaryStick.getRawAxis(3) > .7)){
     		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
     	}
-    	
-    	
-    	
     	
     }
 

@@ -41,8 +41,6 @@ public class TankDriveSolenoidFlip extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	//returns true right away because it is only flipping the 
-    	//pistons once
         return false;
     }
 
