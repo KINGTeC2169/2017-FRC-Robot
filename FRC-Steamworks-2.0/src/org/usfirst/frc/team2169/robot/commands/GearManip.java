@@ -14,10 +14,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class GearManip extends Command {
 	
-	public double maxSpeed = .45;
+	public double maxSpeed = .8;
 	public double kP = .25;
 	public double angleThreshold = 5;
-	public double speed = 1;
+	public double sliderSpeed = 1;
 	
     public GearManip() {
         // Use requires() here to declare subsystem dependencies
@@ -44,7 +44,21 @@ public class GearManip extends Command {
     	if(Robot.sliderAutomatic == true && Robot.sliderCentralizing == false){	
     		if(Robot.gearManipulator.gearDoorSol.get() == Value.kForward){
 
-    			if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
+    			if(Math.abs(Robot.sliderVisionError) > angleThreshold){
+    				if(Robot.sliderVisionError > 0){
+    					Robot.gearManipulator.gearManipLeft(maxSpeed);
+    				} else {
+    					Robot.gearManipulator.gearManipRight(maxSpeed);
+    				}
+    			} else {
+    				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 40));
+    			}
+    		}
+    			
+    			
+    			
+    			
+    			/*if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
             		Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 40));
             	}
             	else{
@@ -53,11 +67,19 @@ public class GearManip extends Command {
     			
     		} else {
     			Robot.gearManipulator.gearMotor.set(0);
-    		}
+    		}*/
+    			
+    			
     	} else {
     		
+        	if (Robot.oi.secondaryStick.getRawAxis(3) > .7){
+        		sliderSpeed = 0.5;
+        	} else {
+        		sliderSpeed = 1;
+        	}
+        	
     		if(Math.abs(Robot.oi.secondaryStick.getRawAxis(4)) > .4){
-    			Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4) * speed);
+    			Robot.gearManipulator.gearManipBoth(Robot.oi.secondaryStick.getRawAxis(4) * sliderSpeed);
     		} else {
     			Robot.gearManipulator.gearMotor.set(0);
     		}

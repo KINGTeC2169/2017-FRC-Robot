@@ -35,7 +35,7 @@ public class GearManipulator extends Subsystem {
     
     public GearManipulator(){
     	//creating the gear manipulator at this port
-    	gearMotor = new CANTalon(3);
+    	gearMotor = new CANTalon(4);
     	//this resets the position of the slider
     	//to 0. This should be at the center of 
     	//every match to ensure the slider can return to 

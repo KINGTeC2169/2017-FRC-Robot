@@ -7,6 +7,8 @@ import org.usfirst.frc.team2169.robot.commands.CentralizeGearSlider;
 import org.usfirst.frc.team2169.robot.commands.GearManip;
 import org.usfirst.frc.team2169.robot.commands.Hanging;
 import org.usfirst.frc.team2169.robot.commands.Intake;
+import org.usfirst.frc.team2169.robot.commands.SetAlliance;
+import org.usfirst.frc.team2169.robot.commands.SetPosition;
 import org.usfirst.frc.team2169.robot.commands.TankDrive;
 import org.usfirst.frc.team2169.robot.commands.TankDriveSolenoidFlip;
 import org.usfirst.frc.team2169.robot.subsystems.ADIS16448_IMU;
@@ -14,6 +16,7 @@ import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
 import org.usfirst.frc.team2169.robot.subsystems.Intakes;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -76,7 +79,8 @@ public class Robot extends IterativeRobot {
 	public static boolean centralize;
 	
 	public Preferences prefs;
-	public SendableChooser allianceChooser;
+	public SendableChooser<Command> allianceChooser;
+	public SendableChooser<Command> positionChooser;
 	
 	public static boolean ramming;
 	public static int alliance;
@@ -99,6 +103,8 @@ public class Robot extends IterativeRobot {
 		sliderAutomatic = false;
 		isSpringButtonPressed = false;
 		sliderCentralizing = false;
+		autoFailed = false;
+		autoRecovered = false;
 		
 		//creating an instance of the commands shown above
 		tankDriveCom = new TankDrive();
@@ -122,12 +128,23 @@ public class Robot extends IterativeRobot {
 		table = NetworkTable.getTable("SmartDashboard");
 		prefs = Preferences.getInstance();
 		
+		allianceChooser = new SendableChooser<>();
+		positionChooser = new SendableChooser<>();
+		
+		allianceChooser.addDefault("Nothing", new SetAlliance(0));
+		allianceChooser.addObject("Self Test", new SetAlliance(-1));
+		allianceChooser.addObject("Drive Forward", new SetAlliance(3));
+		allianceChooser.addObject("Blue Alliance", new SetAlliance(1));
+		allianceChooser.addObject("Red Alliance", new SetAlliance(2));
+		allianceChooser.addObject("Two Gear", new SetAlliance(4));
+		
+		positionChooser.addDefault("Left", new SetPosition(-1));
+		positionChooser.addObject("Center", new SetPosition(0));
+		positionChooser.addObject("Right", new SetPosition(1));
+		
 		Robot.alliance = prefs.getInt("Alliance", -1);
 		Robot.position = prefs.getInt("Position", -2);
 		Robot.ramming = prefs.getBoolean("Ram", false);
-		
-		autoFailed = false;
-		autoRecovered = false;
 		
 		//robot restarting setup at startup
 		Robot.driveTrain.imu.reset();
@@ -174,6 +191,12 @@ public class Robot extends IterativeRobot {
 		Robot.alliance = prefs.getInt("Alliance", -1);
 		Robot.position = prefs.getInt("Position", -2);
 		Robot.ramming = prefs.getBoolean("Ram", false);
+		
+		if(allianceChooser.getSelected() != null)
+			allianceChooser.getSelected().start();
+		
+		if(positionChooser.getSelected() != null)
+			positionChooser.getSelected().start();
 		
 		//pulls the checked command on the SmartDashboard that the drivers want to use for that 
 		autonomousCommand = new Auto_Master(Robot.alliance, Robot.position);
