@@ -152,7 +152,7 @@ public class GearManipulator extends Subsystem {
     	
     	//if we want a gear and are loading one in,
     	//we make sure the gear doors are closed
-    	if(playerSol.get() == Value.kForward){
+    	if(playerSol.get() == Value.kReverse){
     		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
     	}
     	

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Auto_ContinouslyUpdateSlider extends Command {
 
 	public double fullThreshold = 35;
-	public double angleThreshold = 12;
+	public double angleThreshold = 6;
 	public double maxSpeed = 0.2;
 	
 	public boolean finished;
@@ -33,18 +33,14 @@ public class Auto_ContinouslyUpdateSlider extends Command {
     	
     		Robot.sliderVisionError = Robot.table.getNumber("centx", 0);
     	
-    		if(Math.abs(Robot.sliderVisionError) < fullThreshold){
-
-    			if(Math.abs(Robot.sliderVisionError) > angleThreshold){
-    				if(Robot.sliderVisionError > 0){
-    					Robot.gearManipulator.gearManipLeft(maxSpeed);
-    				} else {
-    					Robot.gearManipulator.gearManipRight(maxSpeed);
-    				}
-//    				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 30));
-    			} else {
-    				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 22));
-    			}
+    		if(Robot.autoSliderCentralizing == false){
+    			if(Math.abs(Robot.sliderVisionError) < fullThreshold){
+        			if(Math.abs(Robot.sliderVisionError) > angleThreshold){
+        				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 35));
+        			} else {
+        				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 30));
+        			}
+        		}
     		}
 		
     		SmartDashboard.putDouble("centx auto", Robot.sliderVisionError);
@@ -56,6 +52,9 @@ public class Auto_ContinouslyUpdateSlider extends Command {
 //    		if(Math.abs(Robot.sliderVisionError) < .5){
 //    			finished = true;
 //    		}
+    		
+    		if(Robot.autoSliderCentralizing == true)
+    			finished = true;
     	
     }
 

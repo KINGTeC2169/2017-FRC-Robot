@@ -15,7 +15,7 @@ public class DriveBackwards extends Command {
 	
 	public double refiningMotorSpeed = .15;
 	public double distanceTolerance = .2;
-	public double angleTolerance = .5;
+	public double angleTolerance = 1.5;
 	public double rateTolerance = 1;
 	public double motorChange = .001;
 	public double tolerance = 10;
@@ -112,9 +112,9 @@ public class DriveBackwards extends Command {
     		checkEnc = true;
     	}
     	if(checkEnc){
-    		if(Robot.driveTrain.leftEnc.getDistance() < badEncTolerance){
+    		if(Math.abs(Robot.driveTrain.leftEnc.getDistance()) < badEncTolerance){
     			errorDistance = -Math.abs((distance - Robot.driveTrain.rightEnc.getDistance()));
-    		} else if(Robot.driveTrain.rightEnc.getDistance() < badEncTolerance){
+    		} else if(Math.abs(Robot.driveTrain.rightEnc.getDistance()) < badEncTolerance){
     			errorDistance = -Math.abs((distance - Robot.driveTrain.leftEnc.getDistance()));
     		} else {
     			errorDistance = -Math.abs((distance - Robot.driveTrain.getEncDistance()));
@@ -142,6 +142,8 @@ public class DriveBackwards extends Command {
 				}
 			}
 		} 
+		
+		SmartDashboard.putDouble("Drive Backward", errorDistance);
 				
 		//clamp set speeds so they can be applied to the 
 		//motors without errors or exceptions

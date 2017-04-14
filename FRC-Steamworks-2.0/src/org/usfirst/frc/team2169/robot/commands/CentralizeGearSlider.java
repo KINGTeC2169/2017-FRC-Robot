@@ -42,6 +42,7 @@ public class CentralizeGearSlider extends Command {
     protected void execute() {
     	// Central value is set to 0
     	error = center - Robot.gearManipulator.gearMotor.getEncPosition();
+    	Robot.autoSliderCentralizing = true;
     	
     	// Update the global variable to keep the locomotion of the slider as "centralizing"
     	Robot.sliderCentralizing = true;
@@ -64,6 +65,7 @@ public class CentralizeGearSlider extends Command {
     	}
     	
     	SmartDashboard.putDouble("slider enc speed", Robot.gearManipulator.gearMotor.getEncVelocity());
+    	SmartDashboard.putDouble("slider enc pos", Robot.gearManipulator.gearMotor.getEncPosition());
     	
     	// Adjusts the position of the gear manip until it is slow enough and within tolerance to stop
     	if(error < positionTolerance && error > -positionTolerance){
@@ -78,6 +80,7 @@ public class CentralizeGearSlider extends Command {
     protected void end() {
     	Robot.sliderCentralizing = false;
     	Robot.gearManipulator.gearMotor.set(0);
+    	Robot.autoSliderCentralizing = false;
     }
 
     // Called when another command which requires one or more of the same
@@ -86,5 +89,6 @@ public class CentralizeGearSlider extends Command {
     	finished = false;
     	Robot.sliderCentralizing = false;
     	Robot.gearManipulator.gearMotor.set(0);
+    	Robot.autoSliderCentralizing = false;
     }
 }
