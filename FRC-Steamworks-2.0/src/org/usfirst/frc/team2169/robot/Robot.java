@@ -16,6 +16,7 @@ import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
 import org.usfirst.frc.team2169.robot.subsystems.Intakes;
+import org.usfirst.frc.team2169.robot.subsystems.KTMath;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -51,7 +52,7 @@ public class Robot extends IterativeRobot {
 	public static final Intakes intakes = new Intakes();
 	
 	//creating an instance of the vision
-	//public static final Vision vision = new Vision();
+	public static final KTMath ktMath = new KTMath();
 	
 	//creating an instance of the hanger
 	public static final Hanger hanger = new Hanger();
@@ -78,9 +79,8 @@ public class Robot extends IterativeRobot {
 	public static double sliderVisionError;
 	public static boolean centralize;
 	
-	public Preferences prefs;
-	public SendableChooser<Command> allianceChooser;
-	public SendableChooser<Command> positionChooser;
+	public SendableChooser<Integer> allianceChooser;
+	public SendableChooser<Integer> positionChooser;
 	
 	public static boolean ramming;
 	public static int alliance;
@@ -126,25 +126,29 @@ public class Robot extends IterativeRobot {
 		}
 
 		table = NetworkTable.getTable("SmartDashboard");
-		prefs = Preferences.getInstance();
 		
-		allianceChooser = new SendableChooser<>();
-		positionChooser = new SendableChooser<>();
+		allianceChooser = new SendableChooser<Integer>();
+		positionChooser = new SendableChooser<Integer>();
 		
-		allianceChooser.addDefault("Nothing", new SetAlliance(0));
-		allianceChooser.addObject("Self Test", new SetAlliance(-1));
-		allianceChooser.addObject("Drive Forward", new SetAlliance(3));
-		allianceChooser.addObject("Blue Alliance", new SetAlliance(1));
-		allianceChooser.addObject("Red Alliance", new SetAlliance(2));
-		allianceChooser.addObject("Two Gear", new SetAlliance(4));
+		allianceChooser.addDefault("Nothing", 0);
+		allianceChooser.addObject("Self Test", -1);
+		allianceChooser.addObject("Drive Forward", 3);
+		allianceChooser.addObject("Blue Alliance", 1);
+		allianceChooser.addObject("Red Alliance", 2);
+		allianceChooser.addObject("Two Gear", 4);
 		
-		positionChooser.addDefault("Left", new SetPosition(-1));
-		positionChooser.addObject("Center", new SetPosition(0));
-		positionChooser.addObject("Right", new SetPosition(1));
+		positionChooser.addDefault("Left", -1);
+		positionChooser.addObject("Center", 0);
+		positionChooser.addObject("Right", 1);
 		
-		Robot.alliance = prefs.getInt("Alliance", -1);
-		Robot.position = prefs.getInt("Position", -2);
-		Robot.ramming = prefs.getBoolean("Ram", false);
+		SmartDashboard.putData("Alliance Chooser", allianceChooser);
+		SmartDashboard.putData("Position Chooser", positionChooser);
+		
+		if(allianceChooser.getSelected() != null)
+			Robot.alliance = allianceChooser.getSelected().intValue();
+		
+		if(positionChooser.getSelected() != null)
+			Robot.position = positionChooser.getSelected().intValue();
 		
 		//robot restarting setup at startup
 		Robot.driveTrain.imu.reset();
@@ -188,15 +192,11 @@ public class Robot extends IterativeRobot {
 		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
 		Robot.intakes.intakeSol.set(Value.kReverse);
 		
-		Robot.alliance = prefs.getInt("Alliance", -1);
-		Robot.position = prefs.getInt("Position", -2);
-		Robot.ramming = prefs.getBoolean("Ram", false);
-		
 		if(allianceChooser.getSelected() != null)
-			allianceChooser.getSelected().start();
+			Robot.alliance = allianceChooser.getSelected().intValue();
 		
 		if(positionChooser.getSelected() != null)
-			positionChooser.getSelected().start();
+			Robot.position = positionChooser.getSelected().intValue();
 		
 		//pulls the checked command on the SmartDashboard that the drivers want to use for that 
 		autonomousCommand = new Auto_Master(Robot.alliance, Robot.position);
@@ -278,6 +278,8 @@ public class Robot extends IterativeRobot {
 			Robot.intakes.speed = 1;
 		}
 		
+		Debug();
+		
 	}
 
 	/**
@@ -296,6 +298,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
 		SmartDashboard.putNumber("Right Enc", Robot.driveTrain.rightEnc.getDistance());
 		SmartDashboard.putNumber("Left Enc", Robot.driveTrain.leftEnc.getDistance());
+		SmartDashboard.putNumber("Robot Angle", Robot.driveTrain.imu.getAngleZ() / 4);
+		SmartDashboard.putNumber("CentX Graph", Robot.sliderVisionError);
 		SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
+		
 	}
 }

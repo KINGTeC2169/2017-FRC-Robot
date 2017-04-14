@@ -12,16 +12,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Auto_ContinouslyUpdateSlider extends Command {
 
 	public double fullThreshold = 35;
-	public double angleThreshold = 10;
-	public double maxSpeed = 0.8;
+	public double angleThreshold = 12;
+	public double maxSpeed = 0.2;
+	
+	public boolean finished;
 	
     public Auto_ContinouslyUpdateSlider() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	finished = false;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	finished = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -37,22 +41,27 @@ public class Auto_ContinouslyUpdateSlider extends Command {
     				} else {
     					Robot.gearManipulator.gearManipRight(maxSpeed);
     				}
+//    				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 30));
     			} else {
-    				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 40));
+    				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 22));
     			}
     		}
 		
     		SmartDashboard.putDouble("centx auto", Robot.sliderVisionError);
     		
     		if(Robot.sliderVisionError > fullThreshold){
-    			SmartDashboard.putString("Error", "SLIDER OUT OF RANGE OF TARGET");
+    			SmartDashboard.putString("Error", "SLIDER OUT OF RANGE");
     		}
+    		
+//    		if(Math.abs(Robot.sliderVisionError) < .5){
+//    			finished = true;
+//    		}
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return finished;
     }
 
     // Called once after isFinished returns true

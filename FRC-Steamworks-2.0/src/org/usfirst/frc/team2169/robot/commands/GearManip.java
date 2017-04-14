@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class GearManip extends Command {
 	
-	public double maxSpeed = .8;
+	public double maxSpeed = .3;
 	public double kP = .25;
-	public double angleThreshold = 5;
+	public double angleThreshold = 12;
 	public double sliderSpeed = 1;
 	
     public GearManip() {
@@ -51,23 +51,9 @@ public class GearManip extends Command {
     					Robot.gearManipulator.gearManipRight(maxSpeed);
     				}
     			} else {
-    				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 40));
+    				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 35));
     			}
     		}
-    			
-    			
-    			
-    			
-    			/*if (Robot.sliderVisionError < angleThreshold && Robot.sliderVisionError > -angleThreshold ){
-            		Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 40));
-            	}
-            	else{
-            		Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 30));
-            	}
-    			
-    		} else {
-    			Robot.gearManipulator.gearMotor.set(0);
-    		}*/
     			
     			
     	} else {

@@ -49,15 +49,15 @@ public class CentralizeGearSlider extends Command {
     	// Set the speed of the motor based on the encoder position of the gear slider
     	if(error > 0){
     		if(error * gearMaxSpeed * kP >= gearMaxSpeed){
-    			Robot.gearManipulator.gearManipLeft(gearMaxSpeed);
+    			Robot.gearManipulator.gearManipRight(gearMaxSpeed);
         	} else {
-        		Robot.gearManipulator.gearManipLeft(error * gearMaxSpeed * kP);
+        		Robot.gearManipulator.gearManipRight(Math.abs(error) * gearMaxSpeed * kP);
         	}
     	} else if(error < 0 ) {
     		if(error * gearMaxSpeed * kP <= -gearMaxSpeed){
-    			Robot.gearManipulator.gearManipRight(gearMaxSpeed);
+    			Robot.gearManipulator.gearManipLeft(gearMaxSpeed);
         	} else {
-        		Robot.gearManipulator.gearManipRight(-error * gearMaxSpeed * kP);
+        		Robot.gearManipulator.gearManipLeft(Math.abs(error) * gearMaxSpeed * kP);
         	}
     	} else {
     		Robot.gearManipulator.gearManipIdle();

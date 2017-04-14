@@ -119,11 +119,6 @@ public class DriveBackwards extends Command {
     		} else {
     			errorDistance = -Math.abs((distance - Robot.driveTrain.getEncDistance()));
     		}
-    		
-    		/*if(Robot.driveTrain.leftEnc.getDistance() == 0 && Robot.driveTrain.rightEnc.getDistance() == 0){
-    			finished = true;
-    			Robot.autoFailed = true;
-    		}*/
     	} else {
     		errorDistance = -Math.abs((distance - Robot.driveTrain.getEncDistance()));
     	}
@@ -131,7 +126,6 @@ public class DriveBackwards extends Command {
 		//if the robot drives out of the angle tolerance to drive 
 		//forward, a motor speed up or cool down is applied
 		if(!(Math.abs(errorAngle) < angleTolerance)){
-			SmartDashboard.putDouble("Out of range", errorAngle);
 			//turning too far right
 			if(errorAngle < 0){
 				if(rightSpeed > maxSpeed){
@@ -149,19 +143,10 @@ public class DriveBackwards extends Command {
 			}
 		} 
 				
-				//clamp set speeds so they can be applied to the 
-				//motors without errors or exceptions
-				if(leftSpeed < minSpeed){
-					leftSpeed = minSpeed;
-				} else if(leftSpeed > maxSpeed){
-					leftSpeed = maxSpeed;
-				}
-				
-				if(rightSpeed < minSpeed){
-					rightSpeed = minSpeed;
-				} else if(rightSpeed > maxSpeed){
-					rightSpeed = maxSpeed;
-				}
+		//clamp set speeds so they can be applied to the 
+		//motors without errors or exceptions
+		leftSpeed = Robot.ktMath.clamp(leftSpeed, minSpeed, maxSpeed);
+		rightSpeed = Robot.ktMath.clamp(rightSpeed, minSpeed, maxSpeed);
 		
 		if(refinedDistance == false){
 			//Update driving speeds on both sides of the driveTrain
@@ -185,19 +170,6 @@ public class DriveBackwards extends Command {
 			if(Math.abs(errorDistance) < tolerance){
 				refinedDistance = true;
 			}
-			
-//			if(Math.abs(errorDistance) < tolerance){
-//	    		if (!timerOn) {
-//	    			timerOn = true;
-//	    			timer = Timer.getFPGATimestamp();
-//	    		}
-//	    		
-//	    		refinedDistance = true;
-//	    	} 
-//    		
-//	    	if (timerOn && timer + waitTime < Timer.getFPGATimestamp()) {
-//	    		refinedDistance = true;
-//	    	}
 		} else {
 			if(errorDistance > 0){
     			Robot.driveTrain.leftDrive.set(refiningMotorSpeed * flip);
@@ -211,15 +183,18 @@ public class DriveBackwards extends Command {
 	            Robot.driveTrain.rightDrive2.set(refiningMotorSpeed * flip);
     		}
     		
-    		if(Math.abs(errorDistance) < refinedTolerance){
+    		/*if(Math.abs(errorDistance) < refinedTolerance){
     			Robot.driveTrain.leftDrive.set(0);
     			Robot.driveTrain.rightDrive.set(0);
     			finished = true;
-    		}
+    		}*/
 		}
 		
-		SmartDashboard.putDouble("Auto enc average", errorDistance);
-		SmartDashboard.putDouble("Auto drive forward angle error", errorAngle);
+		if(Math.abs(errorDistance) < refinedTolerance){
+			Robot.driveTrain.leftDrive.set(0);
+			Robot.driveTrain.rightDrive.set(0);
+			finished = true;
+		}
 	}
 
 	@Override

@@ -18,8 +18,8 @@ public class DriveForward extends Command {
 	public double distanceTolerance = .2;
 	public double angleTolerance = .5;
 	public double rateTolerance = 1;
-	public double motorChange = .001;
 	public double tolerance = 10;
+	public double motorChange = .001;
 	public double rightSpeed = .65;
 	public double leftSpeed = .65;
 	public double minSpeed = .5;
@@ -27,22 +27,22 @@ public class DriveForward extends Command {
 	public double timer = 0;
 	public double kP = .1;
 	public double waitTime = .5;
-	public double currentAngle;
 	public double distance;
 	public double errorDistance;
 	public double errorAngle;
+	public double currentAngle;
 	public double refinedTolerance = 2;
-	public double currentMotorSpeed = 0;
-	public static double meterToTickConversion = 128;
 	public double badEncTolerance = 1;
+	public double currentMotorSpeed = 0;
+	public double incSpeedStep = .02;
 	
 	public boolean checkForSpring;
-	//in to meters to diamter to circumfrence
+	public static double meterToTickConversion = 128;
 	public static double wheelCircumfrence = 4 * .0254 * 2 * Math.PI;
-	
 	
 	public double actualTickDistance;
 	
+	public boolean incSpeed;
 	public boolean refinedDistance;
 	public boolean finished;
 	public boolean timerOn;
@@ -69,6 +69,7 @@ public class DriveForward extends Command {
 		
 		refinedDistance = false;
 		checkForSpring = false;
+		incSpeed = true;
 	}
 	
 	public DriveForward(double dist, double minSpeed2,double maxSpeed2) {
@@ -94,6 +95,7 @@ public class DriveForward extends Command {
 		
 		refinedDistance = false;
 		checkForSpring = false;
+		incSpeed = true;
 	}
 	
 	public DriveForward(double dist, double minSpeed2,double maxSpeed2, boolean checkingForPeg) {
@@ -119,6 +121,7 @@ public class DriveForward extends Command {
 		
 		refinedDistance = false;
 		checkForSpring = checkingForPeg;
+		incSpeed = true;
 	}
 
 	@Override
@@ -136,6 +139,7 @@ public class DriveForward extends Command {
 		
 		timer = Timer.getFPGATimestamp();
 		checkEnc = false;
+		incSpeed = true;
 	}
 
 	@Override
@@ -156,22 +160,34 @@ public class DriveForward extends Command {
     		} else {
     			errorDistance = Math.abs(distance - Robot.driveTrain.getEncDistance());
     		}
-    		
-    		/*if(Robot.driveTrain.leftEnc.getDistance() == 0 && Robot.driveTrain.rightEnc.getDistance() == 0){
-    			finished = true;
-    			Robot.autoFailed = true;
-    		}*/
-    		
     	} else {
     		errorDistance = Math.abs((distance - Robot.driveTrain.getEncDistance()));
     	}
 		
-		
 		errorAngle = Robot.driveTrain.getTurnAngle(currentAngle, Robot.driveTrain.imu.getAngleZ() / 4);
+		
+		if(incSpeed){
+			
+			//increase the speed applied to the motors to prevent initial jolting of robot
+			incSpeedStep += .15;
+			
+			//if the speeding up speed applied to the motors is close to what we want
+			//jump out ofthe loop
+			if(incSpeedStep > minSpeed)
+				incSpeed = false;
+			
+			//applies speed to motor
+			Robot.driveTrain.leftDrive.set(incSpeedStep);
+    		Robot.driveTrain.leftDrive2.set(incSpeedStep);
+            Robot.driveTrain.rightDrive.set(-incSpeedStep);
+            Robot.driveTrain.rightDrive2.set(-incSpeedStep);
+		}
 		
 		//if the robot drives out of the angle tolerance to drive 
 		//forward, a motor speed up or cool down is applied
 		if(!(Math.abs(errorAngle) < angleTolerance)){
+			//apply a motor change based upon how far off angle
+			motorChange = Math.abs(errorAngle) * .00025;
 			//turning too far right
 			if(errorAngle < 0){
 				if(rightSpeed < maxSpeed){
@@ -191,24 +207,14 @@ public class DriveForward extends Command {
 				
 		//clamp set speeds so they can be applied to the 
 		//motors without errors or exceptions
-		if(leftSpeed < minSpeed){
-			leftSpeed = minSpeed;
-		} else if(leftSpeed > maxSpeed){
-			leftSpeed = maxSpeed;
-		}
+		leftSpeed = Robot.ktMath.clamp(leftSpeed, minSpeed, maxSpeed);
+		rightSpeed = Robot.ktMath.clamp(rightSpeed, minSpeed, maxSpeed);
 		
-		if(rightSpeed < minSpeed){
-			rightSpeed = minSpeed;
-		} else if(rightSpeed > maxSpeed){
-			rightSpeed = maxSpeed;
-		}
-		
-		if(refinedDistance == false){
+		if(refinedDistance == false && incSpeed == false){
 			//Update driving speeds on both sides of the driveTrain
 			if (leftSpeed * kP * errorDistance * flip >= leftSpeed * flip) {
 				Robot.driveTrain.leftDrive.set(leftSpeed * flip);
 				Robot.driveTrain.leftDrive2.set(leftSpeed * flip);
-				currentMotorSpeed = leftSpeed * flip;
 			} else {
 				Robot.driveTrain.leftDrive.set(leftSpeed * kP * errorDistance * flip);
 				Robot.driveTrain.leftDrive2.set(leftSpeed * kP * errorDistance * flip);
@@ -225,7 +231,7 @@ public class DriveForward extends Command {
 			if(Math.abs(errorDistance) < tolerance){
 				refinedDistance = true;
 			}
-		} else {
+		} else if(incSpeed == false){
 			if(errorDistance > 0){
     			Robot.driveTrain.leftDrive.set(refiningMotorSpeed * flip);
 	    		Robot.driveTrain.leftDrive2.set(refiningMotorSpeed * flip);
@@ -238,14 +244,18 @@ public class DriveForward extends Command {
 	            Robot.driveTrain.rightDrive2.set(refiningMotorSpeed * flip);
     		}
     		
-    		if(Math.abs(errorDistance) < refinedTolerance){
+    		/*if(Math.abs(errorDistance) < refinedTolerance){
     			Robot.driveTrain.leftDrive.set(0);
     			Robot.driveTrain.rightDrive.set(0);
     			finished = true;
-    		}
+    		}*/
 		}
 		
-		SmartDashboard.putDouble("aut driveforward dist", errorDistance);
+		if(Math.abs(errorDistance) < refinedTolerance && Math.abs(errorAngle) < 2){
+			Robot.driveTrain.leftDrive.set(0);
+			Robot.driveTrain.rightDrive.set(0);
+			finished = true;
+		}
 	}
 
 	@Override

@@ -71,7 +71,7 @@ public class Auto_Master extends CommandGroup {
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	
 	    	//setup for second gear
-	    	addSequential(centralizer);
+	    	addParallel(centralizer);
 	    	addSequential(new DriveBackwards(25, -.8, -.9));
 	    	addSequential(new SetGearDoor(doorClose, true));
 	    	addSequential(new DriveTrainTurn(angleOffset));
@@ -80,12 +80,14 @@ public class Auto_Master extends CommandGroup {
 	    	addParallel(new Auto_RunIntake(5));
 	    	addSequential(new DriveBackwards(48, -.8, -.9));
 	    	
+	    	addParallel(new Auto_ContinouslyUpdateSlider());
+	    	
 	    	//setup for second gear hang
 	    	addSequential(new DriveForward(48, .8, .9));
-	    	addSequential(new DriveTrainTurn(-angleOffset));
+	    	addSequential(new DriveTrainTurn(-angleOffset - 8));
 	    	
 	    	//hang the second gear
-	    	addSequential(new DriveForward(30, .3, .4, true));
+	    	addSequential(new DriveForward(30, .2, .3, true));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	
 	    	//back up from second gear hanger
