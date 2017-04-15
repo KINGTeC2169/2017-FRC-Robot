@@ -16,7 +16,8 @@ public class DriveForward extends Command {
 	// What is this, AveryDog?
 	public double refiningMotorSpeed = .15;
 	public double distanceTolerance = .2;
-	public double angleTolerance = .5;
+	public double angleTolerance = .5
+			;
 	public double rateTolerance = 1;
 	public double tolerance = 10;
 	public double motorChange = .001;
@@ -153,9 +154,9 @@ public class DriveForward extends Command {
     	}
     	
     	if(checkEnc){
-    		if(Robot.driveTrain.leftEnc.getDistance() < badEncTolerance){
+    		if(Math.abs(Robot.driveTrain.leftEnc.getDistance()) < badEncTolerance){
     			errorDistance = Math.abs((distance - Robot.driveTrain.rightEnc.getDistance()));
-    		} else if(Robot.driveTrain.rightEnc.getDistance() < badEncTolerance){
+    		} else if(Math.abs(Robot.driveTrain.rightEnc.getDistance()) < badEncTolerance){
     			errorDistance = Math.abs((distance - Robot.driveTrain.leftEnc.getDistance()));
     		} else {
     			errorDistance = Math.abs(distance - Robot.driveTrain.getEncDistance());
@@ -169,7 +170,7 @@ public class DriveForward extends Command {
 		if(incSpeed){
 			
 			//increase the speed applied to the motors to prevent initial jolting of robot
-			incSpeedStep += .15;
+			incSpeedStep += .025;
 			
 			//if the speeding up speed applied to the motors is close to what we want
 			//jump out ofthe loop
@@ -187,7 +188,8 @@ public class DriveForward extends Command {
 		//forward, a motor speed up or cool down is applied
 		if(!(Math.abs(errorAngle) < angleTolerance)){
 			//apply a motor change based upon how far off angle
-			motorChange = Math.abs(errorAngle) * .00025;
+			//motorChange = Math.abs(errorAngle) * .001;
+			motorChange = .001;
 			//turning too far right
 			if(errorAngle < 0){
 				if(rightSpeed < maxSpeed){
@@ -251,11 +253,15 @@ public class DriveForward extends Command {
     		}*/
 		}
 		
-		if(Math.abs(errorDistance) < refinedTolerance && Math.abs(errorAngle) < 2){
+		if(Math.abs(errorDistance) < refinedTolerance){
 			Robot.driveTrain.leftDrive.set(0);
 			Robot.driveTrain.rightDrive.set(0);
 			finished = true;
 		}
+		
+		SmartDashboard.putNumber("Auto Left Enc", Robot.driveTrain.leftEnc.getDistance());
+		SmartDashboard.putNumber("Auto Right Enc", Robot.driveTrain.rightEnc.getDistance());
+		SmartDashboard.putNumber("Auto Enc Dist Combined", errorDistance);
 	}
 
 	@Override

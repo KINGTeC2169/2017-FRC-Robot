@@ -90,6 +90,8 @@ public class Robot extends IterativeRobot {
 	public static boolean sliderCentralizing;
 	public static boolean sliderAutomatic;
 	
+	public static boolean autoSliderCentralizing;
+	
 	public static boolean autoFailed;
 	public static boolean autoRecovered;
 	
@@ -105,6 +107,7 @@ public class Robot extends IterativeRobot {
 		sliderCentralizing = false;
 		autoFailed = false;
 		autoRecovered = false;
+		autoSliderCentralizing = false;
 		
 		//creating an instance of the commands shown above
 		tankDriveCom = new TankDrive();
@@ -192,6 +195,8 @@ public class Robot extends IterativeRobot {
 		Robot.gearManipulator.gearDoorSol.set(Value.kForward);
 		Robot.intakes.intakeSol.set(Value.kReverse);
 		
+		Robot.gearManipulator.gearMotor.setEncPosition(0);
+		
 		if(allianceChooser.getSelected() != null)
 			Robot.alliance = allianceChooser.getSelected().intValue();
 		
@@ -215,6 +220,8 @@ public class Robot extends IterativeRobot {
 		Robot.isSpringButtonPressed = Robot.gearManipulator.springButtonHit();
 		
 		SmartDashboard.putBoolean("auto pressure plate", isSpringButtonPressed);
+		SmartDashboard.putDouble("Auto Enc Pos", Robot.driveTrain.getEncDistance());
+		SmartDashboard.putBoolean("Auto autoCentralizing", Robot.autoSliderCentralizing);
 		
 		sliderVisionError = table.getNumber("centx", 0);
 		

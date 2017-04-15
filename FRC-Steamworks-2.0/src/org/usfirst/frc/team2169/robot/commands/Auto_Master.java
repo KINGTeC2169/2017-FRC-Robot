@@ -3,7 +3,6 @@ package org.usfirst.frc.team2169.robot.commands;
 import org.usfirst.frc.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -26,12 +25,8 @@ public class Auto_Master extends CommandGroup {
 	
 	public Value doorRelease = Value.kReverse;
 	public Value doorClose = Value.kForward;
-	public Command centralizer;
-	
 	
     public Auto_Master(double alliance, double position) {
-    	
-    	centralizer = new CentralizeGearSlider();
 
     	//NOTHING AUTO
     	
@@ -56,10 +51,11 @@ public class Auto_Master extends CommandGroup {
     	
     	if(alliance == 4){
     		double angleOffset;
-    		if(position == -1)
+    		if(position == -1){
     			angleOffset = 46;
-    		else
+    		} else {
     			angleOffset = -46;
+    		}
     		
     		addParallel(new Auto_ContinouslyUpdateSlider());
 			
@@ -67,11 +63,13 @@ public class Auto_Master extends CommandGroup {
 
     		//hang first gear
     		addSequential(new DriveForward(50, .8, .9));
-	    	addSequential(new DriveForward(38, .2, .3, true));
+	    	addSequential(new DriveForward(38, .3, .4, true));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	
+	    	//centralize slider
+	    	addParallel(new CentralizeGearSlider());
+	    	
 	    	//setup for second gear
-	    	addParallel(centralizer);
 	    	addSequential(new DriveBackwards(25, -.8, -.9));
 	    	addSequential(new SetGearDoor(doorClose, true));
 	    	addSequential(new DriveTrainTurn(angleOffset));
@@ -80,14 +78,20 @@ public class Auto_Master extends CommandGroup {
 	    	addParallel(new Auto_RunIntake(5));
 	    	addSequential(new DriveBackwards(48, -.8, -.9));
 	    	
-	    	addParallel(new Auto_ContinouslyUpdateSlider());
 	    	
 	    	//setup for second gear hang
 	    	addSequential(new DriveForward(48, .8, .9));
-	    	addSequential(new DriveTrainTurn(-angleOffset - 8));
+	    	addParallel(new Auto_ContinouslyUpdateSlider());
+	    	
+	    	if(position == -1){
+	    		addSequential(new DriveTrainTurn(-angleOffset - 2));
+    		} else {
+    			addSequential(new DriveTrainTurn(-angleOffset - 16));
+    		}
+	    	
 	    	
 	    	//hang the second gear
-	    	addSequential(new DriveForward(30, .2, .3, true));
+	    	addSequential(new DriveForward(35, .3, .4, true));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	
 	    	//back up from second gear hanger
@@ -96,18 +100,15 @@ public class Auto_Master extends CommandGroup {
     		return;
     	} 
     	
-    	//1 GEAR AUTOS
-    	
-    	if(Robot.ramming == false){
-    		
+    	//1 GEAR AUTO
     		//FEEDER STATION AUTOS
     		
     		if((alliance == 1 && position == 1) || (alliance == 2 && position == -1)){
     			double angleOffset;
     			if(alliance == 1 && position == 1)
-    				angleOffset = 62;
+    				angleOffset = 60;
     			else
-    				angleOffset = -62;
+    				angleOffset = -60;
     			
     			//drive forward and align with the target
     		   	addSequential(new DriveForward(72));
@@ -116,8 +117,8 @@ public class Auto_Master extends CommandGroup {
     		   	addParallel(new Auto_ContinouslyUpdateSlider());
     		  	
     		   	//drive towards the target, hang the gear, and back up
-    		   	addSequential(new DriveForward(20));
-    		   	addSequential(new DriveForward(60, .1, .2, true));
+    		   	addSequential(new DriveForward(30));
+    		   	addSequential(new DriveForward(50, .3, .4, true));
     		   	addSequential(new SetGearDoor(doorRelease));
     		   	addSequential(new DriveBackwards(38));
     		  	
@@ -140,15 +141,14 @@ public class Auto_Master extends CommandGroup {
     				angleOffset = -60;
     			
     			//drive to offset and turn towards target
-    			addSequential(new DriveForward(72));
+    			addSequential(new DriveForward(80));
         	   	addSequential(new DriveTrainTurn(angleOffset));
         	   	
         	   	//update slider
         	   	addParallel(new Auto_ContinouslyUpdateSlider());
         	   	
         	   	//drive towards the target, hang the gear, and back up
-        	   	addSequential(new DriveForward(30));
-        	   	addSequential(new DriveForward(70, .25, .35, true));
+        	   	addSequential(new DriveForward(40, .25, .35, true));
         	   	addSequential(new SetGearDoor(doorRelease));
         	   	addSequential(new DriveBackwards(47));
         	   	
@@ -168,7 +168,7 @@ public class Auto_Master extends CommandGroup {
     			addParallel(new Auto_ContinouslyUpdateSlider());
     			//hang gear
     	    	addSequential(new DriveForward(45));
-    	    	addSequential(new DriveForward(42, .1, .25, true));
+    	    	addSequential(new DriveForward(42, .3, .4, true));
     	    	
     	    	addSequential(new SetGearDoor(doorRelease));
     	    	
@@ -185,96 +185,5 @@ public class Auto_Master extends CommandGroup {
     	    	addSequential(new SetGearDoor(doorClose, true));
     			return;
     		}
-	    	
-	    //RAMMING METHOD WITH THE SAME 1 GEAR AUTOS
-	    	
-    	} else {
-    		
-    		//FEEDER STATION AUTOS
-    		
-    		if((alliance == 1 && position == 1) || (alliance == 2 && position == -1)){
-    			double angleOffset;
-    			if(alliance == 1 && position == 1)
-    				angleOffset = 62;
-    			else
-    				angleOffset = -62;
-    			
-    			//drive forward and align with the target
-    		   	addSequential(new DriveForward(72));
-    		   	addSequential(new DriveTrainTurn(-angleOffset));
-    		   	
-    		   	addParallel(new Auto_ContinouslyUpdateSlider());
-    		  	
-    		   	//drive towards the target, hang the gear, and back up
-    		   	addSequential(new DriveForward(20));
-    		   	addSequential(new Auto_Ramming(60, .1, .2));
-    		   	addSequential(new SetGearDoor(doorRelease));
-    		   	addSequential(new DriveBackwards(38));
-    		  	
-    		   	//turn away from the airship
-    		   	addSequential(new DriveTrainTurn(angleOffset));
-    		  	
-    		   	//drive across line
-    		   	addSequential(new DriveForward(200));
-    		   	addSequential(new SetGearDoor(doorClose, true));
-    			return;
-    		} 
-    		
-    		//BOILER AUTOS
-    		
-    		if((alliance == 1 && position == -1) || (alliance == 2 && position == 1)){
-    			double angleOffset;
-    			if(alliance == 1 && position == -1)
-    				angleOffset = 60;
-    			else
-    				angleOffset = -60;
-    			
-    			//drive to offset and turn towards target
-    			addSequential(new DriveForward(72));
-        	   	addSequential(new DriveTrainTurn(angleOffset));
-        	   	
-        	   	//update slider
-        	   	addParallel(new Auto_ContinouslyUpdateSlider());
-        	   	
-        	   	//drive towards the target, hang the gear, and back up
-        	   	addSequential(new DriveForward(30));
-        	   	addSequential(new Auto_Ramming(70, .25, .35));
-        	   	addSequential(new SetGearDoor(doorRelease));
-        	   	addSequential(new DriveBackwards(47));
-        	   	
-        	   	//turn away from the airship
-        	   	addSequential(new DriveTrainTurn(-angleOffset));
-        	   	
-        	   	//drive across line
-        	   	addSequential(new DriveForward(200));
-        	   	addSequential(new SetGearDoor(doorClose, true));
-    			return;
-    		}
-    		
-    		//CENTER GEAR AUTOS
-    		
-    		if((alliance == 1 && position == 0) || (alliance == 2 && position == 0)){
-    			
-    			addParallel(new Auto_ContinouslyUpdateSlider());
-    			//hang gear
-    	    	addSequential(new DriveForward(45));
-    	    	addSequential(new Auto_Ramming(42, .1, .25));
-    	    	
-    	    	addSequential(new SetGearDoor(doorRelease));
-    	    	
-    	    	//Go back from the gear hanger
-    	    	addSequential(new DriveBackwards(35));
-    	    	//turn 90
-    	    	addSequential(new DriveTrainTurn(90));
-    	    	//forward
-    	    	addSequential(new DriveForward(74));
-    	    	//turn 90
-    	    	addSequential(new DriveTrainTurn(-90));
-    	    	//forward across field
-    	    	addSequential(new DriveForward(240));
-    	    	addSequential(new SetGearDoor(doorClose, true));
-    			return;
-    		}
-    	}
    }
 }

@@ -44,7 +44,7 @@ public class DriveTrain extends Subsystem {
 		dogShift.set(Value.kForward);
 
 		//creating the encoders at these DIO ports
-		leftEnc = new Encoder(2,3,false);
+		leftEnc = new Encoder(0,1,false);
 		leftEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);		// (1 rev / number of ticks) * unit conversion for circumfrence
 		leftEnc.reset();
 		
@@ -52,7 +52,7 @@ public class DriveTrain extends Subsystem {
 		 * and resetting of encoders. the initialization is at 0 and 1 on the DIO port.
 		 * and set distance per pulse function sets ticks per distance applied.
 		 */
-		rightEnc = new Encoder(0,1,true);
+		rightEnc = new Encoder(2,3,false);
 		rightEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);	// (1 rev / number of ticks) * unit conversion  for circumfrence
 		rightEnc.reset();
 		
