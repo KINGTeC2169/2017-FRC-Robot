@@ -139,6 +139,7 @@ public class Robot extends IterativeRobot {
 		allianceChooser.addObject("Blue Alliance", 1);
 		allianceChooser.addObject("Red Alliance", 2);
 		allianceChooser.addObject("Two Gear", 4);
+		allianceChooser.addObject("Three Gear", 5);
 		
 		positionChooser.addDefault("Left", -1);
 		positionChooser.addObject("Center", 0);
