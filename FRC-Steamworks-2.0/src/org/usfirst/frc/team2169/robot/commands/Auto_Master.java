@@ -175,9 +175,8 @@ public class Auto_Master extends CommandGroup {
     			
     			//drive forward and align with the target
     		   	addSequential(new DriveForward(72));
-    		   	addSequential(new DriveTrainTurn(-angleOffset));
-    		   	
     		   	addParallel(new Auto_ContinouslyUpdateSlider());
+    		   	addSequential(new DriveTrainTurn(-angleOffset));
     		  	
     		   	//drive towards the target, hang the gear, and back up
     		   	addSequential(new DriveForward(30));
@@ -208,10 +207,9 @@ public class Auto_Master extends CommandGroup {
     			
     			//drive to offset and turn towards target
     			addSequential(new DriveForward(83));
+    			addParallel(new Auto_ContinouslyUpdateSlider());
         	   	addSequential(new DriveTrainTurn(angleOffset));
         	   	
-        	   	//update slider
-        	   	addParallel(new Auto_ContinouslyUpdateSlider());
         	   	
         	   	//drive towards the target, hang the gear, and back up
         	   	addSequential(new DriveForward(40, .25, .35, true));
