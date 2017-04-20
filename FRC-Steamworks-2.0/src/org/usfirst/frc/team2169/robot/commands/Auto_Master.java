@@ -45,60 +45,86 @@ public class Auto_Master extends CommandGroup {
     	//DRIVE FORWARD AUTO
     	
     	if(alliance == 3){
-    		addSequential(new DriveForward(100));
+    		addSequential(new DriveForward(200));
     		return;
     	} 
     	
     	//2 GEAR AUTO
     	
     	if(alliance == 4){
-    		double angleOffset;
     		if(position == -1){
-    			angleOffset = 46;
-    		} else {
-    			angleOffset = -46;
-    		}
-    		
-    		addParallel(new Auto_ContinouslyUpdateSlider());
-			
-			addParallel(new ReleaseIntake());
+    			addParallel(new Auto_ContinouslyUpdateSlider());
+    			addParallel(new ReleaseIntake());
 
-    		//hang first gear
-    		addSequential(new DriveForward(50, .9, 1));
-	    	addSequential(new DriveForward(38, .35, .45, true));
-	    	addSequential(new SetGearDoor(doorRelease));
-	    	addSequential(new TimedStop(waitTime));
-	    	
-	    	//centralize slider
-	    	addParallel(new CentralizeGearSlider());
-	    	
-	    	//setup for second gear
-	    	addSequential(new DriveBackwards(25, -.8, -.9));
-	    	addSequential(new SetGearDoor(doorClose, true));
-	    	addSequential(new DriveTrainTurn(angleOffset));
-	    	
-	    	//drive forward and pickup second gear
-	    	addParallel(new Auto_RunIntake(6));
-	    	addSequential(new DriveBackwards(48, -.9, -.95));
-	    	
-	    	if(position == -1){
-	    		addSequential(new DriveForward(43, .8, .9));
-	    		addSequential(new DriveTrainTurn(-angleOffset - 5));
+        		//hang first gear
+        		addSequential(new DriveForward(65, .9, 1));
+    	    	addSequential(new DriveForward(23, .35, .45, true));
+    	    	addSequential(new SetGearDoor(doorRelease));
+    	    	addSequential(new TimedStop(waitTime));
+    	    	
+    	    	//centralize slider
+    	    	addParallel(new CentralizeGearSlider());
+    	    	
+    	    	//setup for second gear
+    	    	addSequential(new DriveBackwards(25, -.8, -.9));
+    	    	addSequential(new SetGearDoor(doorClose, true));
+    	    	addSequential(new DriveTrainTurn(47));
+    	    	
+    	    	//drive forward and pickup second gear
+    	    	addParallel(new Auto_RunIntake(6));
+    	    	addSequential(new DriveBackwards(48, -.9, -.1));
+    	    	
+    	    	addSequential(new DriveForward(48, .9, 1));
+    	    	addSequential(new DriveTrainTurn(-47));
+        		
+    	    	
+    	    	addParallel(new Auto_ContinouslyUpdateSlider());
+    	    	
+    	    	//hang the second gear
+    	    	addSequential(new DriveForward(35, .4, .5, true));
+    	    	addSequential(new SetGearDoor(doorRelease));
+    	    	addSequential(new TimedStop(waitTime));
+    	    	
+    	    	//back up from second gear hanger
+    	    	addSequential(new DriveBackwards(30));
+    	    	addSequential(new SetGearDoor(doorClose, true));
     		} else {
-    			addSequential(new DriveForward(50, .8, .9));
-    			addSequential(new DriveTrainTurn(-angleOffset - 16));
+    			addParallel(new Auto_ContinouslyUpdateSlider());
+    			addParallel(new ReleaseIntake());
+
+        		//hang first gear
+        		addSequential(new DriveForward(65, .9, .1));
+    	    	addSequential(new DriveForward(23, .35, .45, true));
+    	    	addSequential(new SetGearDoor(doorRelease));
+    	    	addSequential(new TimedStop(waitTime));
+    	    	
+    	    	//centralize slider
+    	    	addParallel(new CentralizeGearSlider());
+    	    	
+    	    	//setup for second gear
+    	    	addSequential(new DriveBackwards(25, -.9, -1));
+    	    	addSequential(new SetGearDoor(doorClose, true));
+    	    	addSequential(new DriveTrainTurn(-47));
+    	    	
+    	    	//drive forward and pickup second gear
+    	    	addParallel(new Auto_RunIntake(6));
+    	    	addSequential(new DriveBackwards(48, -.9, -1));
+    	    	addSequential(new DriveForward(48, .8, .9));
+    	    	
+    	    	addSequential(new DriveTrainTurn(47));
+        		
+    	    	
+    	    	addParallel(new Auto_ContinouslyUpdateSlider());
+    	    	
+    	    	//hang the second gear
+    	    	addSequential(new DriveForward(35, .4, .5, true));
+    	    	addSequential(new SetGearDoor(doorRelease));
+    	    	addSequential(new TimedStop(waitTime));
+    	    	
+    	    	//back up from second gear hanger
+    	    	addSequential(new DriveBackwards(30));
+    	    	addSequential(new SetGearDoor(doorClose, true));
     		}
-	    	
-	    	addParallel(new Auto_ContinouslyUpdateSlider());
-	    	
-	    	//hang the second gear
-	    	addSequential(new DriveForward(35, .3, .4, true));
-	    	addSequential(new SetGearDoor(doorRelease));
-	    	addSequential(new TimedStop(waitTime));
-	    	
-	    	//back up from second gear hanger
-	    	addSequential(new DriveBackwards(30));
-	    	addSequential(new SetGearDoor(doorClose, true));
     		return;
     	} 
     	
@@ -111,8 +137,8 @@ public class Auto_Master extends CommandGroup {
 			addParallel(new ReleaseIntake());
 
     		//hang first gear
-    		addSequential(new DriveForward(50, .9, 1));
-	    	addSequential(new DriveForward(38, .4, .5, true));
+    		addSequential(new DriveForward(60, .9, 1));
+	    	addSequential(new DriveForward(28, .3, .4, true));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	addSequential(new TimedStop(waitTime));
 	    	
@@ -130,15 +156,18 @@ public class Auto_Master extends CommandGroup {
 	    	
 	    	
 	    	//setup for second gear hang
-	    	addSequential(new DriveForward(41, .9, 1));
+	    	addSequential(new DriveForward(48, .9, 1));
 	    	addParallel(new Auto_ContinouslyUpdateSlider());
 	    	addSequential(new DriveTrainTurn(-48));
 	    	
 	    	
 	    	//hang the second gear
-	    	addSequential(new DriveForward(35, .5, .6, true));
+	    	addSequential(new DriveForward(35, .3, .4, true));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	addSequential(new TimedStop(waitTime));
+	    	
+	    	//centralize slider
+	    	addParallel(new CentralizeGearSlider());
 	    	
 	    	//setup for second gear
 	    	addSequential(new DriveBackwards(25, -.9, -1));
@@ -151,15 +180,17 @@ public class Auto_Master extends CommandGroup {
 	    	
 	    	
 	    	//setup for second gear hang
-	    	addSequential(new DriveForward(52, .9, 1));
+	    	addSequential(new DriveForward(48, .9, 1));
 	    	addParallel(new Auto_ContinouslyUpdateSlider());
-	    	addSequential(new DriveTrainTurn(56));
+	    	addSequential(new DriveTrainTurn(48));
 	    	
 	    	
 	    	//hang the second gear
 	    	addSequential(new DriveForward(35, .5, .6, true));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	addSequential(new TimedStop(waitTime));
+	    	
+	    	addSequential(new DriveBackwards(30));
     		return;
     	} 
     	
@@ -174,12 +205,12 @@ public class Auto_Master extends CommandGroup {
     				angleOffset = -60;
     			
     			//drive forward and align with the target
-    		   	addSequential(new DriveForward(72));
-    		   	addParallel(new Auto_ContinouslyUpdateSlider());
+    		   	addSequential(new DriveForward(73, .65, .75));
     		   	addSequential(new DriveTrainTurn(-angleOffset));
-    		  	
+    		   	addParallel(new Auto_ContinouslyUpdateSlider());
+    		   	
     		   	//drive towards the target, hang the gear, and back up
-    		   	addSequential(new DriveForward(30));
+    		   	addSequential(new DriveForward(30,.65,.75));
     		   	addSequential(new DriveForward(50, .3, .4, true));
     		   	addSequential(new SetGearDoor(doorRelease));
     		   	addSequential(new TimedStop(waitTime));
@@ -206,18 +237,19 @@ public class Auto_Master extends CommandGroup {
     				angleOffset = -60;
     			
     			//drive to offset and turn towards target
-    			addSequential(new DriveForward(83));
-    			addParallel(new Auto_ContinouslyUpdateSlider());
+    			addSequential(new DriveForward(90, .7, .8));
         	   	addSequential(new DriveTrainTurn(angleOffset));
-        	   	
+        	   	addParallel(new Auto_ContinouslyUpdateSlider());
+        		addSequential(new TimedStop(.5));
         	   	
         	   	//drive towards the target, hang the gear, and back up
-        	   	addSequential(new DriveForward(40, .25, .35, true));
+        	   	addSequential(new DriveForward(40, .35, .45, true));
         	   	addSequential(new SetGearDoor(doorRelease));
         	   	addSequential(new TimedStop(waitTime));
+        	   	addParallel(new CentralizeGearSlider());
+        	   	
         	   	addSequential(new DriveBackwards(47));
         	   	
-        	   	addParallel(new CentralizeGearSlider());
         	   	
         	   	//turn away from the airship
         	   	addSequential(new DriveTrainTurn(-angleOffset));

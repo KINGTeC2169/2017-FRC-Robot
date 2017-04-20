@@ -16,7 +16,7 @@ public class GearManip extends Command {
 	
 	public double maxSpeed = .3;
 	public double kP = .25;
-	public double angleThreshold = 12;
+	public double angleThreshold = 6;
 	public double sliderSpeed = 1;
 	
     public GearManip() {
@@ -41,18 +41,10 @@ public class GearManip extends Command {
    	 */
     	Robot.sliderVisionError = Robot.table.getNumber("centx", 0);
     	
-    	if(Robot.sliderAutomatic == true && Robot.sliderCentralizing == false){	
+    	if(Robot.sliderAutomatic == true && Robot.sliderCentralizing == false && Robot.PIDvisionactive == false){	
     		if(Robot.gearManipulator.gearDoorSol.get() == Value.kForward){
 
-    			if(Math.abs(Robot.sliderVisionError) > angleThreshold){
-    				if(Robot.sliderVisionError > 0){
-    					Robot.gearManipulator.gearManipLeft(maxSpeed);
-    				} else {
-    					Robot.gearManipulator.gearManipRight(maxSpeed);
-    				}
-    			} else {
-    				Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 35));
-    			}
+    			Robot.gearManipulator.gearManipBoth((-Robot.sliderVisionError / 30));
     		}
     			
     			

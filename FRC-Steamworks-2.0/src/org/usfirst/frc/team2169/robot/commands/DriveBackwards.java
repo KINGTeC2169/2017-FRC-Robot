@@ -15,10 +15,10 @@ public class DriveBackwards extends Command {
 	
 	public double refiningMotorSpeed = .15;
 	public double distanceTolerance = .2;
-	public double angleTolerance = 1.5;
+	public double angleTolerance = .2;
 	public double rateTolerance = 1;
 	public double motorChange = .001;
-	public double tolerance = 10;
+	public double tolerance = 12;
 	public double rightSpeed = -.65;
 	public double leftSpeed = -.65;
 	public double minSpeed = -.6;
@@ -43,6 +43,9 @@ public class DriveBackwards extends Command {
 	public boolean finished;
 	public boolean timerOn;
 	public boolean checkEnc;
+	public boolean incSpeed;
+	
+	public double incSpeedStep;
 	
 	public int flip = 1;
 
@@ -61,6 +64,8 @@ public class DriveBackwards extends Command {
 		refinedDistance = false;
 		
 		finished = false;
+		incSpeed = true;
+		incSpeedStep = 0;
 	}
 	
 	public DriveBackwards(double dist, double minSpeed2,double maxSpeed2) {
@@ -85,6 +90,8 @@ public class DriveBackwards extends Command {
 		Robot.driveTrain.resetEncoders();
 		
 		refinedDistance = false;
+		incSpeed = true;
+		incSpeedStep = 0;
 	}
 
 	@Override
@@ -100,6 +107,8 @@ public class DriveBackwards extends Command {
 		
 		refinedDistance = false;
 		checkEnc = false;
+		incSpeed = true;
+		incSpeedStep = 0;
 	}
 
 	@Override
@@ -122,26 +131,67 @@ public class DriveBackwards extends Command {
     	} else {
     		errorDistance = -Math.abs((distance - Robot.driveTrain.getEncDistance()));
     	}
+    	
+    	if(incSpeed){
+			
+			//increase the speed applied to the motors to prevent initial jolting of robot
+			incSpeedStep += .020;
+			
+			//if the speeding up speed applied to the motors is close to what we want
+			//jump out ofthe loop
+			if(incSpeedStep > Math.abs(minSpeed))
+				incSpeed = false;
+			
+			//applies speed to motor
+			Robot.driveTrain.leftDrive.set(-incSpeedStep);
+    		Robot.driveTrain.leftDrive2.set(-incSpeedStep);
+            Robot.driveTrain.rightDrive.set(incSpeedStep);
+            Robot.driveTrain.rightDrive2.set(incSpeedStep);
+		} else {
+			
 		
-		//if the robot drives out of the angle tolerance to drive 
-		//forward, a motor speed up or cool down is applied
-		if(!(Math.abs(errorAngle) < angleTolerance)){
+		
+		if(Math.abs(errorAngle) < angleTolerance){
+			//apply a motor change based upon how far off angle
+			//motorChange = Math.abs(errorAngle) * .001;
 			//turning too far right
-			if(errorAngle < 0){
+			
+			double average = (leftSpeed + rightSpeed) / 2;
+			leftSpeed = average;
+			rightSpeed = average;
+			
+			if(errorAngle > 0){
 				if(rightSpeed > maxSpeed){
-					rightSpeed -= motorChange;
+					rightSpeed -= (motorChange / 3);
 				} else {
-					leftSpeed += motorChange;
+					leftSpeed += (motorChange / 3);
 				}
 			//turning too far left
-			} else if(errorAngle > 0){
+			} else if(errorAngle < 0){
 				if(leftSpeed > maxSpeed){
-					leftSpeed -= motorChange;
+					leftSpeed -= (motorChange / 3);
 				} else {
-					rightSpeed += motorChange;
+					rightSpeed += (motorChange / 3);
 				}
 			}
-		} 
+		} else {
+			if(errorAngle > 0){
+				if(rightSpeed > maxSpeed){
+					rightSpeed -= (motorChange * 2);
+				} else {
+					leftSpeed += (motorChange * 2);
+				}
+			//turning too far left
+			} else if(errorAngle < 0){
+				if(leftSpeed > maxSpeed){
+					leftSpeed -= (motorChange * 2);
+				} else {
+					rightSpeed += (motorChange * 2);
+				}
+			}
+		}
+		
+		SmartDashboard.putDouble("Auto Angle Error Backwards", errorAngle);
 		
 		SmartDashboard.putDouble("Drive Backward", errorDistance);
 				
@@ -196,6 +246,8 @@ public class DriveBackwards extends Command {
 			Robot.driveTrain.leftDrive.set(0);
 			Robot.driveTrain.rightDrive.set(0);
 			finished = true;
+		}
+		
 		}
 	}
 

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *	This is the DriveTrain subsystem that will control of all the
@@ -29,6 +30,14 @@ public class DriveTrain extends Subsystem {
     //creating an instance of the two Encoders on each chain of the drive train
     public Encoder leftEnc;
     public Encoder rightEnc;
+    
+    public double velX;
+    public double velY;
+    public double velZ;
+    
+    public double absoluteX;
+    public double absoluteY;
+    public double absoluteZ;
 	
 	public DriveTrain(){
 		leftDrive = new CANTalon(1);	// Setting left drive to talon at port 1
@@ -44,7 +53,7 @@ public class DriveTrain extends Subsystem {
 		dogShift.set(Value.kForward);
 
 		//creating the encoders at these DIO ports
-		leftEnc = new Encoder(0,1,false);
+		leftEnc = new Encoder(2,3,true);
 		leftEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);		// (1 rev / number of ticks) * unit conversion for circumfrence
 		leftEnc.reset();
 		
@@ -52,11 +61,17 @@ public class DriveTrain extends Subsystem {
 		 * and resetting of encoders. the initialization is at 0 and 1 on the DIO port.
 		 * and set distance per pulse function sets ticks per distance applied.
 		 */
-		rightEnc = new Encoder(2,3,false);
+		rightEnc = new Encoder(0,1,true);
 		rightEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);	// (1 rev / number of ticks) * unit conversion  for circumfrence
 		rightEnc.reset();
 		
-
+		velX = 0.0;
+	    velY = 0.0;
+	    velZ = 0.0;
+		
+		absoluteX = 0.0;
+		absoluteY = 0.0;
+		absoluteZ = 0.0;
 		
 	
 	}
@@ -122,6 +137,35 @@ public class DriveTrain extends Subsystem {
     	//SmartDashboard.putDouble("Robot Angle Z:", imu.getAngleZ() / (720 / 180));
     }
 	
+	public double increment = 1E-4;
+    
+    private double integrate(double a, double b, double accel){
+    	double area = 0;
+    	double modifier = 1;
+    	
+    	if(a > b){
+    		double temp = a;
+    		a = b;
+    		b = temp;
+    		modifier = -1;
+    	}
+    	
+    	return (b - a) * accel * modifier;
+    }
+    
+    public void updatePosition(){
+    	velX = integrate(0,imu.getLastSampleTime(),imu.getAccelX());
+    	velY = integrate(0,imu.getLastSampleTime(),imu.getAccelY());
+    	velZ = integrate(0,imu.getLastSampleTime(),imu.getAccelZ());
+    	
+    	absoluteX = integrate(0,imu.getLastSampleTime(), velX);
+    	absoluteY = integrate(0,imu.getLastSampleTime(), velY);
+    	absoluteZ = integrate(0,imu.getLastSampleTime(), velZ);
+    	
+    	SmartDashboard.putNumber("Absolute X", absoluteX);
+    	SmartDashboard.putNumber("Absolute Y", absoluteY);
+    	SmartDashboard.putNumber("Absolute Z", absoluteZ);
+    }
     public void initDefaultCommand() {}
 
 }

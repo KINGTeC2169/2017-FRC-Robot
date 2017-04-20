@@ -1,10 +1,10 @@
 package org.usfirst.frc.team2169.robot.commands;
 
+import org.usfirst.frc.team2169.robot.Robot;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team2169.robot.Robot;
 
 /**
  * This command drives the robot over a given distance with simple proportional
@@ -16,11 +16,11 @@ public class DriveForward extends Command {
 	// What is this, AveryDog?
 	public double refiningMotorSpeed = .15;
 	public double distanceTolerance = .2;
-	public double angleTolerance = .5
-			;
+	public double angleTolerance = .2;
+	
 	public double rateTolerance = 1;
-	public double tolerance = 10;
-	public double motorChange = .001;
+	public double tolerance = 12;
+	public double motorChange = .0018;
 	public double rightSpeed = .65;
 	public double leftSpeed = .65;
 	public double minSpeed = .5;
@@ -32,7 +32,7 @@ public class DriveForward extends Command {
 	public double errorDistance;
 	public double errorAngle;
 	public double currentAngle;
-	public double refinedTolerance = 2;
+	public double refinedTolerance = .5;
 	public double badEncTolerance = 1;
 	public double currentMotorSpeed = 0;
 	public double incSpeedStep = .02;
@@ -127,7 +127,6 @@ public class DriveForward extends Command {
 
 	@Override
 	protected void initialize() {
-		Robot.driveTrain.imu.reset();
 		Robot.driveTrain.resetEncoders();
 		
 		currentAngle = Robot.driveTrain.imu.getAngleZ() / 4;
@@ -186,26 +185,49 @@ public class DriveForward extends Command {
 		
 		//if the robot drives out of the angle tolerance to drive 
 		//forward, a motor speed up or cool down is applied
-		if(!(Math.abs(errorAngle) < angleTolerance)){
+		if(Math.abs(errorAngle) < angleTolerance){
 			//apply a motor change based upon how far off angle
 			//motorChange = Math.abs(errorAngle) * .001;
-			motorChange = .001;
 			//turning too far right
+			
+			double average = (leftSpeed + rightSpeed) / 2;
+			leftSpeed = average;
+			rightSpeed = average;
+			
 			if(errorAngle < 0){
 				if(rightSpeed < maxSpeed){
-					rightSpeed += motorChange;
+					rightSpeed += (motorChange);
 				} else {
-					leftSpeed -= motorChange;
+					leftSpeed -= (motorChange / 3);
 				}
 			//turning too far left
 			} else if(errorAngle > 0){
 				if(leftSpeed < maxSpeed){
-					leftSpeed += motorChange;
+					leftSpeed += (motorChange / 3);
 				} else {
-					rightSpeed -= motorChange;
+					rightSpeed -= (motorChange / 3);
 				}
 			}
-		} 
+		} else {
+			if(errorAngle < 0){
+				if(rightSpeed < maxSpeed){
+					rightSpeed += (motorChange * 2);
+				} else {
+					leftSpeed -= (motorChange * 2);
+				}
+			//turning too far left
+			} else if(errorAngle > 0){
+				if(leftSpeed < maxSpeed){
+					leftSpeed += (motorChange * 2);
+				} else {
+					rightSpeed -= (motorChange * 2);
+				}
+			}
+		}
+		
+		SmartDashboard.putDouble("Auto Angle Error", errorAngle);
+		SmartDashboard.putNumber("Auto Distance Error", errorDistance);
+
 				
 		//clamp set speeds so they can be applied to the 
 		//motors without errors or exceptions

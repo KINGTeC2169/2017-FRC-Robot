@@ -15,6 +15,7 @@ import org.usfirst.frc.team2169.robot.subsystems.ADIS16448_IMU;
 import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
+import org.usfirst.frc.team2169.robot.subsystems.SliderPID;
 import org.usfirst.frc.team2169.robot.subsystems.Intakes;
 import org.usfirst.frc.team2169.robot.subsystems.KTMath;
 
@@ -57,6 +58,9 @@ public class Robot extends IterativeRobot {
 	//creating an instance of the hanger
 	public static final Hanger hanger = new Hanger();
 	
+	//creating an instance of the SliderPID
+	public static final SliderPID SliderPID = new SliderPID();
+	
 	//creating an instance of the OI
 	public static OI oi;
 	
@@ -86,6 +90,7 @@ public class Robot extends IterativeRobot {
 	public static int alliance;
 	public static int position;
 
+	public static boolean PIDvisionactive;
 	public static boolean isSpringButtonPressed;
 	public static boolean sliderCentralizing;
 	public static boolean sliderAutomatic;
@@ -264,7 +269,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
+		Robot.SliderPID.setSetpoint(sliderVisionError);
 		sliderVisionError = table.getNumber("centx", 0);
 		SmartDashboard.putNumber("centx2", sliderVisionError);
 		
@@ -286,7 +291,21 @@ public class Robot extends IterativeRobot {
 			Robot.intakes.speed = 1;
 		}
 		
+		if(Robot.oi.leftStick.getRawButton(6)){
+			Robot.driveTrain.imu.calibrate();
+		}
+		
+		if(Robot.oi.secondaryStick.getRawButton(2)){
+			Robot.PIDvisionactive = true;
+			Robot.gearManipulator.gearManipBoth(-Robot.SliderPID.PIDvisionoutput);
+			Robot.SliderPID.enable();
+		} else if(Robot.oi.secondaryStick.getRawButton(2) == false){
+			Robot.PIDvisionactive = false;
+			Robot.SliderPID.disable();
+		}
+		
 		Debug();
+		//Robot.driveTrain.updatePosition();
 		
 	}
 
@@ -306,9 +325,14 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
 		SmartDashboard.putNumber("Right Enc", Robot.driveTrain.rightEnc.getDistance());
 		SmartDashboard.putNumber("Left Enc", Robot.driveTrain.leftEnc.getDistance());
-		SmartDashboard.putNumber("Robot Angle", Robot.driveTrain.imu.getAngleZ() / 4);
+		SmartDashboard.putNumber("Robot Angle", (Robot.driveTrain.imu.getAngleZ() / 4) % 360);
 		SmartDashboard.putNumber("CentX Graph", Robot.sliderVisionError);
 		SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
+		
+		
+		//visionPidcrap
+		SmartDashboard.putDouble("PID output", Robot.SliderPID.PIDvisionoutput);
+		SmartDashboard.putBoolean("PID Vision Active", Robot.PIDvisionactive);
 		
 	}
 }

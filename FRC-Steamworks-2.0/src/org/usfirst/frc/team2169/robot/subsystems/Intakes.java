@@ -34,7 +34,7 @@ public class Intakes extends Subsystem {
 	//into the robot
 	public void intakeIn(){
 		intakeMotor.set(speed);
-		topRollerMotor.set(-speed);
+		topRollerMotor.set(speed);
 	}
 	
 	//an idle function that keeps the intakes
@@ -48,7 +48,7 @@ public class Intakes extends Subsystem {
 	//out in a rare case that they could not use a gear
 	public void intakeOut(){
 		intakeMotor.set(-speed);
-		topRollerMotor.set(speed);
+		topRollerMotor.set(-speed);
 	}
 	
 	//this method sets the value of the intakes based 
