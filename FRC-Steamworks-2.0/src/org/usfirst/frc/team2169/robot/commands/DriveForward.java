@@ -19,7 +19,7 @@ public class DriveForward extends Command {
 	public double angleTolerance = .2;
 	
 	public double rateTolerance = 1;
-	public double tolerance = 12;
+	public double tolerance = 10;
 	public double motorChange = .0018;
 	public double rightSpeed = .65;
 	public double leftSpeed = .65;
@@ -169,7 +169,7 @@ public class DriveForward extends Command {
 		if(incSpeed){
 			
 			//increase the speed applied to the motors to prevent initial jolting of robot
-			incSpeedStep += .025;
+			incSpeedStep += .035;
 			
 			//if the speeding up speed applied to the motors is close to what we want
 			//jump out ofthe loop

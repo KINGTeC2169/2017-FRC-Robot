@@ -135,7 +135,7 @@ public class DriveBackwards extends Command {
     	if(incSpeed){
 			
 			//increase the speed applied to the motors to prevent initial jolting of robot
-			incSpeedStep += .020;
+			incSpeedStep += .045;
 			
 			//if the speeding up speed applied to the motors is close to what we want
 			//jump out ofthe loop

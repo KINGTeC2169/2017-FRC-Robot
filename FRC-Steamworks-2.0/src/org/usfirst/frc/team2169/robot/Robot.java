@@ -291,15 +291,11 @@ public class Robot extends IterativeRobot {
 			Robot.intakes.speed = 1;
 		}
 		
-		if(Robot.oi.leftStick.getRawButton(6)){
-			Robot.driveTrain.imu.calibrate();
-		}
-		
-		if(Robot.oi.secondaryStick.getRawButton(2)){
+		if(Robot.oi.secondaryStick.getRawButton(6)){
 			Robot.PIDvisionactive = true;
 			Robot.gearManipulator.gearManipBoth(-Robot.SliderPID.PIDvisionoutput);
 			Robot.SliderPID.enable();
-		} else if(Robot.oi.secondaryStick.getRawButton(2) == false){
+		} else if(Robot.oi.secondaryStick.getRawButton(6) == false){
 			Robot.PIDvisionactive = false;
 			Robot.SliderPID.disable();
 		}
