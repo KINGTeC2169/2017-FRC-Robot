@@ -64,8 +64,8 @@ public class CentralizeGearSlider extends Command {
     		Robot.gearManipulator.gearManipIdle();
     	}
     	
-    	SmartDashboard.putDouble("slider enc speed", Robot.gearManipulator.gearMotor.getEncVelocity());
-    	SmartDashboard.putDouble("slider enc pos", Robot.gearManipulator.gearMotor.getEncPosition());
+    	//SmartDashboard.putDouble("slider enc speed", Robot.gearManipulator.gearMotor.getEncVelocity());
+    	//SmartDashboard.putDouble("slider enc pos", Robot.gearManipulator.gearMotor.getEncPosition());
     	
     	// Adjusts the position of the gear manip until it is slow enough and within tolerance to stop
     	if(error < positionTolerance && error > -positionTolerance){

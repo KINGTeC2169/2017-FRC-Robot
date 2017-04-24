@@ -221,7 +221,7 @@ public class Robot extends IterativeRobot {
 		Robot.isSpringButtonPressed = Robot.gearManipulator.springButtonHit();
 		
 		sliderVisionError = table.getNumber("centX", -1);
-		SmartDashboard.putDouble("Auto Encoders", Robot.driveTrain.getEncDistance());
+		//SmartDashboard.putDouble("Auto Encoders", Robot.driveTrain.getEncDistance());
 	}
 
 	@Override
@@ -267,15 +267,15 @@ public class Robot extends IterativeRobot {
 		//SmartDashboard.putDouble("Robot Acceleration X:", imu.getAccelX());
 		//SmartDashboard.putDouble("Amps", Robot.hanger.hangMotor.getOutputCurrent());
 		//Robot.gearManipulator.log();
-		SmartDashboard.putBoolean("Hang Buttons:", Robot.hanger.hangButtonHit());
-		SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
+		//SmartDashboard.putBoolean("Hang Buttons:", Robot.hanger.hangButtonHit());
+		//SmartDashboard.putDouble("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
 		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
-		SmartDashboard.putDouble("Right Enc", Robot.driveTrain.rightEnc.getDistance());
-		SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());
-		SmartDashboard.putBoolean("SliderAutomatic", sliderAutomatic);
+		//SmartDashboard.putDouble("Right Enc", Robot.driveTrain.rightEnc.getDistance());
+		//SmartDashboard.putDouble("Left Enc", Robot.driveTrain.leftEnc.getDistance());
+		//SmartDashboard.putBoolean("SliderAutomatic", sliderAutomatic);
 		
 		sliderVisionError = table.getNumber("centX", -1);
-		SmartDashboard.putDouble("bb", sliderVisionError);
+		//SmartDashboard.putDouble("bb", sliderVisionError);
 		
 	}
 

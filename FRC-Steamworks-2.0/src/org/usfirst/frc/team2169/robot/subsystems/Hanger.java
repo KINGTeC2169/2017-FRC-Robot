@@ -74,10 +74,10 @@ public class Hanger extends Subsystem {
     
     @SuppressWarnings("deprecation")
 	public void log(){
-		SmartDashboard.putNumber("Aamps:", hangMotor.getOutputCurrent());
+		//SmartDashboard.putNumber("Aamps:", hangMotor.getOutputCurrent());
 		
 		//SmartDashboard.p("Volts:", hangMotor.getOutputVoltage());
-		}
+	}
     
     //a standard log function that outputs data about the hanging mechanism
     //to the SmarDashboard using .putInt() .putDouble() or .putData()

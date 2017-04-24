@@ -162,9 +162,9 @@ public class DriveTrain extends Subsystem {
     	absoluteY = integrate(0,imu.getLastSampleTime(), velY);
     	absoluteZ = integrate(0,imu.getLastSampleTime(), velZ);
     	
-    	SmartDashboard.putNumber("Absolute X", absoluteX);
-    	SmartDashboard.putNumber("Absolute Y", absoluteY);
-    	SmartDashboard.putNumber("Absolute Z", absoluteZ);
+    	//SmartDashboard.putNumber("Absolute X", absoluteX);
+    	//SmartDashboard.putNumber("Absolute Y", absoluteY);
+    	//SmartDashboard.putNumber("Absolute Z", absoluteZ);
     }
     public void initDefaultCommand() {}
 

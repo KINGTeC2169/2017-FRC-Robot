@@ -225,9 +225,9 @@ public class Robot extends IterativeRobot {
 		
 		Robot.isSpringButtonPressed = Robot.gearManipulator.springButtonHit();
 		
-		SmartDashboard.putBoolean("auto pressure plate", isSpringButtonPressed);
-		SmartDashboard.putDouble("Auto Enc Pos", Robot.driveTrain.getEncDistance());
-		SmartDashboard.putBoolean("Auto autoCentralizing", Robot.autoSliderCentralizing);
+		//SmartDashboard.putBoolean("auto pressure plate", isSpringButtonPressed);
+		//SmartDashboard.putDouble("Auto Enc Pos", Robot.driveTrain.getEncDistance());
+		//SmartDashboard.putBoolean("Auto autoCentralizing", Robot.autoSliderCentralizing);
 		
 		sliderVisionError = table.getNumber("centx", 0);
 		
@@ -271,7 +271,7 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		Robot.SliderPID.setSetpoint(sliderVisionError);
 		sliderVisionError = table.getNumber("centx", 0);
-		SmartDashboard.putNumber("centx2", sliderVisionError);
+		//SmartDashboard.putNumber("centx2", sliderVisionError);
 		
 		if(Robot.oi.secondaryStick.getRawButton(6)){
 			sliderAutomatic = true;
@@ -301,6 +301,7 @@ public class Robot extends IterativeRobot {
 		}
 		
 		Debug();
+		DriverOutputs();
 		//Robot.driveTrain.updatePosition();
 		
 	}
@@ -315,20 +316,21 @@ public class Robot extends IterativeRobot {
 	
 	public void DriverOutputs(){
 		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
+		SmartDashboard.putBoolean("Human Player", Robot.gearManipulator.playerSol.get() == Value.kReverse);
 	}
 	
 	public void Debug(){
-		SmartDashboard.putNumber("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
+		//SmartDashboard.putNumber("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
 		SmartDashboard.putNumber("Right Enc", Robot.driveTrain.rightEnc.getDistance());
 		SmartDashboard.putNumber("Left Enc", Robot.driveTrain.leftEnc.getDistance());
-		SmartDashboard.putNumber("Robot Angle", (Robot.driveTrain.imu.getAngleZ() / 4) % 360);
-		SmartDashboard.putNumber("CentX Graph", Robot.sliderVisionError);
-		SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
+		//SmartDashboard.putNumber("Robot Angle", (Robot.driveTrain.imu.getAngleZ() / 4) % 360);
+		//SmartDashboard.putNumber("CentX Graph", Robot.sliderVisionError);
+		//SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
 		
 		
 		//visionPidcrap
-		SmartDashboard.putDouble("PID output", Robot.SliderPID.PIDvisionoutput);
-		SmartDashboard.putBoolean("PID Vision Active", Robot.PIDvisionactive);
+		//SmartDashboard.putDouble("PID output", Robot.SliderPID.PIDvisionoutput);
+		//SmartDashboard.putBoolean("PID Vision Active", Robot.PIDvisionactive);
 		
 	}
 }

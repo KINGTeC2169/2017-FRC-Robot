@@ -199,10 +199,10 @@ public class GearManipulator extends Subsystem {
     //a standard log function that outputs data about the gear mechanism
     //to the SmarDashboard using .putInt() .putNumber() or .putData()
     public void log(){
-    	SmartDashboard.putBoolean("Spring Button", springButtonHit());
-    	SmartDashboard.putBoolean("Left Slider Button", leftButton.get());
-    	SmartDashboard.putBoolean("Right Slider Button", rightButton.get());
-    	SmartDashboard.putDouble("Slider Enc Velocity", gearMotor.getEncVelocity());
+    	//SmartDashboard.putBoolean("Spring Button", springButtonHit());
+    	//SmartDashboard.putBoolean("Left Slider Button", leftButton.get());
+    	//SmartDashboard.putBoolean("Right Slider Button", rightButton.get());
+    	//SmartDashboard.putDouble("Slider Enc Velocity", gearMotor.getEncVelocity());
     	//SmartDashboard.putDouble("Right Stick", Robot.oi.secondaryStick.getRawAxis(4));
     }
 
