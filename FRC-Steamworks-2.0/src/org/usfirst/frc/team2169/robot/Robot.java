@@ -129,6 +129,11 @@ public class Robot extends IterativeRobot {
 			
 			UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture("cam0", 0);
 			camera2.setResolution(160, 120);
+			
+			UsbCamera camera3 = CameraServer.getInstance().startAutomaticCapture("cam2", 2);
+			camera3.setResolution(160, 120);
+			camera3.setFPS(10);
+			
 		} catch(Exception e){
 			SmartDashboard.putString("CAMERA ERROR", e.getMessage());
 		}
@@ -317,14 +322,15 @@ public class Robot extends IterativeRobot {
 	public void DriverOutputs(){
 		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
 		SmartDashboard.putBoolean("Human Player", Robot.gearManipulator.playerSol.get() == Value.kReverse);
+		SmartDashboard.putNumber("Temperature", Robot.driveTrain.imu.getTemperature());
 	}
 	
 	public void Debug(){
-		//SmartDashboard.putNumber("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
+		SmartDashboard.putNumber("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
 		SmartDashboard.putNumber("Right Enc", Robot.driveTrain.rightEnc.getDistance());
 		SmartDashboard.putNumber("Left Enc", Robot.driveTrain.leftEnc.getDistance());
 		//SmartDashboard.putNumber("Robot Angle", (Robot.driveTrain.imu.getAngleZ() / 4) % 360);
-		//SmartDashboard.putNumber("CentX Graph", Robot.sliderVisionError);
+		SmartDashboard.putNumber("CentX Graph", Robot.sliderVisionError);
 		//SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
 		
 		
