@@ -128,7 +128,8 @@ public class Robot extends IterativeRobot {
 			camera.setResolution(160, 120);
 			
 			UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture("cam0", 0);
-			camera2.setResolution(160, 120);
+			camera2.setResolution(120, 80);
+			camera2.setFPS(10);
 			
 			UsbCamera camera3 = CameraServer.getInstance().startAutomaticCapture("cam2", 2);
 			camera3.setResolution(160, 120);
@@ -308,6 +309,7 @@ public class Robot extends IterativeRobot {
 		Debug();
 		DriverOutputs();
 		//Robot.driveTrain.updatePosition();
+		SmartDashboard.putNumber("Gear Enc", Robot.gearManipulator.gearMotor.getEncPosition());
 		
 	}
 
@@ -324,6 +326,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Human Player", Robot.gearManipulator.playerSol.get() == Value.kReverse);
 		SmartDashboard.putNumber("Temperature", Robot.driveTrain.imu.getTemperature());
 	}
+	
 	
 	public void Debug(){
 		SmartDashboard.putNumber("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
