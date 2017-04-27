@@ -325,6 +325,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
 		SmartDashboard.putBoolean("Human Player", Robot.gearManipulator.playerSol.get() == Value.kReverse);
 		SmartDashboard.putNumber("Temperature", Robot.driveTrain.imu.getTemperature());
+		SmartDashboard.putNumber("Pressure", Robot.driveTrain.imu.getBarometricPressure());
 	}
 	
 	
