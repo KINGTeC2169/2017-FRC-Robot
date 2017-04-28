@@ -174,12 +174,12 @@ public class Auto_Master extends CommandGroup {
     				angleOffset = -60;
     			
     			//drive forward and align with the target
-    		   	addSequential(new DriveForward(73, .8, .9));
+    		   	addSequential(new DriveForward(76, .8, .9));
     		   	addSequential(new DriveTrainTurn(-angleOffset));
     		   	addParallel(new Auto_ContinouslyUpdateSlider());
     		   	
     		   	//drive towards the target, hang the gear, and back up
-    		   	addSequential(new DriveForward(30,.7,.8));
+    		   	addSequential(new DriveForward(30, .7, .8, true));
     		   	addSequential(new DriveForward(50, .3, .4, true));
     		   	addSequential(new SetGearDoor(doorRelease));
     		   	addSequential(new TimedStop(waitTime));
