@@ -53,7 +53,7 @@ public class GearManip extends Command {
         	if (Robot.oi.secondaryStick.getRawAxis(3) > .7){
         		sliderSpeed = 0.5;
         	} else {
-        		sliderSpeed = 1;
+        		sliderSpeed = .75;
         	}
         	
     		if(Math.abs(Robot.oi.secondaryStick.getRawAxis(4)) > .4){
