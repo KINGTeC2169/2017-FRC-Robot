@@ -156,8 +156,8 @@ public class Robot extends IterativeRobot {
 		positionChooser.addObject("Center", 0);
 		positionChooser.addObject("Right", 1);
 		
-		SmartDashboard.putData("Alliance Chooser", allianceChooser);
-		SmartDashboard.putData("Position Chooser", positionChooser);
+		SmartDashboard.putData("Alliance Chooser_", allianceChooser);
+		SmartDashboard.putData("Position Chooser_", positionChooser);
 		
 		if(allianceChooser.getSelected() != null)
 			Robot.alliance = allianceChooser.getSelected().intValue();
@@ -333,7 +333,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("gear enc", Robot.gearManipulator.gearMotor.getEncPosition());
 		SmartDashboard.putNumber("Right Enc", Robot.driveTrain.rightEnc.getDistance());
 		SmartDashboard.putNumber("Left Enc", Robot.driveTrain.leftEnc.getDistance());
-		//SmartDashboard.putNumber("Robot Angle", (Robot.driveTrain.imu.getAngleZ() / 4) % 360);
+		SmartDashboard.putNumber("Robot Angle", (Robot.driveTrain.imu.getAngleZ() / 4));
 		SmartDashboard.putNumber("CentX Graph", Robot.sliderVisionError);
 		//SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
 		

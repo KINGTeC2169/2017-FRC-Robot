@@ -129,6 +129,7 @@ public class DriveForward extends Command {
 	protected void initialize() {
 		Robot.driveTrain.resetEncoders();
 		
+		
 		currentAngle = Robot.driveTrain.imu.getAngleZ() / 4;
 		finished = false;
 		
