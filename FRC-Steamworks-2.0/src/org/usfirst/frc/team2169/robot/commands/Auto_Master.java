@@ -74,8 +74,9 @@ public class Auto_Master extends CommandGroup {
    	    	}
    	    	
    	    	//drive forward and pickup second gear
-   	    	addParallel(new Auto_RunIntake(6));
+   	    	addParallel(new Auto_RunIntake(8));
    	    	addSequential(new DriveBackwards(48, -.9, -1));
+   	    	
    	    	addSequential(new DriveForward(48, .9, 1));
    	    	
    	    	if(position == -1){
