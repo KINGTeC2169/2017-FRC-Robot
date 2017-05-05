@@ -2,6 +2,7 @@ package org.usfirst.frc.team2169.robot.commands;
 
 import org.usfirst.frc.team2169.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -45,6 +46,13 @@ public class DriveTrainTurn extends Command {
     	refinedAngle = false;
     	finished = false;
     	timerOn = false;
+    	
+    	if(Robot.driveTrain.dogShift.get() == Value.kForward){
+    		motorSpeed = .38;
+    		refiningMotorSpeed = .25;
+    		refinedTolerance = 6;
+    		tolerance = 10;
+    	}
     	
     }
 

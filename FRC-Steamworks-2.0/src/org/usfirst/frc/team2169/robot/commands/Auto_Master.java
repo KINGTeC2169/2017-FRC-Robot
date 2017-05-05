@@ -1,7 +1,5 @@
 package org.usfirst.frc.team2169.robot.commands;
 
-import org.usfirst.frc.team2169.robot.Robot;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -45,7 +43,8 @@ public class Auto_Master extends CommandGroup {
     	//DRIVE FORWARD AUTO
     	
     	if(alliance == 3){
-    		addSequential(new DriveForward(200));
+    		addSequential(new DriveTrainTurn(90));
+    		addSequential(new DriveTrainTurn(-90));
     		return;
     	} 
     	
@@ -102,13 +101,15 @@ public class Auto_Master extends CommandGroup {
     	
     	if(alliance == 5){
     		
+    		addSequential(new TankDriveSolenoidFlipOnce(Value.kForward));
+    		
     		addParallel(new Auto_ContinouslyUpdateSlider());
 			
 			addParallel(new ReleaseIntake());
 
     		//hang first gear
-    		addSequential(new DriveForward(60, .9, 1));
-	    	addSequential(new DriveForward(28, .3, .4, true));
+    		addSequential(new DriveForward(60, .4, .5));
+	    	addSequential(new DriveForward(28, .1, .2, true));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	addSequential(new TimedStop(waitTime));
 	    	
@@ -116,23 +117,23 @@ public class Auto_Master extends CommandGroup {
 	    	addParallel(new CentralizeGearSlider());
 	    	
 	    	//setup for second gear
-	    	addSequential(new DriveBackwards(25, -.9, -1));
+	    	addSequential(new DriveBackwards(25, -.4, -.5));
 	    	addSequential(new SetGearDoor(doorClose, true));
 	    	addSequential(new DriveTrainTurn(48));
 	    	
 	    	//drive forward and pickup second gear
 	    	addParallel(new Auto_RunIntake(6));
-	    	addSequential(new DriveBackwards(48, -.9, -1));
+	    	addSequential(new DriveBackwards(48, -.5, -.6));
 	    	
 	    	
 	    	//setup for second gear hang
-	    	addSequential(new DriveForward(48, .9, 1));
+	    	addSequential(new DriveForward(48, .5, .6));
 	    	addParallel(new Auto_ContinouslyUpdateSlider());
 	    	addSequential(new DriveTrainTurn(-48));
 	    	
 	    	
 	    	//hang the second gear
-	    	addSequential(new DriveForward(30, .3, .4, true));
+	    	addSequential(new DriveForward(30, .1, .2));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	addSequential(new TimedStop(waitTime));
 	    	
@@ -140,23 +141,23 @@ public class Auto_Master extends CommandGroup {
 	    	addParallel(new CentralizeGearSlider());
 	    	
 	    	//setup for second gear
-	    	addSequential(new DriveBackwards(25, -.9, -1));
+	    	addSequential(new DriveBackwards(25, -.5, -.6));
 	    	addSequential(new SetGearDoor(doorClose, true));
 	    	addSequential(new DriveTrainTurn(-48));
 	    	
 	    	//drive forward and pickup second gear
 	    	addParallel(new Auto_RunIntake(6));
-	    	addSequential(new DriveBackwards(48, -.9, -1));
+	    	addSequential(new DriveBackwards(48, -.5, -.6));
 	    	
 	    	
 	    	//setup for second gear hang
-	    	addSequential(new DriveForward(48, .9, 1));
+	    	addSequential(new DriveForward(48, .5, .6));
 	    	addParallel(new Auto_ContinouslyUpdateSlider());
 	    	addSequential(new DriveTrainTurn(48));
 	    	
 	    	
 	    	//hang the second gear
-	    	addSequential(new DriveForward(35, .5, .6, true));
+	    	addSequential(new DriveForward(35, .3, .4, true));
 	    	addSequential(new SetGearDoor(doorRelease));
 	    	addSequential(new TimedStop(waitTime));
 	    	

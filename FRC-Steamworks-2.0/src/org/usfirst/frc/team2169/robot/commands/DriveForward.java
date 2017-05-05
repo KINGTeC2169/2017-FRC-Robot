@@ -3,6 +3,7 @@ package org.usfirst.frc.team2169.robot.commands;
 import org.usfirst.frc.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,7 +17,7 @@ public class DriveForward extends Command {
 	// What is this, AveryDog?
 	public double refiningMotorSpeed = .15;
 	public double distanceTolerance = .2;
-	public double angleTolerance = .2;
+	public double angleTolerance = 1;
 	
 	public double rateTolerance = 1;
 	public double tolerance = 10;
@@ -141,6 +142,11 @@ public class DriveForward extends Command {
 		timer = Timer.getFPGATimestamp();
 		checkEnc = false;
 		incSpeed = true;
+		
+		if(Robot.driveTrain.dogShift.get() == Value.kForward){
+			tolerance = 20;
+			refinedTolerance = 3;
+		}
 	}
 
 	@Override
@@ -204,24 +210,26 @@ public class DriveForward extends Command {
 			//turning too far left
 			} else if(errorAngle > 0){
 				if(leftSpeed < maxSpeed){
-					leftSpeed += (motorChange / 3);
+					leftSpeed += (motorChange);
 				} else {
 					rightSpeed -= (motorChange / 3);
 				}
 			}
+		
 		} else {
+			
 			if(errorAngle < 0){
 				if(rightSpeed < maxSpeed){
-					rightSpeed += (motorChange * 2);
+					rightSpeed += (motorChange * 1.4 * Math.abs(errorAngle));
 				} else {
-					leftSpeed -= (motorChange * 2);
+					leftSpeed -= (motorChange * 1.4 * Math.abs(errorAngle));
 				}
 			//turning too far left
 			} else if(errorAngle > 0){
 				if(leftSpeed < maxSpeed){
-					leftSpeed += (motorChange * 2);
+					leftSpeed += (motorChange * 1.4 * Math.abs(errorAngle));
 				} else {
-					rightSpeed -= (motorChange * 2);
+					rightSpeed -= (motorChange * 1.4 * Math.abs(errorAngle));
 				}
 			}
 		}
@@ -310,5 +318,6 @@ public class DriveForward extends Command {
 		Robot.driveTrain.rightDrive.set(0);
 		Robot.driveTrain.rightDrive2.set(0);
 		Robot.driveTrain.resetEncoders();
+		
 	}
 }

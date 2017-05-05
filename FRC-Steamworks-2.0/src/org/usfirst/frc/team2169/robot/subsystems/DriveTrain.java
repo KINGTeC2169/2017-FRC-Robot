@@ -54,7 +54,7 @@ public class DriveTrain extends Subsystem {
 
 		//creating the encoders at these DIO ports
 		leftEnc = new Encoder(0,1,false);
-		leftEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);		// (1 rev / number of ticks) * unit conversion for circumfrence
+		leftEnc.setDistancePerPulse(-(1 / 143.5) * 4.125 * Math.PI);		// (1 rev / number of ticks) * unit conversion for circumfrence
 		leftEnc.reset();
 		
 		/* Here is an example of the an initialization
@@ -62,7 +62,7 @@ public class DriveTrain extends Subsystem {
 		 * and set distance per pulse function sets ticks per distance applied.
 		 */
 		rightEnc = new Encoder(2,3,true);
-		rightEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);	// (1 rev / number of ticks) * unit conversion  for circumfrence
+		rightEnc.setDistancePerPulse(-(1 / 143.5) * 4.125 * Math.PI);	// (1 rev / number of ticks) * unit conversion  for circumfrence
 		rightEnc.reset();
 		
 		velX = 0.0;
