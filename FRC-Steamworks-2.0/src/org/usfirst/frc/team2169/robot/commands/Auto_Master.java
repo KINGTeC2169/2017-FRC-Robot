@@ -45,6 +45,7 @@ public class Auto_Master extends CommandGroup {
     	if(alliance == 3){
     		addSequential(new DriveTrainTurn(90));
     		addSequential(new DriveTrainTurn(-90));
+    		addSequential(new DriveToPoint(100));
     		return;
     	} 
     	
@@ -164,6 +165,11 @@ public class Auto_Master extends CommandGroup {
 	    	addSequential(new DriveBackwards(30));
     		return;
     	} 
+    	
+    	if(alliance == 6){
+    		addSequential(new DriveToPoint(200));
+    		return;
+    	}
     	
     	//1 GEAR AUTO
     		//FEEDER STATION AUTOS

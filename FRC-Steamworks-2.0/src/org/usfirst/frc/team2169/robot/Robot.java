@@ -13,7 +13,9 @@ import org.usfirst.frc.team2169.robot.commands.TankDrive;
 import org.usfirst.frc.team2169.robot.commands.TankDriveSolenoidFlip;
 import org.usfirst.frc.team2169.robot.subsystems.ADIS16448_IMU;
 import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2169.robot.subsystems.DrivingStraightPID;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
+import org.usfirst.frc.team2169.robot.subsystems.DriveToPointPID;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
 import org.usfirst.frc.team2169.robot.subsystems.SliderPID;
 import org.usfirst.frc.team2169.robot.subsystems.Intakes;
@@ -61,6 +63,12 @@ public class Robot extends IterativeRobot {
 	//creating an instance of the SliderPID
 	public static final SliderPID SliderPID = new SliderPID();
 	
+	//creating an instance of the DriveToPointPID
+	public static final DriveToPointPID DriveToPointPID = new DriveToPointPID();	
+	
+	//creating an instance of the DrivingStraightPID
+	public static final DrivingStraightPID DrivingStraightPID = new DrivingStraightPID();
+	
 	//creating an instance of the OI
 	public static OI oi;
 	
@@ -91,6 +99,7 @@ public class Robot extends IterativeRobot {
 	public static int position;
 
 	public static boolean PIDvisionactive;
+	public static boolean PIDdrivingactive;
 	public static boolean isSpringButtonPressed;
 	public static boolean sliderCentralizing;
 	public static boolean sliderAutomatic;
@@ -151,6 +160,7 @@ public class Robot extends IterativeRobot {
 		allianceChooser.addObject("Red Alliance", 2);
 		allianceChooser.addObject("Two Gear", 4);
 		allianceChooser.addObject("Three Gear", 5);
+		allianceChooser.addObject("DrivingForwardPID", 6);
 		
 		positionChooser.addDefault("Left", -1);
 		positionChooser.addObject("Center", 0);
@@ -321,11 +331,14 @@ public class Robot extends IterativeRobot {
 		LiveWindow.run();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void DriverOutputs(){
 		SmartDashboard.putBoolean("Gear Door", Robot.gearManipulator.gearDoorSol.get() == Value.kReverse);
 		SmartDashboard.putBoolean("Human Player", Robot.gearManipulator.playerSol.get() == Value.kReverse);
 		SmartDashboard.putNumber("Temperature", Robot.driveTrain.imu.getTemperature());
 		SmartDashboard.putNumber("Pressure", Robot.driveTrain.imu.getBarometricPressure());
+		SmartDashboard.putNumber("Curent PID Setspeed", Robot.DriveToPointPID.DriveToPointPIDOutput);
+		SmartDashboard.putBoolean("PID Driving Active", Robot.PIDdrivingactive);
 	}
 	
 	
@@ -335,6 +348,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Left Enc", Robot.driveTrain.leftEnc.getDistance());
 		SmartDashboard.putNumber("Robot Angle", (Robot.driveTrain.imu.getAngleZ() / 4));
 		SmartDashboard.putNumber("CentX Graph", Robot.sliderVisionError);
+		
 		//SmartDashboard.putBoolean("Pressure Plate", Robot.gearManipulator.springButtonHit());
 		
 		
