@@ -47,13 +47,13 @@ public class DriveTrain extends Subsystem {
 		
 		imu = new ADIS16448_IMU();	// Creating the IMU (Inertial Measurement Unit) at the MXP Bus port as labeled in its class
 		
-		compressor = new Compressor(0);	// Creating the compressor at port 0 on the PWM Module
+		compressor = new Compressor(12);	// Creating the compressor at port 0 on the PWM Module
 		
 		dogShift = new DoubleSolenoid(0,0,7);
 		dogShift.set(Value.kForward);
 
 		//creating the encoders at these DIO ports
-		leftEnc = new Encoder(0,1,true);
+		leftEnc = new Encoder(0,1,false);
 		leftEnc.setDistancePerPulse(-(1 / 143.5) * 4.125 * Math.PI);		// (1 rev / number of ticks) * unit conversion for circumfrence
 		leftEnc.reset();
 		
@@ -62,7 +62,7 @@ public class DriveTrain extends Subsystem {
 		 * and set distance per pulse function sets ticks per distance applied.
 		 */
 		rightEnc = new Encoder(2,3,false);
-		rightEnc.setDistancePerPulse(-(1 / 143.5) * 4.125 * Math.PI);	// (1 rev / number of ticks) * unit conversion  for circumfrence
+		rightEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);	// (1 rev / number of ticks) * unit conversion  for circumfrence
 		rightEnc.reset();
 		
 		velX = 0.0;
