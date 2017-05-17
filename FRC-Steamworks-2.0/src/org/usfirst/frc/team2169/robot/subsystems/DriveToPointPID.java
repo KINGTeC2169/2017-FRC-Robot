@@ -17,7 +17,7 @@ public class DriveToPointPID extends PIDSubsystem {
         // setSetpoint() -  Sets where the PID controller should move the system
         //                  to
         // enable() - Enables the PID controller.
-    	super("DriveToPointPID", 0.01, 0.0, 0.0);
+    	super("DriveToPointPID", 0.03, 0.00, 0.00);
     	setAbsoluteTolerance(0.5);
     	getPIDController().setContinuous(false);
     	setOutputRange(-0.75,0.75);

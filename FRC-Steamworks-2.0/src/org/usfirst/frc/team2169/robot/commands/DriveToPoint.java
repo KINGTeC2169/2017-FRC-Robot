@@ -40,7 +40,7 @@ public class DriveToPoint extends Command {
     	Robot.DrivingStraightPID.setSetpoint(Robot.driveTrain.getTurnAngle(Robot.DrivingStraightPID.setAnglePID, Robot.driveTrain.imu.getAngleZ() / 4));
     	currentSpeed = Robot.DriveToPointPID.DriveToPointPIDOutput;
     	angleFix = Robot.DrivingStraightPID.DrivingStraightOutput;
-    	if(Robot.driveTrain.getEncDistance() <= distance){
+    	if(Robot.driveTrain.getEncDistance() - distance <= 0.75){
     		Robot.driveTrain.leftDrive.set(currentSpeed + -angleFix);
     		Robot.driveTrain.leftDrive2.set(currentSpeed + -angleFix);
             Robot.driveTrain.rightDrive.set(-currentSpeed + angleFix);

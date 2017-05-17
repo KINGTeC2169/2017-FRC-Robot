@@ -45,7 +45,6 @@ public class Auto_Master extends CommandGroup {
     	if(alliance == 3){
     		addSequential(new DriveTrainTurn(90));
     		addSequential(new DriveTrainTurn(-90));
-    		addSequential(new DriveToPoint(100));
     		return;
     	} 
     	
