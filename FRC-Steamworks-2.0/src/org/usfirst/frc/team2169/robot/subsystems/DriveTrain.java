@@ -49,19 +49,19 @@ public class DriveTrain extends Subsystem {
 		
 		compressor = new Compressor(12);	// Creating the compressor at port 0 on the PWM Module
 		
-		dogShift = new DoubleSolenoid(0,0,7);
+		dogShift = new DoubleSolenoid(12,0,7);
 		dogShift.set(Value.kForward);
 
 		//creating the encoders at these DIO ports
 		leftEnc = new Encoder(0,1,false);
-		leftEnc.setDistancePerPulse(-(1 / 143.5) * 4.125 * Math.PI);		// (1 rev / number of ticks) * unit conversion for circumfrence
+		leftEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);		// (1 rev / number of ticks) * unit conversion for circumfrence
 		leftEnc.reset();
 		
 		/* Here is an example of the an initialization
 		 * and resetting of encoders. the initialization is at 0 and 1 on the DIO port.
 		 * and set distance per pulse function sets ticks per distance applied.
 		 */
-		rightEnc = new Encoder(2,3,false);
+		rightEnc = new Encoder(2,3,true);
 		rightEnc.setDistancePerPulse((1 / 143.5) * 4.125 * Math.PI);	// (1 rev / number of ticks) * unit conversion  for circumfrence
 		rightEnc.reset();
 		

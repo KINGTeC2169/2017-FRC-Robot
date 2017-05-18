@@ -52,11 +52,10 @@ public class GearManipulator extends Subsystem {
     	springButton = new DigitalInput(6);
     	
     	//creating two solenoids that flip pistons
-    	playerSol = new DoubleSolenoid(0,3,4);
-    	gearDoorSol = new DoubleSolenoid(0,1,6);
+    	playerSol = new DoubleSolenoid(12,3,4);
+    	gearDoorSol = new DoubleSolenoid(12,1,6);
     }
     
-    //this method sets the value of the gear 
     //manipulator based on the reflective tapes position
     //relative to the slider. Motor values are already
     //calculated on the Pi side

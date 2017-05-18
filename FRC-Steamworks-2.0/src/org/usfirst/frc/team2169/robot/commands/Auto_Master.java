@@ -165,7 +165,7 @@ public class Auto_Master extends CommandGroup {
     	} 
     	
     	if(alliance == 6){
-    		addSequential(new DriveToPoint(200));
+    		addSequential(new DriveToPoint(100));
     		return;
     	}
     	

@@ -17,8 +17,8 @@ public class DrivingStraightPID extends PIDSubsystem {
         // setSetpoint() -  Sets where the PID controller should move the system
         //                  to
         // enable() - Enables the PID controller.
-    	super("DrivingStraightPID", 0.06, 0.0, 0.0);
-    	setAbsoluteTolerance(0.5);
+    	super("DrivingStraightPID", 12, 0.0, 0.0);
+    	setAbsoluteTolerance(0.1);
     	getPIDController().setContinuous(false);
     	setOutputRange(-0.75,0.75);
     	LiveWindow.addActuator("PID", "DrivingStraightPID", getPIDController());

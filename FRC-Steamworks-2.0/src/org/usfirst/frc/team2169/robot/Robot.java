@@ -320,6 +320,7 @@ public class Robot extends IterativeRobot {
 		DriverOutputs();
 		//Robot.driveTrain.updatePosition();
 		SmartDashboard.putNumber("Gear Enc", Robot.gearManipulator.gearMotor.getEncPosition());
+    	SmartDashboard.putNumber("anglefix", Robot.DrivingStraightPID.DrivingStraightOutput);
 		
 	}
 

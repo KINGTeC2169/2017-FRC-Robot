@@ -3,6 +3,7 @@ package org.usfirst.frc.team2169.robot.commands;
 import org.usfirst.frc.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -41,10 +42,10 @@ public class DriveToPoint extends Command {
     	currentSpeed = Robot.DriveToPointPID.DriveToPointPIDOutput;
     	angleFix = Robot.DrivingStraightPID.DrivingStraightOutput;
     	if(Robot.driveTrain.getEncDistance() - distance <= 0.75){
-    		Robot.driveTrain.leftDrive.set(currentSpeed + -angleFix);
-    		Robot.driveTrain.leftDrive2.set(currentSpeed + -angleFix);
-            Robot.driveTrain.rightDrive.set(-currentSpeed + angleFix);
-            Robot.driveTrain.rightDrive2.set(-currentSpeed + angleFix);
+    		Robot.driveTrain.leftDrive.set(currentSpeed + angleFix);
+    		Robot.driveTrain.leftDrive2.set(currentSpeed + angleFix);
+            Robot.driveTrain.rightDrive.set(-currentSpeed + -angleFix);
+            Robot.driveTrain.rightDrive2.set(-currentSpeed + -angleFix);
     	} else {
     		isDone = true;
     	}

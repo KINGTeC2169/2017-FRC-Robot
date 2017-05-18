@@ -27,7 +27,7 @@ public class Intakes extends Subsystem {
 		
 		intakeMotor = new CANTalon(8); 			//Creating the intake motor at this port
 		topRollerMotor = new CANTalon(4);		//AVERY I CHANGED THIS PORT FROM 9 TO 10 FOR A TEST
-		intakeSol = new DoubleSolenoid(0,2,5);  //Creates the solenoid module at these ports
+		intakeSol = new DoubleSolenoid(12,2,5);
 	}
 	
 	//sets the motor so objects can be lodged
