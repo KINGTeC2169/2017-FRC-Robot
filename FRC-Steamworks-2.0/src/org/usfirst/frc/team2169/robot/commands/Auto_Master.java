@@ -242,7 +242,7 @@ public class Auto_Master extends CommandGroup {
     			addParallel(new Auto_ContinouslyUpdateSlider());
     			//hang gear
     	    	addSequential(new DriveForward(50));
-    	    	addSequential(new DriveForward(37, .3, .4, true));
+    	    	addSequential(new DriveForward(45, .3, .4, true));
     	    	
     	    	addSequential(new SetGearDoor(doorRelease));
     	    	addSequential(new TimedStop(waitTime));
