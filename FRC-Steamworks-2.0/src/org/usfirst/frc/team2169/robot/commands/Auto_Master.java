@@ -13,7 +13,7 @@ public class Auto_Master extends CommandGroup {
 	// addSequential(new DriveForward(double x, double min, double max)) - drives the robot forward x number of inches
 	//																	   with min and max speeds
 	// addSequential(new DriveForward(double x, double min, double max, boolean x)) - drives the robot forward x number of inches
-	//																	   		      with min and max speedsand checks for pressure plate
+	//																	   		      with min and max speeds and checks for pressure plate
 	// addSequential(new DriveBackward(double x)) - drives the robot backward x number of inches
 	// addSequential(new DriveTrainTurn(double x)) - turns the robot x number of degrees 
 	//												 x > 0 turns clockwise

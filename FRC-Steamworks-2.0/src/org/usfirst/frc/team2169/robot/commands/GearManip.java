@@ -65,7 +65,7 @@ public class GearManip extends Command {
     	
     	//If the spring button is hit, then the gear manipulator 
     	//stays closed or closes
-    	if(Robot.gearManipulator.springButtonHit() && (Robot.oi.secondaryStick.getRawAxis(2) > .7)){
+    	if(Robot.gearManipulator.springButtonHit() && (Robot.oi.secondaryStick.getRawAxis(3) > .7)){
     		Robot.gearManipulator.gearDoorSol.set(Value.kReverse);
     	}
     	
