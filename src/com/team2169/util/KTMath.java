@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2169.util;
+package com.team2169.util;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 

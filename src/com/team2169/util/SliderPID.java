@@ -1,6 +1,5 @@
-package org.usfirst.frc.team2169.util;
-
-import org.usfirst.frc.team2169.robot.Robot;
+package com.team2169.util;
+import com.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -8,20 +7,27 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 /**
  *
  */
-public class DriveToPointPID extends PIDSubsystem {
-	double pot = Robot.driveTrain.getEncDistance();
-	public double DriveToPointPIDOutput;
+public class SliderPID extends PIDSubsystem {
+	double pot = Robot.sliderVisionError / 30;
+	public double PIDvisionoutput;
+	
+	
 	// Initialize your subsystem here
-    public DriveToPointPID() {
+    public SliderPID() {
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
         //                  to
         // enable() - Enables the PID controller.
-    	super("DriveToPointPID", 0.03, 0.00, 0.00);
-    	setAbsoluteTolerance(0.5);
+    	
+    	
+    	
+    	//PID Controller
+    	super("Slider", 0.032, 0.0006, 0.001);
+    	setAbsoluteTolerance(5);
     	getPIDController().setContinuous(false);
-    	setOutputRange(-0.75,0.75);
-    	LiveWindow.addActuator("PID", "DriveToPointPID", getPIDController());
+    	setOutputRange(-1,1);
+    	LiveWindow.addActuator("PID", "PIDSubsystem Controller", getPIDController());
+    	
     }
 
     public void initDefaultCommand() {
@@ -39,6 +45,6 @@ public class DriveToPointPID extends PIDSubsystem {
     protected void usePIDOutput(double output) {
         // Use output to drive your system, like a motor
         // e.g. yourMotor.set(output);
-    	DriveToPointPIDOutput = output;
+    	PIDvisionoutput = output;
     }
 }

@@ -1,8 +1,7 @@
-package org.usfirst.frc.team2169.robot.subsystems;
-
-import org.usfirst.frc.team2169.util.ADIS16448_IMU;
+package com.team2169.robot.subsystems;
 
 import com.ctre.CANTalon;
+import com.team2169.util.ADIS16448_IMU;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;

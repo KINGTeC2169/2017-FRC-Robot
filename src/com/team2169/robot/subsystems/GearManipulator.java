@@ -1,8 +1,7 @@
-package org.usfirst.frc.team2169.robot.subsystems;
-
-import org.usfirst.frc.team2169.robot.Robot;
+package com.team2169.robot.subsystems;
 
 import com.ctre.CANTalon;
+import com.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;

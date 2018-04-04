@@ -1,25 +1,25 @@
 
-package org.usfirst.frc.team2169.robot;
+package com.team2169.robot;
 
 
-import org.usfirst.frc.team2169.robot.commands.auto.Auto_Master;
-import org.usfirst.frc.team2169.robot.commands.auto.SetAlliance;
-import org.usfirst.frc.team2169.robot.commands.auto.SetPosition;
-import org.usfirst.frc.team2169.robot.commands.drive.TankDrive;
-import org.usfirst.frc.team2169.robot.commands.drive.TankDriveSolenoidFlip;
-import org.usfirst.frc.team2169.robot.commands.gearSlider.CentralizeGearSlider;
-import org.usfirst.frc.team2169.robot.commands.gearSlider.GearManip;
-import org.usfirst.frc.team2169.robot.commands.hanging.Hanging;
-import org.usfirst.frc.team2169.robot.commands.intake.Intake;
-import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
-import org.usfirst.frc.team2169.robot.subsystems.Hanger;
-import org.usfirst.frc.team2169.robot.subsystems.Intakes;
-import org.usfirst.frc.team2169.util.ADIS16448_IMU;
-import org.usfirst.frc.team2169.util.DriveToPointPID;
-import org.usfirst.frc.team2169.util.DrivingStraightPID;
-import org.usfirst.frc.team2169.util.KTMath;
-import org.usfirst.frc.team2169.util.SliderPID;
+import com.team2169.robot.commands.auto.Auto_Master;
+import com.team2169.robot.commands.auto.SetAlliance;
+import com.team2169.robot.commands.auto.SetPosition;
+import com.team2169.robot.commands.drive.TankDrive;
+import com.team2169.robot.commands.drive.TankDriveSolenoidFlip;
+import com.team2169.robot.commands.gearSlider.CentralizeGearSlider;
+import com.team2169.robot.commands.gearSlider.GearManip;
+import com.team2169.robot.commands.hanging.Hanging;
+import com.team2169.robot.commands.intake.Intake;
+import com.team2169.robot.subsystems.DriveTrain;
+import com.team2169.robot.subsystems.GearManipulator;
+import com.team2169.robot.subsystems.Hanger;
+import com.team2169.robot.subsystems.Intakes;
+import com.team2169.util.ADIS16448_IMU;
+import com.team2169.util.DriveToPointPID;
+import com.team2169.util.DrivingStraightPID;
+import com.team2169.util.KTMath;
+import com.team2169.util.SliderPID;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;

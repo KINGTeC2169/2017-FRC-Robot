@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team2169.util;
+package com.team2169.util;
 
 import java.nio.ByteOrder;
 import java.nio.ByteBuffer;

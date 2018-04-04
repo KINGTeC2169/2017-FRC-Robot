@@ -1,6 +1,6 @@
-package org.usfirst.frc.team2169.util;
+package com.team2169.util;
 
-import org.usfirst.frc.team2169.robot.Robot;
+import com.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;

@@ -1,5 +1,6 @@
-package org.usfirst.frc.team2169.util;
-import org.usfirst.frc.team2169.robot.Robot;
+package com.team2169.util;
+
+import com.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -7,27 +8,21 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 /**
  *
  */
-public class SliderPID extends PIDSubsystem {
-	double pot = Robot.sliderVisionError / 30;
-	public double PIDvisionoutput;
-	
-	
-	// Initialize your subsystem here
-    public SliderPID() {
+public class DrivingStraightPID extends PIDSubsystem {
+	public double setAnglePID;
+	double pot = Robot.driveTrain.getTurnAngle(setAnglePID, Robot.driveTrain.imu.getAngleZ() / 4);
+	public double DrivingStraightOutput;
+    // Initialize your subsystem here
+    public DrivingStraightPID() {
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
         //                  to
         // enable() - Enables the PID controller.
-    	
-    	
-    	
-    	//PID Controller
-    	super("Slider", 0.032, 0.0006, 0.001);
-    	setAbsoluteTolerance(5);
+    	super("DrivingStraightPID", 12, 0.0, 0.0);
+    	setAbsoluteTolerance(0.1);
     	getPIDController().setContinuous(false);
-    	setOutputRange(-1,1);
-    	LiveWindow.addActuator("PID", "PIDSubsystem Controller", getPIDController());
-    	
+    	setOutputRange(-0.75,0.75);
+    	LiveWindow.addActuator("PID", "DrivingStraightPID", getPIDController());
     }
 
     public void initDefaultCommand() {
@@ -45,6 +40,6 @@ public class SliderPID extends PIDSubsystem {
     protected void usePIDOutput(double output) {
         // Use output to drive your system, like a motor
         // e.g. yourMotor.set(output);
-    	PIDvisionoutput = output;
+    	DrivingStraightOutput = output;
     }
 }
