@@ -1,3 +1,4 @@
 # 2017-FRC-Robot
-2017 FRC Robot Code
-add a readme
+Last-Minute Competition Code for the 2017 Robot.
+
+We do not recommend using this code to learn how to program FRC robots.  This code was the result of attempting to put all robot actions into various WPILib Command objects, without any centralized structure or status-keeper.  This resulted in a system that did not have any knowledge of what the robot was doing at any given time, and instead ran purely on open-loop commands based on raw driver input.  Because it didn't use a structure, such as the Royal-Iterative framework, creating autonomous modes that were reliant on inconsistent variables, not having any robot-level safeguards in place, and relying on time and consistent battery voltage for nearly all functions. These practices are not recommended.  Use this code as a resource of learning what not to do. If you wish to see an example of code that demonstrates the correct way to program an FRC robot, take a look at one of our sample projects (such as Bedivere_Iterative, a rewritten codebase for this specific robot), or our 2018 Robot Code, assuming it has been released. 
