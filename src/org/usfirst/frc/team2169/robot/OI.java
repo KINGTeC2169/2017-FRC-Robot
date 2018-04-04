@@ -1,9 +1,9 @@
 package org.usfirst.frc.team2169.robot;
 
-import org.usfirst.frc.team2169.robot.commands.AnotherGearFlipCom;
-import org.usfirst.frc.team2169.robot.commands.CentralizeGearSlider;
-import org.usfirst.frc.team2169.robot.commands.HumanPlayerSolenoidFlip;
-import org.usfirst.frc.team2169.robot.commands.IntakeSolenoidFlip;
+import org.usfirst.frc.team2169.robot.commands.doors.AnotherGearFlipCom;
+import org.usfirst.frc.team2169.robot.commands.doors.HumanPlayerSolenoidFlip;
+import org.usfirst.frc.team2169.robot.commands.gearSlider.CentralizeGearSlider;
+import org.usfirst.frc.team2169.robot.commands.intake.IntakeSolenoidFlip;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;

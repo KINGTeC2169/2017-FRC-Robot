@@ -2,24 +2,24 @@
 package org.usfirst.frc.team2169.robot;
 
 
-import org.usfirst.frc.team2169.robot.commands.Auto_Master;
-import org.usfirst.frc.team2169.robot.commands.CentralizeGearSlider;
-import org.usfirst.frc.team2169.robot.commands.GearManip;
-import org.usfirst.frc.team2169.robot.commands.Hanging;
-import org.usfirst.frc.team2169.robot.commands.Intake;
-import org.usfirst.frc.team2169.robot.commands.SetAlliance;
-import org.usfirst.frc.team2169.robot.commands.SetPosition;
-import org.usfirst.frc.team2169.robot.commands.TankDrive;
-import org.usfirst.frc.team2169.robot.commands.TankDriveSolenoidFlip;
-import org.usfirst.frc.team2169.robot.subsystems.ADIS16448_IMU;
+import org.usfirst.frc.team2169.robot.commands.auto.Auto_Master;
+import org.usfirst.frc.team2169.robot.commands.auto.SetAlliance;
+import org.usfirst.frc.team2169.robot.commands.auto.SetPosition;
+import org.usfirst.frc.team2169.robot.commands.drive.TankDrive;
+import org.usfirst.frc.team2169.robot.commands.drive.TankDriveSolenoidFlip;
+import org.usfirst.frc.team2169.robot.commands.gearSlider.CentralizeGearSlider;
+import org.usfirst.frc.team2169.robot.commands.gearSlider.GearManip;
+import org.usfirst.frc.team2169.robot.commands.hanging.Hanging;
+import org.usfirst.frc.team2169.robot.commands.intake.Intake;
 import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team2169.robot.subsystems.DrivingStraightPID;
 import org.usfirst.frc.team2169.robot.subsystems.GearManipulator;
-import org.usfirst.frc.team2169.robot.subsystems.DriveToPointPID;
 import org.usfirst.frc.team2169.robot.subsystems.Hanger;
-import org.usfirst.frc.team2169.robot.subsystems.SliderPID;
 import org.usfirst.frc.team2169.robot.subsystems.Intakes;
-import org.usfirst.frc.team2169.robot.subsystems.KTMath;
+import org.usfirst.frc.team2169.util.ADIS16448_IMU;
+import org.usfirst.frc.team2169.util.DriveToPointPID;
+import org.usfirst.frc.team2169.util.DrivingStraightPID;
+import org.usfirst.frc.team2169.util.KTMath;
+import org.usfirst.frc.team2169.util.SliderPID;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;

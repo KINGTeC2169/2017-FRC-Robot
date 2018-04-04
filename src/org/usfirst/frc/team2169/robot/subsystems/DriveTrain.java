@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
+import org.usfirst.frc.team2169.util.ADIS16448_IMU;
+
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Compressor;
