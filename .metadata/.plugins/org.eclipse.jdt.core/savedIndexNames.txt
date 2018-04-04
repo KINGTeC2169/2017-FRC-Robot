@@ -1,3 +1,0 @@
-INDEX VERSION 1.129+C:\Users\KING\Documents\GitHub\2017-FRC-Robot\.metadata\.plugins\org.eclipse.jdt.core
-3878457715.index
-334379558.index
