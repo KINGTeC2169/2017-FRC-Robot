@@ -1,7 +1,7 @@
-package org.usfirst.frc.team2169.robot.commands.doors;
+package com.team2169.robot.commands.doors;
 
-import org.usfirst.frc.team2169.robot.Robot;
-import org.usfirst.frc.team2169.robot.subsystems.*;
+import com.team2169.robot.Robot;
+import com.team2169.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 

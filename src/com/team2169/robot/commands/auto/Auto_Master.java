@@ -1,9 +1,9 @@
-package org.usfirst.frc.team2169.robot.commands.auto;
+package com.team2169.robot.commands.auto;
 
-import org.usfirst.frc.team2169.robot.commands.doors.SetGearDoor;
-import org.usfirst.frc.team2169.robot.commands.drive.TankDriveSolenoidFlipOnce;
-import org.usfirst.frc.team2169.robot.commands.gearSlider.CentralizeGearSlider;
-import org.usfirst.frc.team2169.robot.commands.intake.ReleaseIntake;
+import com.team2169.robot.commands.doors.SetGearDoor;
+import com.team2169.robot.commands.drive.TankDriveSolenoidFlipOnce;
+import com.team2169.robot.commands.gearSlider.CentralizeGearSlider;
+import com.team2169.robot.commands.intake.ReleaseIntake;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.CommandGroup;

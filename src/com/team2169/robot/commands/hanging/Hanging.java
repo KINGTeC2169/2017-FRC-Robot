@@ -1,6 +1,6 @@
-package org.usfirst.frc.team2169.robot.commands.hanging;
+package com.team2169.robot.commands.hanging;
 
-import org.usfirst.frc.team2169.robot.Robot;
+import com.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 

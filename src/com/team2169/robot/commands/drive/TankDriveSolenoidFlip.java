@@ -1,7 +1,7 @@
-package org.usfirst.frc.team2169.robot.commands.drive;
+package com.team2169.robot.commands.drive;
 
-import org.usfirst.frc.team2169.robot.Robot;
-import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
+import com.team2169.robot.Robot;
+import com.team2169.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;

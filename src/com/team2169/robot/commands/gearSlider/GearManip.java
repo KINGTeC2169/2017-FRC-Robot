@@ -1,8 +1,8 @@
-package org.usfirst.frc.team2169.robot.commands.gearSlider;
+package com.team2169.robot.commands.gearSlider;
 
 import java.util.Set;
 
-import org.usfirst.frc.team2169.robot.Robot;
+import com.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;

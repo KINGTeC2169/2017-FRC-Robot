@@ -1,6 +1,6 @@
-package org.usfirst.frc.team2169.robot.commands.auto;
+package com.team2169.robot.commands.auto;
 
-import org.usfirst.frc.team2169.robot.Robot;
+import com.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;

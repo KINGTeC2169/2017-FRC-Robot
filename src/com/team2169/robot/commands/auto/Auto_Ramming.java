@@ -1,7 +1,7 @@
-package org.usfirst.frc.team2169.robot.commands.auto;
+package com.team2169.robot.commands.auto;
 
-import org.usfirst.frc.team2169.robot.Robot;
-import org.usfirst.frc.team2169.robot.commands.gearSlider.CentralizeGearSlider;
+import com.team2169.robot.Robot;
+import com.team2169.robot.commands.gearSlider.CentralizeGearSlider;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

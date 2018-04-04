@@ -1,10 +1,10 @@
-package org.usfirst.frc.team2169.robot.commands.auto;
+package com.team2169.robot.commands.auto;
+
+import com.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team2169.robot.Robot;
 
 /**
  * This command drives the robot over a given distance with simple proportional
